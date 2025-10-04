@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ScreenCaptureService } from './services/ScreenCaptureService';
 import { ActionEventService } from './services/ActionEventService';
 import { WebRTCService } from './services/WebRTCService';
+import { InputCaptureService } from './services/InputCaptureService';
 import { OrchestratorClient } from './clients/OrchestratorClient';
 import { SystemController } from './controllers/SystemController';
 
@@ -25,6 +26,7 @@ class JarvisXPCAgent {
   private screenCaptureService: ScreenCaptureService;
   private actionEventService: ActionEventService;
   private webRTCService: WebRTCService;
+  private inputCaptureService: InputCaptureService;
   private orchestratorClient: OrchestratorClient;
   private systemController: SystemController;
   private activeSessions: Map<string, any> = new Map();
@@ -49,7 +51,12 @@ class JarvisXPCAgent {
       this.screenCaptureService = new ScreenCaptureService();
       this.actionEventService = new ActionEventService();
       this.webRTCService = new WebRTCService();
-      this.orchestratorClient = new OrchestratorClient();
+      this.inputCaptureService = new InputCaptureService();
+      this.orchestratorClient = new OrchestratorClient({
+        baseUrl: process.env.ORCHESTRATOR_URL || 'http://localhost:3000',
+        wsUrl: process.env.ORCHESTRATOR_WS_URL || 'ws://localhost:3000',
+        apiKey: process.env.ORCHESTRATOR_API_KEY
+      });
       this.systemController = new SystemController();
 
       // Initialize WebRTC service
