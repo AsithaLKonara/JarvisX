@@ -18,8 +18,7 @@
     "uuid": "^9.0.1",
     "node-binance-api": "^0.13.1",
     "ccxt": "^4.1.0",
-    "node-keychain": "^1.0.2",
-    "crypto": "^1.0.1"
+    "node-keychain": "^1.0.2"
   },
   "devDependencies": {
     "@types/node": "^20.9.0",
