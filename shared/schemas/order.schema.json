@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Order Schema",
+  "description": "Schema for validating parsed orders from WhatsApp messages",
+  "required": ["customer", "items"],
+  "properties": {
+    "customer": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Customer name"
+        },
+        "phone": {
+          "type": "string",
+          "pattern": "^[0-9+\\-\\s()]+$",
+          "description": "Customer phone number"
+        },
+        "address": {
+          "type": "string",
+          "description": "Customer delivery address"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Customer email address"
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "description": "List of ordered items",
+      "items": {
+        "type": "object",
+        "required": ["sku", "title", "qty"],
+        "properties": {
+          "sku": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Product SKU or identifier"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Product name or description"
+          },
+          "qty": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Quantity ordered"
+          },
+          "price": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Unit price"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Special instructions for this item"
+          }
+        }
+      }
+    },
+    "total_amount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total order amount"
+    },
+    "delivery_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Preferred delivery date"
+    },
+    "payment_method": {
+      "type": "string",
+      "enum": ["cash", "card", "bank_transfer", "digital_wallet"],
+      "description": "Preferred payment method"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional order notes or special instructions"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["whatsapp", "voice", "web", "mobile"],
+      "description": "Source of the order"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the order was created"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@jarvisx/stt-service",
+  "version": "1.0.0",
+  "description": "Speech-to-Text service with Sinhala support",
+  "scripts": {
+    "start": "python main.py",
+    "dev": "python main.py",
+    "test": "python -m pytest test_stt.py -v",
+    "lint": "flake8 . --max-line-length=100"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Task Schema",
+  "description": "Schema for validating AI-generated task plans",
+  "required": ["task_id", "intent", "steps"],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "description": "Unique identifier for the task"
+    },
+    "intent": {
+      "type": "string",
+      "description": "High-level description of what the user wants to accomplish"
+    },
+    "user_text": {
+      "type": "string",
+      "description": "Original user input text"
+    },
+    "steps": {
+      "type": "array",
+      "description": "Sequential steps to accomplish the task",
+      "items": {
+        "type": "object",
+        "required": ["step_id", "action", "tool"],
+        "properties": {
+          "step_id": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Sequential step number"
+          },
+          "action": {
+            "type": "string",
+            "description": "Human-readable description of the action"
+          },
+          "tool": {
+            "type": "string",
+            "enum": ["system_executor", "web_executor", "whatsapp_executor", "tts_service"],
+            "description": "Which executor service to use"
+          },
+          "params": {
+            "type": "object",
+            "description": "Parameters for the specific executor"
+          },
+          "requires_approval": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether this step requires user confirmation"
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["read_files", "run_command", "network", "use_credentials", "admin_access"]
+            },
+            "description": "Required permissions for this step"
+          }
+        }
+      }
+    },
+    "estimated_duration": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Estimated duration in seconds"
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "default": "low",
+      "description": "Risk assessment for the task"
+    },
+    "error": {
+      "type": "string",
+      "description": "Error message if task planning failed"
+    }
+  },
+  "additionalProperties": false
+}

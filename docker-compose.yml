@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  orchestrator:
+    build: ./apps/orchestrator
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - GPT_API_KEY=${GPT_API_KEY}
+      - DATABASE_URL=sqlite:./data/jarvisx.db
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - stt
+      - tts
+    networks:
+      - jarvisx-network
+
+  stt:
+    build: ./services/stt
+    ports:
+      - "8001:8000"
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      - ./services/stt:/app
+    networks:
+      - jarvisx-network
+
+  tts:
+    build: ./services/tts
+    ports:
+      - "8002:8000"
+    environment:
+      - GOOGLE_CLOUD_KEY=${GOOGLE_CLOUD_KEY}
+    volumes:
+      - ./services/tts:/app
+    networks:
+      - jarvisx-network
+
+  web-executor:
+    build: ./services/web-executor
+    environment:
+      - ADMIN_URL=${ADMIN_URL}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+    volumes:
+      - ./services/web-executor:/app
+    networks:
+      - jarvisx-network
+
+  whatsapp:
+    build: ./services/whatsapp
+    ports:
+      - "8003:8000"
+    environment:
+      - WHATSAPP_TOKEN=${WHATSAPP_TOKEN}
+      - WEBHOOK_SECRET=${WEBHOOK_SECRET}
+    volumes:
+      - ./services/whatsapp:/app
+    networks:
+      - jarvisx-network
+
+networks:
+  jarvisx-network:
+    driver: bridge
+
+volumes:
+  jarvisx-data:
