@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AssistantWindow from './components/AssistantWindow';
 import TradingDashboard from './components/TradingDashboard';
+import HumanLikeInterface from './components/HumanLikeInterface';
 import { Mic, Settings, TrendingUp, X } from 'lucide-react';
 
 // App state interface
@@ -28,6 +29,7 @@ function App() {
 
   const [isConnected, setIsConnected] = useState(false);
   const [orchestratorUrl, setOrchestratorUrl] = useState('ws://localhost:3000');
+  const [personalityUrl, setPersonalityUrl] = useState('ws://localhost:8007');
 
   // Initialize app
   useEffect(() => {
@@ -248,6 +250,14 @@ function App() {
             />
           )}
         </AnimatePresence>
+
+        {/* Human-like Interface Overlay */}
+        <HumanLikeInterface 
+          wsUrl={personalityUrl}
+          onInteraction={(type, data) => {
+            console.log('Human interaction:', type, data);
+          }}
+        />
       </div>
 
       {/* Global Styles */}
