@@ -1,0 +1,24 @@
+{
+  "name": "@jarvisx/system-executor",
+  "version": "1.0.0",
+  "description": "JarvisX System Executor - Safe system command execution",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "child_process": "^1.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "jest": "^29.7.0"
+  },
+  "keywords": ["jarvisx", "system", "executor", "automation"],
+  "author": "Asitha Lakmal",
+  "license": "MIT"
+}

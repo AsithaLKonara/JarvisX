@@ -96,6 +96,17 @@ services:
     networks:
       - jarvisx-network
 
+  system-executor:
+    build: ./services/system-executor
+    ports:
+      - "8009:8009"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./services/system-executor:/app
+    networks:
+      - jarvisx-network
+
 networks:
   jarvisx-network:
     driver: bridge
