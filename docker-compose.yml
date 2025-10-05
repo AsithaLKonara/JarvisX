@@ -79,6 +79,23 @@ services:
     networks:
       - jarvisx-network
 
+  self-training:
+    build: ./services/self-training
+    ports:
+      - "8008:8008"
+    environment:
+      - NODE_ENV=development
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - TRAINING_DATA_PATH=/app/data
+    volumes:
+      - ./services/self-training:/app
+      - ./data:/app/data
+    depends_on:
+      - orchestrator
+      - personality
+    networks:
+      - jarvisx-network
+
 networks:
   jarvisx-network:
     driver: bridge
