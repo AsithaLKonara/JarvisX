@@ -226,6 +226,178 @@ class JarvisXPersonalityService {
         });
       }
     });
+
+    // Generate avatar animation cues
+    this.app.post('/avatar/animation-cues', async (req, res) => {
+      try {
+        const { text, emotion, duration } = req.body;
+        
+        const currentMood = emotion || this.emotionalEngine.getCurrentMood();
+        const moodIntensity = this.emotionalEngine.getCurrentMoodIntensity();
+        
+        // Generate animation cues based on text content and emotion
+        const animationCues = this.generateAvatarAnimationCues(
+          text,
+          currentMood,
+          moodIntensity,
+          duration
+        );
+
+        res.json({
+          success: true,
+          animationCues,
+          emotion: currentMood,
+          intensity: moodIntensity
+        });
+
+      } catch (error: any) {
+        console.error('❌ Failed to generate avatar animation cues:', error);
+        res.status(500).json({
+          success: false,
+          error: error.message
+        });
+      }
+    });
+  }
+
+  /**
+   * Generate avatar animation cues from text and emotion
+   */
+  private generateAvatarAnimationCues(
+    text: string,
+    emotion: string,
+    intensity: number,
+    duration?: number
+  ): any {
+    const words = text.split(/\s+/);
+    const estimatedDuration = duration || (words.length / 150) * 60; // 150 words per minute
+    
+    // Detect emphasis points (punctuation, capitalization)
+    const emphasisPoints: number[] = [];
+    let currentPos = 0;
+    
+    words.forEach((word, index) => {
+      if (word.endsWith('!') || word.endsWith('?') || word.toUpperCase() === word) {
+        emphasisPoints.push(index / words.length);
+      }
+    });
+
+    // Generate gesture cues
+    const gestures = [];
+    
+    // Add gestures at emphasis points
+    emphasisPoints.forEach(position => {
+      const timestamp = position * estimatedDuration;
+      gestures.push({
+        timestamp,
+        type: emotion === 'excited' ? 'wide_gesture' : 'subtle_nod',
+        intensity: intensity * 0.8
+      });
+    });
+
+    // Generate micro-expressions based on emotion
+    const microExpressions = this.generateMicroExpressions(emotion, estimatedDuration);
+
+    return {
+      emotion,
+      intensity,
+      duration: estimatedDuration,
+      gestures,
+      microExpressions,
+      emphasisPoints,
+      headMovementPattern: this.getHeadMovementPattern(emotion),
+      eyeContactPattern: this.getEyeContactPattern(emotion),
+      bodyLanguage: this.getBodyLanguage(emotion)
+    };
+  }
+
+  /**
+   * Generate micro-expressions for the duration
+   */
+  private generateMicroExpressions(emotion: string, duration: number): any[] {
+    const expressions = [];
+    const expressionInterval = 2.5; // Every 2.5 seconds
+    const numExpressions = Math.floor(duration / expressionInterval);
+
+    const emotionExpressions: { [key: string]: string[] } = {
+      happy: ['smile', 'bright_eyes', 'raised_cheeks'],
+      excited: ['wide_eyes', 'open_mouth', 'animated'],
+      concerned: ['furrowed_brow', 'slight_frown', 'focused'],
+      confident: ['slight_smirk', 'steady_gaze', 'relaxed'],
+      curious: ['raised_eyebrow', 'tilted_head', 'attentive'],
+      proud: ['satisfied_smile', 'chin_up', 'chest_out'],
+      grateful: ['soft_smile', 'warm_eyes', 'gentle_nod'],
+      optimistic: ['hopeful_look', 'forward_lean', 'bright']
+    };
+
+    const availableExpressions = emotionExpressions[emotion] || ['neutral', 'attentive'];
+
+    for (let i = 0; i < numExpressions; i++) {
+      const timestamp = i * expressionInterval;
+      const expression = availableExpressions[Math.floor(Math.random() * availableExpressions.length)];
+      
+      expressions.push({
+        timestamp,
+        expression,
+        duration: 0.5 + Math.random() * 0.5
+      });
+    }
+
+    return expressions;
+  }
+
+  /**
+   * Get head movement pattern for emotion
+   */
+  private getHeadMovementPattern(emotion: string): string {
+    const patterns: { [key: string]: string } = {
+      happy: 'slight_bob',
+      excited: 'energetic_movement',
+      concerned: 'subtle_tilt',
+      confident: 'steady',
+      curious: 'inquisitive_tilt',
+      proud: 'upright',
+      grateful: 'gentle_nod',
+      optimistic: 'forward_lean'
+    };
+
+    return patterns[emotion] || 'neutral';
+  }
+
+  /**
+   * Get eye contact pattern for emotion
+   */
+  private getEyeContactPattern(emotion: string): string {
+    const patterns: { [key: string]: string } = {
+      happy: 'warm_direct',
+      excited: 'bright_engaged',
+      concerned: 'focused_attentive',
+      confident: 'steady_direct',
+      curious: 'searching_interested',
+      proud: 'assured_direct',
+      grateful: 'soft_appreciative',
+      optimistic: 'hopeful_forward'
+    };
+
+    return patterns[emotion] || 'neutral';
+  }
+
+  /**
+   * Get body language for emotion
+   */
+  private getBodyLanguage(emotion: string): string {
+    const bodyLanguage: { [key: string]: string } = {
+      happy: 'open_relaxed',
+      excited: 'energetic_animated',
+      concerned: 'attentive_focused',
+      confident: 'upright_strong',
+      curious: 'leaning_interested',
+      proud: 'chest_out_tall',
+      grateful: 'warm_open',
+      optimistic: 'forward_positive'
+    };
+
+    return bodyLanguage[emotion] || 'neutral';
   }
 
   private setupWebSocket(): void {

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎭 JarvisX Joi Avatar Demo - Blade Runner 2049 Style</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        #canvas-container {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+        }
+
+        #controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .emotion-btn {
+            padding: 10px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .emotion-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .emotion-btn.active {
+            background: rgba(59, 130, 246, 0.4);
+            border-color: rgba(59, 130, 246, 0.8);
+        }
+
+        #status {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px 20px;
+        }
+
+        #emotion-label {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(59, 130, 246, 0.2);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 20px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .ambient-glow {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+            mix-blend-mode: screen;
+            transition: background 1s ease-in-out;
+        }
+
+        #title {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            text-align: right;
+        }
+
+        #title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        #title p {
+            font-size: 12px;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Ambient Glow -->
+    <div class="ambient-glow" id="ambientGlow"></div>
+
+    <!-- Title -->
+    <div id="title">
+        <h1>🎭 Joi Avatar</h1>
+        <p>Blade Runner 2049 Style</p>
+    </div>
+
+    <!-- Status -->
+    <div id="status">
+        <div style="font-size: 12px; opacity: 0.6; margin-bottom: 5px;">STATUS</div>
+        <div style="font-size: 16px; font-weight: 600;">✅ Active</div>
+    </div>
+
+    <!-- Emotion Label -->
+    <div id="emotion-label">Optimistic</div>
+
+    <!-- Canvas Container -->
+    <div id="canvas-container"></div>
+
+    <!-- Controls -->
+    <div id="controls">
+        <button class="emotion-btn active" onclick="setEmotion('optimistic', '#84CC16')">🟢 Optimistic</button>
+        <button class="emotion-btn" onclick="setEmotion('happy', '#10B981')">😊 Happy</button>
+        <button class="emotion-btn" onclick="setEmotion('excited', '#F59E0B')">🤩 Excited</button>
+        <button class="emotion-btn" onclick="setEmotion('confident', '#3B82F6')">😎 Confident</button>
+        <button class="emotion-btn" onclick="setEmotion('curious', '#8B5CF6')">🤔 Curious</button>
+        <button class="emotion-btn" onclick="setEmotion('proud', '#EC4899')">😌 Proud</button>
+    </div>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r160/three.min.js"></script>
+    
+    <script>
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        camera.position.z = 5;
+
+        // Current state
+        let currentEmotion = 'optimistic';
+        let currentColor = new THREE.Color('#84CC16');
+        let targetColor = new THREE.Color('#84CC16');
+        let breathingPhase = 0;
+        let blinkTimer = 0;
+        let lipSyncPhase = 0;
+        let isSpeaking = false;
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+        scene.add(ambientLight);
+
+        const pointLight1 = new THREE.PointLight(currentColor, 1, 100);
+        pointLight1.position.set(5, 5, 5);
+        scene.add(pointLight1);
+
+        const pointLight2 = new THREE.PointLight(currentColor, 0.5, 100);
+        pointLight2.position.set(-5, 3, -5);
+        scene.add(pointLight2);
+
+        // Avatar group
+        const avatarGroup = new THREE.Group();
+        scene.add(avatarGroup);
+
+        // Head
+        const headGeometry = new THREE.SphereGeometry(1, 32, 32);
+        const headMaterial = new THREE.MeshStandardMaterial({
+            color: currentColor,
+            emissive: currentColor,
+            emissiveIntensity: 0.5,
+            metalness: 0.3,
+            roughness: 0.4,
+            transparent: true,
+            opacity: 0.9
+        });
+        const head = new THREE.Mesh(headGeometry, headMaterial);
+        avatarGroup.add(head);
+
+        // Eyes
+        const eyeGeometry = new THREE.SphereGeometry(0.12, 16, 16);
+        const eyeMaterial = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            emissive: 0x4d9eff,
+            emissiveIntensity: 1.5
+        });
+
+        const eyeLeft = new THREE.Mesh(eyeGeometry, eyeMaterial);
+        eyeLeft.position.set(-0.3, 0.2, 0.85);
+        avatarGroup.add(eyeLeft);
+
+        const eyeRight = new THREE.Mesh(eyeGeometry, eyeMaterial);
+        eyeRight.position.set(0.3, 0.2, 0.85);
+        avatarGroup.add(eyeRight);
+
+        // Eye irises
+        const irisGeometry = new THREE.SphereGeometry(0.06, 16, 16);
+        const irisMaterial = new THREE.MeshStandardMaterial({
+            color: 0x000033,
+            metalness: 0.8,
+            roughness: 0.2
+        });
+
+        const irisLeft = new THREE.Mesh(irisGeometry, irisMaterial);
+        irisLeft.position.set(-0.3, 0.2, 0.95);
+        avatarGroup.add(irisLeft);
+
+        const irisRight = new THREE.Mesh(irisGeometry, irisMaterial);
+        irisRight.position.set(0.3, 0.2, 0.95);
+        avatarGroup.add(irisRight);
+
+        // Mouth
+        const mouthGeometry = new THREE.TorusGeometry(0.2, 0.05, 8, 16);
+        const mouthMaterial = new THREE.MeshStandardMaterial({
+            color: 0xff4d6d,
+            emissive: 0xff1744,
+            emissiveIntensity: 0.2
+        });
+        const mouth = new THREE.Mesh(mouthGeometry, mouthMaterial);
+        mouth.position.set(0, -0.2, 0.9);
+        mouth.rotation.x = Math.PI / 2;
+        avatarGroup.add(mouth);
+
+        // Hair glow
+        const hairGeometry = new THREE.SphereGeometry(0.8, 32, 32);
+        const hairMaterial = new THREE.MeshStandardMaterial({
+            color: currentColor,
+            emissive: currentColor,
+            emissiveIntensity: 0.8,
+            transparent: true,
+            opacity: 0.3,
+            wireframe: true
+        });
+        const hair = new THREE.Mesh(hairGeometry, hairMaterial);
+        hair.position.set(0, 0.5, 0);
+        hair.scale.set(1.2, 1.4, 1);
+        avatarGroup.add(hair);
+
+        // Holographic base
+        const baseGeometry = new THREE.CircleGeometry(1.5, 64);
+        const baseMaterial = new THREE.MeshStandardMaterial({
+            color: currentColor,
+            emissive: currentColor,
+            emissiveIntensity: 0.7,
+            transparent: true,
+            opacity: 0.2,
+            side: THREE.DoubleSide
+        });
+        const base = new THREE.Mesh(baseGeometry, baseMaterial);
+        base.position.set(0, -1.5, 0);
+        base.rotation.x = -Math.PI / 2;
+        avatarGroup.add(base);
+
+        // Floating animation
+        let floatPhase = 0;
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const time = Date.now() * 0.001;
+
+            // Breathing animation
+            breathingPhase += 0.01;
+            const breathScale = 1 + Math.sin(breathingPhase) * 0.02;
+            avatarGroup.scale.setScalar(breathScale);
+
+            // Floating
+            floatPhase += 0.01;
+            avatarGroup.position.y = Math.sin(floatPhase) * 0.1;
+
+            // Head idle movement
+            avatarGroup.rotation.y = Math.sin(time * 0.3) * 0.05;
+            avatarGroup.rotation.x = Math.cos(time * 0.2) * 0.05;
+
+            // Eye tracking
+            const lookAtX = Math.sin(time * 0.5) * 0.1;
+            const lookAtY = Math.cos(time * 0.4) * 0.05;
+            
+            irisLeft.position.x = -0.3 + lookAtX;
+            irisLeft.position.y = 0.2 + lookAtY;
+            irisRight.position.x = 0.3 + lookAtX;
+            irisRight.position.y = 0.2 + lookAtY;
+
+            // Blinking
+            blinkTimer += 0.016;
+            if (blinkTimer > 3 + Math.random() * 2) {
+                const blinkDuration = 0.15;
+                const blinkProgress = (blinkTimer % blinkDuration) / blinkDuration;
+                const blinkScale = Math.sin(blinkProgress * Math.PI);
+                eyeLeft.scale.y = Math.max(0.1, 1 - blinkScale);
+                eyeRight.scale.y = Math.max(0.1, 1 - blinkScale);
+                
+                if (blinkTimer > 3.2) {
+                    blinkTimer = 0;
+                    eyeLeft.scale.y = 1;
+                    eyeRight.scale.y = 1;
+                }
+            }
+
+            // Lip sync (simulated speaking)
+            if (isSpeaking) {
+                lipSyncPhase += 0.2;
+                const mouthOpen = Math.abs(Math.sin(lipSyncPhase)) * 0.7 + 0.3;
+                mouth.scale.y = mouthOpen;
+                mouthMaterial.emissiveIntensity = 0.8;
+            } else {
+                mouth.scale.y = 0.3;
+                mouthMaterial.emissiveIntensity = 0.2;
+            }
+
+            // Color transition
+            headMaterial.color.lerp(targetColor, 0.05);
+            headMaterial.emissive.lerp(targetColor, 0.05);
+            hairMaterial.color.lerp(targetColor, 0.05);
+            hairMaterial.emissive.lerp(targetColor, 0.05);
+            baseMaterial.color.lerp(targetColor, 0.05);
+            baseMaterial.emissive.lerp(targetColor, 0.05);
+
+            // Update lights
+            pointLight1.color.lerp(targetColor, 0.05);
+            pointLight2.color.lerp(targetColor, 0.05);
+
+            renderer.render(scene, camera);
+        }
+
+        // Emotion control
+        function setEmotion(emotion, colorHex) {
+            currentEmotion = emotion;
+            targetColor = new THREE.Color(colorHex);
+            
+            // Update UI
+            document.getElementById('emotion-label').textContent = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+            document.getElementById('emotion-label').style.background = `${colorHex}20`;
+            document.getElementById('emotion-label').style.borderColor = `${colorHex}60`;
+            
+            // Update ambient glow
+            const glowEl = document.getElementById('ambientGlow');
+            glowEl.style.background = `radial-gradient(circle at 50% 50%, ${colorHex}40 0%, transparent 70%)`;
+            
+            // Update active button
+            document.querySelectorAll('.emotion-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Simulate speaking when emotion changes
+            isSpeaking = true;
+            setTimeout(() => {
+                isSpeaking = false;
+            }, 2000);
+
+            console.log(`🎭 Emotion changed to: ${emotion}`);
+        }
+
+        // Window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Start animation
+        animate();
+
+        // Welcome message
+        console.log(`
+╔═══════════════════════════════════════════════════════════╗
+║                                                           ║
+║   🎭 JarvisX Joi Avatar Demo                             ║
+║                                                           ║
+║   Click the emotion buttons to see Joi react!            ║
+║                                                           ║
+║   Built with Three.js & inspired by Blade Runner 2049    ║
+║                                                           ║
+╚═══════════════════════════════════════════════════════════╝
+        `);
+    </script>
+</body>
+</html>
+

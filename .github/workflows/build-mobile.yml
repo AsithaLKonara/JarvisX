@@ -1,0 +1,104 @@
+name: Build Mobile Apps
+
+on:
+  push:
+    branches: [ main, develop ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+          
+      - name: Install dependencies
+        run: |
+          cd apps/mobile
+          npm install
+          
+      - name: Build SDK
+        run: |
+          cd shared/sdk
+          npm install
+          npm run build
+          
+      - name: Build iOS with EAS
+        run: |
+          cd apps/mobile
+          eas build --platform ios --profile production --non-interactive
+          
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+          
+      - name: Install dependencies
+        run: |
+          cd apps/mobile
+          npm install
+          
+      - name: Build SDK
+        run: |
+          cd shared/sdk
+          npm install
+          npm run build
+          
+      - name: Build Android with EAS
+        run: |
+          cd apps/mobile
+          eas build --platform android --profile production --non-interactive
+          
+  publish-update:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+          
+      - name: Install dependencies
+        run: |
+          cd apps/mobile
+          npm install
+          
+      - name: Publish OTA Update
+        run: |
+          cd apps/mobile
+          eas update --branch production --message "Automated update from CI"
+

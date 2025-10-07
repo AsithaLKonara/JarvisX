@@ -1,0 +1,22 @@
+{
+  "name": "jarvisx-demo",
+  "version": "1.0.0",
+  "description": "JarvisX Demo Server",
+  "main": "demo-server.js",
+  "scripts": {
+    "demo": "node demo-server.js",
+    "start": "node demo-server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "keywords": [
+    "jarvisx",
+    "ai",
+    "assistant",
+    "demo"
+  ],
+  "author": "JarvisX Team",
+  "license": "MIT"
+}

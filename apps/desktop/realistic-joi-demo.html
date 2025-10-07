@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Realistic Joi Avatar - JarvisX</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+      color: white;
+      overflow: hidden;
+    }
+
+    #container {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    #canvas-container {
+      width: 100%;
+      height: 100%;
+    }
+
+    .overlay {
+      position: absolute;
+      z-index: 10;
+    }
+
+    .top-left {
+      top: 20px;
+      left: 20px;
+    }
+
+    .top-right {
+      top: 20px;
+      right: 20px;
+    }
+
+    .bottom-left {
+      bottom: 20px;
+      left: 20px;
+      max-width: 400px;
+    }
+
+    .panel {
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #fff;
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .avatar-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .avatar-btn {
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 13px;
+    }
+
+    .avatar-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: #667eea;
+      transform: translateY(-2px);
+    }
+
+    .avatar-btn.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-color: #667eea;
+    }
+
+    .emotion-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .emotion-btn {
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 12px;
+    }
+
+    .emotion-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .emotion-btn.active {
+      background: #10b981;
+      border-color: #10b981;
+    }
+
+    .speak-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .speak-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+
+    .speak-btn.speaking {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      animation: speaking-pulse 1s infinite;
+    }
+
+    @keyframes speaking-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .info-section {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .info-label {
+      color: #888;
+    }
+
+    .info-value {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .instructions {
+      margin-top: 15px;
+      padding: 12px;
+      background: rgba(16, 185, 129, 0.1);
+      border-left: 3px solid #10b981;
+      border-radius: 4px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #aaa;
+    }
+
+    .loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top-color: #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="canvas-container"></div>
+
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading Realistic Joi Avatar...</p>
+      <p style="font-size: 12px; color: #666; margin-top: 10px;">This may take a moment for high-quality models</p>
+    </div>
+
+    <!-- Top Left: Title & Status -->
+    <div class="overlay top-left panel">
+      <h1>🌟 Realistic Joi Avatar</h1>
+      <div class="stat">
+        <div class="status-dot"></div>
+        <span>Ready & Interactive</span>
+      </div>
+      <div class="stat">
+        <span>⚡</span>
+        <span id="fps">60</span> FPS
+      </div>
+    </div>
+
+    <!-- Top Right: Controls -->
+    <div class="overlay top-right panel">
+      <h2>Avatar Selection</h2>
+      <div class="avatar-grid">
+        <button class="avatar-btn active" data-avatar="rpm-1">
+          Joi (Default)
+        </button>
+        <button class="avatar-btn" data-avatar="rpm-2">
+          Emma
+        </button>
+        <button class="avatar-btn" data-avatar="rpm-3">
+          Alex
+        </button>
+        <button class="avatar-btn" data-avatar="custom">
+          Custom
+        </button>
+      </div>
+
+      <h2>Emotions</h2>
+      <div class="emotion-grid">
+        <button class="emotion-btn" data-emotion="happy">😊 Happy</button>
+        <button class="emotion-btn" data-emotion="excited">🤩 Excited</button>
+        <button class="emotion-btn" data-emotion="concerned">😟 Concerned</button>
+        <button class="emotion-btn" data-emotion="confident">😎 Confident</button>
+        <button class="emotion-btn" data-emotion="curious">🤔 Curious</button>
+        <button class="emotion-btn active" data-emotion="neutral">😐 Neutral</button>
+      </div>
+
+      <button class="speak-btn" id="speak-toggle">
+        🎤 Toggle Speaking
+      </button>
+
+      <div class="instructions">
+        💡 <strong>Try this:</strong><br>
+        • Move your mouse to change where Joi looks<br>
+        • Click emotion buttons to see expressions<br>
+        • Toggle speaking to see lip movement<br>
+        • Select different avatars
+      </div>
+    </div>
+
+    <!-- Bottom Left: Info -->
+    <div class="overlay bottom-left panel">
+      <h2>Current Status</h2>
+      <div class="info-section">
+        <div class="info-row">
+          <span class="info-label">Avatar:</span>
+          <span class="info-value" id="current-avatar">Joi (Default)</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Emotion:</span>
+          <span class="info-value" id="current-emotion">Neutral</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Speaking:</span>
+          <span class="info-value" id="speaking-status">No</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Blend Shapes:</span>
+          <span class="info-value" id="blend-shapes">Loading...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
+
+    // Avatar URLs
+    const AVATARS = {
+      'rpm-1': 'https://models.readyplayer.me/64bfa15f0e72c63d7c3934a6.glb',
+      'rpm-2': 'https://models.readyplayer.me/658f5c5f8b0c4c001a3e7b5d.glb',
+      'rpm-3': 'https://models.readyplayer.me/64bfa15f0e72c63d7c3934a7.glb',
+      'custom': 'https://models.readyplayer.me/64bfa15f0e72c63d7c3934a6.glb' // Placeholder
+    };
+
+    // State
+    let scene, camera, renderer, controls;
+    let avatar = null;
+    let morphTargetMeshes = [];
+    let currentEmotion = 'neutral';
+    let isSpeaking = false;
+    let lookAtTarget = new THREE.Vector3(0, 1.6, 2);
+    let mousePosition = { x: 0, y: 0 };
+
+    // Initialize
+    function init() {
+      const container = document.getElementById('canvas-container');
+
+      // Scene
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x0a0a0a);
+
+      // Camera
+      camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 1.6, 3);
+
+      // Renderer
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      container.appendChild(renderer.domElement);
+
+      // Lights
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+
+      const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight1.position.set(5, 5, 5);
+      directionalLight1.castShadow = true;
+      scene.add(directionalLight1);
+
+      const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.5);
+      directionalLight2.position.set(-5, 3, -5);
+      scene.add(directionalLight2);
+
+      const spotLight = new THREE.SpotLight(0xffffff, 0.5);
+      spotLight.position.set(0, 5, 0);
+      spotLight.angle = 0.3;
+      spotLight.penumbra = 1;
+      spotLight.castShadow = true;
+      scene.add(spotLight);
+
+      // Controls
+      controls = new OrbitControls(camera, renderer.domElement);
+      controls.target.set(0, 1.6, 0);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.minDistance = 1;
+      controls.maxDistance = 10;
+
+      // Load initial avatar
+      loadAvatar(AVATARS['rpm-1']);
+
+      // Event listeners
+      window.addEventListener('resize', onWindowResize);
+      window.addEventListener('mousemove', onMouseMove);
+
+      // UI listeners
+      document.querySelectorAll('.avatar-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.avatar-btn').forEach(b => b.classList.remove('active'));
+          e.target.classList.add('active');
+          const avatarId = e.target.dataset.avatar;
+          loadAvatar(AVATARS[avatarId]);
+          document.getElementById('current-avatar').textContent = e.target.textContent.trim();
+        });
+      });
+
+      document.querySelectorAll('.emotion-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.emotion-btn').forEach(b => b.classList.remove('active'));
+          e.target.classList.add('active');
+          currentEmotion = e.target.dataset.emotion;
+          document.getElementById('current-emotion').textContent = e.target.textContent.trim();
+        });
+      });
+
+      document.getElementById('speak-toggle').addEventListener('click', (e) => {
+        isSpeaking = !isSpeaking;
+        e.target.classList.toggle('speaking', isSpeaking);
+        e.target.textContent = isSpeaking ? '🔇 Stop Speaking' : '🎤 Start Speaking';
+        document.getElementById('speaking-status').textContent = isSpeaking ? 'Yes' : 'No';
+      });
+
+      // Start animation
+      animate();
+    }
+
+    function loadAvatar(url) {
+      document.getElementById('loading').style.display = 'block';
+
+      // Remove old avatar
+      if (avatar) {
+        scene.remove(avatar);
+      }
+
+      const loader = new GLTFLoader();
+      loader.load(
+        url,
+        (gltf) => {
+          avatar = gltf.scene;
+          scene.add(avatar);
+
+          // Find morph target meshes
+          morphTargetMeshes = [];
+          avatar.traverse((child) => {
+            if (child.isMesh && child.morphTargetDictionary) {
+              morphTargetMeshes.push(child);
+            }
+          });
+
+          const blendShapeCount = morphTargetMeshes.reduce((sum, mesh) => 
+            sum + (mesh.morphTargetDictionary ? Object.keys(mesh.morphTargetDictionary).length : 0), 0);
+          document.getElementById('blend-shapes').textContent = blendShapeCount;
+
+          document.getElementById('loading').style.display = 'none';
+          console.log('✅ Avatar loaded:', url);
+          console.log('🎭 Blend shapes found:', blendShapeCount);
+        },
+        (progress) => {
+          console.log('Loading:', (progress.loaded / progress.total * 100).toFixed(0) + '%');
+        },
+        (error) => {
+          console.error('❌ Error loading avatar:', error);
+          document.getElementById('loading').innerHTML = '<p>❌ Failed to load avatar</p>';
+        }
+      );
+    }
+
+    function onMouseMove(event) {
+      mousePosition.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mousePosition.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      
+      lookAtTarget.set(
+        mousePosition.x * 2,
+        mousePosition.y * 2 + 1.6,
+        2
+      );
+    }
+
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      if (avatar && morphTargetMeshes.length > 0) {
+        const time = performance.now() * 0.001;
+
+        // Simulate lip-sync when speaking
+        if (isSpeaking) {
+          const mouthValue = Math.abs(Math.sin(time * 10)) * 0.5;
+          morphTargetMeshes.forEach(mesh => {
+            if (!mesh.morphTargetInfluences || !mesh.morphTargetDictionary) return;
+            
+            const jawOpenIndex = mesh.morphTargetDictionary['jawOpen'];
+            if (jawOpenIndex !== undefined) {
+              mesh.morphTargetInfluences[jawOpenIndex] = mouthValue;
+            }
+          });
+        }
+
+        // Blinking
+        const shouldBlink = Math.sin(time * 0.3) > 0.98;
+        morphTargetMeshes.forEach(mesh => {
+          if (!mesh.morphTargetInfluences || !mesh.morphTargetDictionary) return;
+          
+          const blinkLeftIndex = mesh.morphTargetDictionary['eyeBlinkLeft'];
+          const blinkRightIndex = mesh.morphTargetDictionary['eyeBlinkRight'];
+          
+          if (blinkLeftIndex !== undefined) {
+            mesh.morphTargetInfluences[blinkLeftIndex] = shouldBlink ? 1.0 : 0;
+          }
+          if (blinkRightIndex !== undefined) {
+            mesh.morphTargetInfluences[blinkRightIndex] = shouldBlink ? 1.0 : 0;
+          }
+        });
+
+        // Emotion expressions
+        applyEmotion(currentEmotion);
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+
+      // Update FPS
+      document.getElementById('fps').textContent = Math.round(1000 / (performance.now() - (window.lastFrameTime || 0)));
+      window.lastFrameTime = performance.now();
+    }
+
+    function applyEmotion(emotion) {
+      const emotionMappings = {
+        happy: { mouthSmile: 0.7 },
+        excited: { mouthSmile: 0.9, eyeWideLeft: 0.6, eyeWideRight: 0.6 },
+        concerned: { browDownLeft: 0.6, browDownRight: 0.6 },
+        confident: { mouthSmile: 0.4 },
+        curious: { browInnerUp: 0.7, eyeWideLeft: 0.5, eyeWideRight: 0.5 },
+        neutral: {}
+      };
+
+      const shapes = emotionMappings[emotion] || {};
+
+      morphTargetMeshes.forEach(mesh => {
+        if (!mesh.morphTargetInfluences || !mesh.morphTargetDictionary) return;
+
+        // Apply emotion blend shapes
+        Object.entries(shapes).forEach(([shapeName, value]) => {
+          const index = mesh.morphTargetDictionary[shapeName];
+          if (index !== undefined) {
+            mesh.morphTargetInfluences[index] = value;
+          }
+        });
+      });
+    }
+
+    // Start
+    init();
+  </script>
+</body>
+</html>
+

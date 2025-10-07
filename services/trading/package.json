@@ -17,8 +17,7 @@
     "dotenv": "^16.3.1",
     "uuid": "^9.0.1",
     "node-binance-api": "^0.13.1",
-    "ccxt": "^4.1.0",
-    "node-keychain": "^1.0.2"
+    "ccxt": "^4.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.9.0",

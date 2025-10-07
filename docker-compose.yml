@@ -79,14 +79,29 @@ services:
     networks:
       - jarvisx-network
 
-  self-training:
-    build: ./services/self-training
+  avatar:
+    build: ./services/avatar
     ports:
       - "8008:8008"
     environment:
       - NODE_ENV=development
+      - AVATAR_PORT=8008
+    volumes:
+      - ./services/avatar:/app
+    depends_on:
+      - personality
+    networks:
+      - jarvisx-network
+
+  self-training:
+    build: ./services/self-training
+    ports:
+      - "8006:8006"
+    environment:
+      - NODE_ENV=development
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - TRAINING_DATA_PATH=/app/data
+      - PORT=8006
     volumes:
       - ./services/self-training:/app
       - ./data:/app/data
@@ -107,9 +122,224 @@ services:
     networks:
       - jarvisx-network
 
+  ocr:
+    build: ./services/ocr
+    ports:
+      - "8011:8011"
+    environment:
+      - NODE_ENV=development
+      - OCR_PORT=8011
+    volumes:
+      - ./services/ocr:/app
+    networks:
+      - jarvisx-network
+
+  vision:
+    build: ./services/vision
+    ports:
+      - "8005:8005"
+    environment:
+      - NODE_ENV=development
+      - VISION_PORT=8005
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./services/vision:/app
+    networks:
+      - jarvisx-network
+
+  screen-analyzer:
+    build: ./services/screen-analyzer
+    ports:
+      - "8010:8010"
+    environment:
+      - NODE_ENV=development
+      - SCREEN_ANALYZER_PORT=8010
+      - OCR_SERVICE_URL=http://ocr:8011
+      - VISION_SERVICE_URL=http://vision:8005
+    volumes:
+      - ./services/screen-analyzer:/app
+    depends_on:
+      - ocr
+      - vision
+    networks:
+      - jarvisx-network
+
+  pc-agent:
+    build: ./services/pc-agent
+    ports:
+      - "8004:8004"
+    environment:
+      - NODE_ENV=development
+      - PC_AGENT_PORT=8004
+      - SCREEN_ANALYZER_URL=http://screen-analyzer:8010
+      - ORCHESTRATOR_URL=http://orchestrator:3000
+    volumes:
+      - ./services/pc-agent:/app
+    depends_on:
+      - screen-analyzer
+      - orchestrator
+    networks:
+      - jarvisx-network
+
+  reasoning:
+    build: ./services/reasoning
+    ports:
+      - "8016:8016"
+    environment:
+      - NODE_ENV=development
+      - REASONING_PORT=8016
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./services/reasoning:/app
+    networks:
+      - jarvisx-network
+
+  approval:
+    build: ./services/approval
+    ports:
+      - "8013:8013"
+    environment:
+      - NODE_ENV=development
+      - APPROVAL_PORT=8013
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./services/approval:/app
+    networks:
+      - jarvisx-network
+
+  learning:
+    build: ./services/learning
+    ports:
+      - "8014:8014"
+    environment:
+      - NODE_ENV=development
+      - LEARNING_PORT=8014
+      - LEARNING_DATA_PATH=/app/data
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./services/learning:/app
+      - ./data:/app/data
+    networks:
+      - jarvisx-network
+
+  # Database Services
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=jarvisx
+      - POSTGRES_USER=jarvisx
+      - POSTGRES_PASSWORD=jarvisx123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jarvisx"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - jarvisx-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - jarvisx-network
+
+  database:
+    build: ./services/database
+    ports:
+      - "8017:8017"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_PORT=8017
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=jarvisx
+      - POSTGRES_USER=jarvisx
+      - POSTGRES_PASSWORD=jarvisx123
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+    volumes:
+      - ./services/database:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - jarvisx-network
+
+  redis-service:
+    build: ./services/redis
+    ports:
+      - "8018:8018"
+    environment:
+      - NODE_ENV=development
+      - REDIS_SERVICE_PORT=8018
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+    volumes:
+      - ./services/redis:/app
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - jarvisx-network
+
+  # Advanced Features Services
+  wake-word:
+    build: ./services/wake-word
+    ports:
+      - "8019:8019"
+    environment:
+      - NODE_ENV=development
+      - WAKE_WORD_PORT=8019
+    volumes:
+      - ./services/wake-word:/app
+    networks:
+      - jarvisx-network
+
+  translation:
+    build: ./services/translation
+    ports:
+      - "8020:8020"
+    environment:
+      - NODE_ENV=development
+      - TRANSLATION_PORT=8020
+    volumes:
+      - ./services/translation:/app
+    networks:
+      - jarvisx-network
+
+  camera:
+    build: ./services/camera
+    ports:
+      - "8021:8021"
+    environment:
+      - NODE_ENV=development
+      - CAMERA_PORT=8021
+    volumes:
+      - ./services/camera:/app
+    networks:
+      - jarvisx-network
+
 networks:
   jarvisx-network:
     driver: bridge
 
 volumes:
   jarvisx-data:
+  postgres_data:
+  redis_data:

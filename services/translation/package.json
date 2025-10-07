@@ -1,0 +1,42 @@
+{
+  "name": "jarvisx-translation",
+  "version": "1.0.0",
+  "description": "JarvisX Translation Service - Multi-language translation and localization",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "dev": "ts-node --watch src/index.ts",
+    "build": "tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "axios": "^1.6.0",
+    "google-translate": "^3.0.0",
+    "translate": "^1.4.0",
+    "node-nlp": "^4.27.0",
+    "uuid": "^9.0.1",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17",
+    "@types/uuid": "^9.0.7",
+    "@types/node": "^20.8.0",
+    "typescript": "^5.2.2",
+    "ts-node": "^10.9.1",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.8"
+  },
+  "keywords": [
+    "translation",
+    "localization",
+    "multi-language",
+    "microservices",
+    "jarvisx"
+  ],
+  "author": "JarvisX Team",
+  "license": "MIT"
+}

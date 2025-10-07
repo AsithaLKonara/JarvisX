@@ -1,101 +1,129 @@
 /**
- * JarvisX Mobile App - Main Application Component
+ * JarvisX Mobile App - Main Entry Point
+ * Native iOS & Android companion with AR avatar and remote control
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'react-native';
+import { JarvisXClient } from '@jarvisx/sdk';
+import { getDeviceInfo } from '@jarvisx/sdk/dist/utils/deviceInfo';
 
 // Screens
-import SessionViewer from './screens/SessionViewer';
 import HomeScreen from './screens/HomeScreen';
-import TradingDashboard from './screens/TradingDashboard';
+import AvatarViewScreen from './screens/AvatarViewScreen';
+import TasksScreen from './screens/TasksScreen';
+import RemoteControlScreen from './screens/RemoteControlScreen';
 import SettingsScreen from './screens/SettingsScreen';
 
-const Stack = createStackNavigator();
+// Create navigator
 const Tab = createBottomTabNavigator();
 
-function MainTabs() {
-  return (
-    <Tab.Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: {
-          backgroundColor: '#1F2937',
-          borderTopColor: '#374151',
-        },
-        tabBarActiveTintColor: '#6366f1',
-        tabBarInactiveTintColor: '#9CA3AF',
-      }}
-    >
-      <Tab.Screen 
-        name="Home" 
-        component={HomeScreen}
-        options={{
-          tabBarLabel: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <Monitor size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen 
-        name="Trading" 
-        component={TradingDashboard}
-        options={{
-          tabBarLabel: 'Trading',
-          tabBarIcon: ({ color, size }) => (
-            <TrendingUp size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen 
-        name="Settings" 
-        component={SettingsScreen}
-        options={{
-          tabBarLabel: 'Settings',
-          tabBarIcon: ({ color, size }) => (
-            <Settings size={size} color={color} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
-  );
-}
-
 export default function App() {
+  const [isConnected, setIsConnected] = useState(false);
+  const [client, setClient] = useState<JarvisXClient | null>(null);
+
+  useEffect(() => {
+    initializeClient();
+  }, []);
+
+  const initializeClient = async () => {
+    try {
+      const deviceInfo = getDeviceInfo();
+      
+      const jarvisClient = new JarvisXClient({
+        apiUrl: 'http://YOUR_SERVER_IP:3000',  // Change to your server
+        wsUrl: 'ws://YOUR_SERVER_IP:3000',
+        deviceId: deviceInfo.deviceId,
+        deviceType: 'mobile',
+        platform: deviceInfo.platform as any,
+        enableOfflineMode: false,
+        enableLocalWhisper: false,
+        enableAvatar: true
+      });
+
+      // Setup event listeners
+      jarvisClient.on('connected', () => {
+        console.log('✅ Connected to JarvisX');
+        setIsConnected(true);
+      });
+
+      jarvisClient.on('disconnected', () => {
+        console.log('🔌 Disconnected from JarvisX');
+        setIsConnected(false);
+      });
+
+      jarvisClient.on('avatar_update', (state) => {
+        console.log('🎭 Avatar updated:', state.currentEmotion);
+      });
+
+      jarvisClient.on('task_update', (task) => {
+        console.log('📋 Task updated:', task.id, task.status);
+      });
+
+      setClient(jarvisClient);
+
+      // Try to connect if already authenticated
+      // (In production, check stored credentials)
+      
+    } catch (error) {
+      console.error('Failed to initialize client:', error);
+    }
+  };
+
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle="light-content" backgroundColor="#111827" />
+    <>
+      <StatusBar barStyle="light-content" />
       <NavigationContainer>
-        <Stack.Navigator
+        <Tab.Navigator
           screenOptions={{
-            headerStyle: {
-              backgroundColor: '#1F2937',
+            headerShown: false,
+            tabBarStyle: {
+              backgroundColor: '#000000',
+              borderTopColor: 'rgba(255,255,255,0.1)',
             },
-            headerTintColor: '#FFFFFF',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
+            tabBarActiveTintColor: '#3B82F6',
+            tabBarInactiveTintColor: '#6B7280',
           }}
         >
-          <Stack.Screen 
-            name="MainTabs" 
-            component={MainTabs}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen 
-            name="SessionViewer" 
-            component={SessionViewer}
+          <Tab.Screen 
+            name="Home" 
+            component={HomeScreen}
             options={{
-              title: 'Live Session',
-              presentation: 'modal',
+              tabBarIcon: ({ color }) => <span style={{ fontSize: 24 }}>🏠</span>,
             }}
           />
-        </Stack.Navigator>
+          <Tab.Screen 
+            name="Avatar" 
+            component={AvatarViewScreen}
+            options={{
+              tabBarIcon: ({ color }) => <span style={{ fontSize: 24 }}>🎭</span>,
+            }}
+          />
+          <Tab.Screen 
+            name="Tasks" 
+            component={TasksScreen}
+            options={{
+              tabBarIcon: ({ color }) => <span style={{ fontSize: 24 }}>📋</span>,
+            }}
+          />
+          <Tab.Screen 
+            name="Remote" 
+            component={RemoteControlScreen}
+            options={{
+              tabBarIcon: ({ color }) => <span style={{ fontSize: 24 }}>📱</span>,
+            }}
+          />
+          <Tab.Screen 
+            name="Settings" 
+            component={SettingsScreen}
+            options={{
+              tabBarIcon: ({ color }) => <span style={{ fontSize: 24 }}>⚙️</span>,
+            }}
+          />
+        </Tab.Navigator>
       </NavigationContainer>
-    </SafeAreaProvider>
+    </>
   );
 }

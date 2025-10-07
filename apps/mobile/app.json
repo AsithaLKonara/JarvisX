@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "JarvisX",
+    "slug": "jarvisx-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jarvisx.mobile",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "JarvisX needs microphone access for voice commands",
+        "NSCameraUsageDescription": "JarvisX needs camera access for AR avatar features",
+        "NSSpeechRecognitionUsageDescription": "JarvisX uses speech recognition for voice control"
+      },
+      "buildNumber": "1"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#000000"
+      },
+      "package": "com.jarvisx.mobile",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.INTERNET",
+        "android.permission.VIBRATE",
+        "android.permission.WAKE_LOCK"
+      ],
+      "versionCode": 1
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-camera",
+      "expo-av",
+      "expo-notifications"
+    ]
+  }
+}
+

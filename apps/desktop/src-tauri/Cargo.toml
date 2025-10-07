@@ -1,0 +1,35 @@
+[package]
+name = "jarvisx-desktop"
+version = "1.0.0"
+description = "JarvisX Desktop - Native AI Companion"
+authors = ["JarvisX Team"]
+license = "MIT"
+repository = "https://github.com/yourusername/jarvisx"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "1.5", features = [] }
+
+[dependencies]
+tauri = { version = "1.5", features = [ "api-all", "system-tray", "notification", "global-shortcut", "cli", "dialog", "fs-all", "http-all", "os-all", "path-all", "process-all", "protocol-all", "shell-all", "window-all"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sysinfo = "0.30"
+tokio = { version = "1", features = ["full"] }
+reqwest = { version = "0.11", features = ["json"] }
+enigo = "0.2"  # For keyboard/mouse simulation
+screenshots = "0.6"  # For screen capture
+cpal = "0.15"  # For audio capture
+base64 = "0.21"  # For base64 encoding
+image = "0.24"  # For image processing
+
+[features]
+# by default Tauri runs in production mode
+# when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL
+default = ["custom-protocol"]
+# this feature is used for production builds where `devPath` points to the filesystem
+# DO NOT remove this
+custom-protocol = ["tauri/custom-protocol"]
+
