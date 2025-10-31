@@ -1,0 +1,206 @@
+/* Terminal Theme - Matrix/Hacker Style with Box-Drawing Characters */
+
+:root[data-theme="terminal"] {
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --text-primary: #00ff00;
+  --text-secondary: #00cc00;
+  --accent: #00ffff;
+  --success: #00ff00;
+  --border: #00ff00;
+  --shadow: rgba(0, 255, 0, 0.2);
+  --radius: 0px;
+  --font-main: 'JetBrains Mono', 'Courier New', 'Consolas', monospace;
+  --font-code: 'Fira Code', 'Courier New', monospace;
+}
+
+/* Terminal-specific global styles */
+:root[data-theme="terminal"] body {
+  font-family: var(--font-main);
+  letter-spacing: 0.5px;
+}
+
+/* Text glow effect */
+:root[data-theme="terminal"] * {
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+}
+
+/* Header border with box-drawing characters */
+:root[data-theme="terminal"] .header {
+  border-bottom: 2px solid var(--border);
+  position: relative;
+}
+
+:root[data-theme="terminal"] .header::before {
+  content: "╔══════════════════════════════════════════════════════════╗";
+  position: absolute;
+  top: -20px;
+  left: 0;
+  right: 0;
+  font-size: 10px;
+  color: var(--border);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Sidebar borders */
+:root[data-theme="terminal"] .sidebar {
+  border-right: 2px solid var(--border);
+  background-color: var(--bg-primary);
+}
+
+/* Mode buttons */
+:root[data-theme="terminal"] .mode-button {
+  border: 1px solid var(--border);
+  font-family: var(--font-main);
+}
+
+:root[data-theme="terminal"] .mode-button.active {
+  background-color: var(--accent) !important;
+  color: #000000 !important;
+  text-shadow: none;
+  box-shadow: 0 0 15px var(--accent);
+}
+
+/* Progress bars with ASCII blocks */
+:root[data-theme="terminal"] .progress-bar {
+  background-color: #0a0a0a;
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+:root[data-theme="terminal"] .progress-fill {
+  background: linear-gradient(90deg, var(--success), var(--accent));
+  box-shadow: 0 0 10px var(--success);
+}
+
+/* Message bubbles */
+:root[data-theme="terminal"] .message-bubble {
+  font-family: var(--font-main);
+}
+
+:root[data-theme="terminal"] .message-content {
+  border: 1px solid var(--border) !important;
+  background-color: var(--bg-secondary) !important;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.1) !important;
+  border-radius: 0 !important;
+}
+
+/* User messages */
+:root[data-theme="terminal"] .message-bubble:has([role="user"]) .message-content {
+  background-color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #000000 !important;
+  text-shadow: none !important;
+  box-shadow: 0 0 15px var(--accent) !important;
+}
+
+/* Input box */
+:root[data-theme="terminal"] .input-box {
+  background-color: var(--bg-primary);
+  border-top: 2px solid var(--border);
+}
+
+:root[data-theme="terminal"] textarea {
+  background-color: var(--bg-secondary) !important;
+  border: 2px solid var(--border) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-main) !important;
+  border-radius: 0 !important;
+}
+
+:root[data-theme="terminal"] textarea:focus {
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.3) !important;
+}
+
+/* Buttons */
+:root[data-theme="terminal"] button {
+  border-radius: 0 !important;
+  font-family: var(--font-main);
+}
+
+/* Scanline effect (optional retro effect) */
+:root[data-theme="terminal"]::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(0, 255, 0, 0.02) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.3;
+}
+
+/* CRT monitor flicker (very subtle) */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.98; }
+}
+
+:root[data-theme="terminal"] .app-container {
+  animation: flicker 0.15s infinite;
+}
+
+/* Typing indicator (terminal style) */
+:root[data-theme="terminal"] .typing-indicator .dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--success);
+  border-radius: 0;
+  box-shadow: 0 0 8px var(--success);
+}
+
+/* Scrollbar (terminal style) */
+:root[data-theme="terminal"] ::-webkit-scrollbar {
+  width: 12px;
+  background-color: var(--bg-primary);
+}
+
+:root[data-theme="terminal"] ::-webkit-scrollbar-track {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+}
+
+:root[data-theme="terminal"] ::-webkit-scrollbar-thumb {
+  background-color: var(--success);
+  border: 1px solid var(--border);
+  box-shadow: 0 0 5px var(--success);
+}
+
+:root[data-theme="terminal"] ::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+/* Selection */
+:root[data-theme="terminal"] ::selection {
+  background-color: var(--success);
+  color: #000000;
+  text-shadow: none;
+}
+
+/* ASCII-style borders for panels */
+:root[data-theme="terminal"] .system-status {
+  border-top: 2px solid var(--border);
+  position: relative;
+}
+
+:root[data-theme="terminal"] .system-status::before {
+  content: "├──────────────────────────────────────────────────────────┤";
+  position: absolute;
+  top: -12px;
+  left: 0;
+  font-size: 10px;
+  color: var(--border);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
