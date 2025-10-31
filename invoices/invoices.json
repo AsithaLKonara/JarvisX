@@ -1,0 +1,36 @@
+{
+  "BA5E7126": {
+    "invoice_id": "BA5E7126",
+    "client_name": "Client A",
+    "items": [
+      {
+        "description": "Service",
+        "amount": 500
+      }
+    ],
+    "subtotal": 500,
+    "tax_rate": 0.0,
+    "tax_amount": 0.0,
+    "total": 500.0,
+    "status": "draft",
+    "created_at": "2025-10-25T12:14:54.316643",
+    "due_date": null
+  },
+  "095CAC63": {
+    "invoice_id": "095CAC63",
+    "client_name": "Client A",
+    "items": [
+      {
+        "description": "Service",
+        "amount": 500
+      }
+    ],
+    "subtotal": 500,
+    "tax_rate": 0.0,
+    "tax_amount": 0.0,
+    "total": 500.0,
+    "status": "draft",
+    "created_at": "2025-10-25T12:16:20.523716",
+    "due_date": null
+  }
+}
