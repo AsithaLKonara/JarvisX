@@ -31,6 +31,13 @@ except ImportError:
     from core.ai_engine import AIEngine
     USE_HYBRID = False
 
+# Try to import TTS engine
+try:
+    from speech.text_to_speech import TTSEngine
+    TTS_AVAILABLE = True
+except ImportError:
+    TTS_AVAILABLE = False
+
 logger = get_logger(__name__)
 
 
@@ -55,6 +62,23 @@ class CLIJarvis:
         
         print(f"\n{Colors.CYAN}[INIT]{Colors.RESET} Loading configuration...")
         self.config = Config()
+        
+        # Initialize TTS (optional)
+        self.tts_engine = None
+        self.tts_enabled = os.getenv('ENABLE_TTS', 'false').lower() == 'true'
+        if TTS_AVAILABLE and self.tts_enabled:
+            print(f"{Colors.CYAN}[INIT]{Colors.RESET} Initializing Text-to-Speech...")
+            try:
+                tts_engine = os.getenv('TTS_ENGINE', 'pyttsx3')
+                self.tts_engine = TTSEngine(engine=tts_engine, rate=150)
+                if self.tts_engine.is_available:
+                    print(f"{Colors.GREEN}✅ TTS enabled ({tts_engine}){Colors.RESET}")
+                else:
+                    print(f"{Colors.YELLOW}⚠️  TTS initialization failed{Colors.RESET}")
+                    self.tts_enabled = False
+            except Exception as e:
+                print(f"{Colors.YELLOW}⚠️  TTS not available: {e}{Colors.RESET}")
+                self.tts_enabled = False
         
         print(f"{Colors.CYAN}[INIT]{Colors.RESET} Initializing AI Brain System...")
         if USE_HYBRID:
@@ -122,8 +146,12 @@ class CLIJarvis:
         # CLI Mode
         print(f"\n{Colors.BLUE}[INTERFACE MODE]{Colors.RESET}")
         print(f"  Mode: {Colors.GREEN}CLI (Text Input/Output){Colors.RESET}")
-        print(f"  Voice I/O: {Colors.YELLOW}Disabled (Planned for Phase 3){Colors.RESET}")
-        print(f"  Avatar UI: {Colors.YELLOW}Disabled (Planned for Phase 4){Colors.RESET}")
+        tts_status = f"{Colors.GREEN}✓ Enabled{Colors.RESET}" if self.tts_enabled else f"{Colors.YELLOW}✗ Disabled{Colors.RESET}"
+        print(f"  Text-to-Speech: {tts_status}")
+        if self.tts_enabled and self.tts_engine:
+            print(f"  TTS Engine: {self.tts_engine.engine_name}")
+        print(f"  Voice Input: {Colors.YELLOW}Not yet implemented{Colors.RESET}")
+        print(f"  Avatar UI: {Colors.YELLOW}Not yet implemented{Colors.RESET}")
         
         # System Info
         print(f"\n{Colors.BLUE}[SYSTEM INFO]{Colors.RESET}")
@@ -142,17 +170,21 @@ class CLIJarvis:
     
     def print_welcome(self):
         """Print welcome message"""
+        tts_status = "✓ Enabled" if self.tts_enabled else "✗ Disabled"
         print(f"""
-{Colors.BOLD}{Colors.CYAN}Welcome to Jarvis X v2 CLI!{Colors.RESET}
+{Colors.BOLD}{Colors.CYAN}Welcome to Jarvis X v2 CLI with Voice Output!{Colors.RESET}
 
 Available commands:
   • Type any message to chat with Jarvis
   • "help" - Show this help message
   • "status" - Show system status
+  • "tts on" - Enable voice output 🎤
+  • "tts off" - Disable voice output
+  • "tts test" - Test text-to-speech
   • "exit" - Exit the application
 
-{Colors.CYAN}Mode: CLI-Only (Text Input/Output){Colors.RESET}
-{Colors.YELLOW}Next Phase: LLM Brain Integration → Voice I/O → Avatar UI{Colors.RESET}
+{Colors.CYAN}Mode: CLI with TTS ({tts_status}){Colors.RESET}
+{Colors.GREEN}✨ Jarvis can now speak responses!{Colors.RESET}
         """)
     
     def log_input(self, user_input: str):
@@ -186,6 +218,15 @@ Available commands:
         """Log AI response"""
         print(f"\n{Colors.CYAN}[AI RESPONSE]{Colors.RESET}")
         print(f"  {Colors.GREEN}{response}{Colors.RESET}")
+        
+        # Speak response if TTS is enabled
+        if self.tts_enabled and self.tts_engine:
+            print(f"{Colors.CYAN}[TTS]{Colors.RESET} Speaking...", end=' ', flush=True)
+            success = self.tts_engine.speak(response, blocking=True)
+            if success:
+                print(f"{Colors.GREEN}✓{Colors.RESET}")
+            else:
+                print(f"{Colors.YELLOW}(failed){Colors.RESET}")
     
     def run(self):
         """Run the CLI interface"""
@@ -202,12 +243,33 @@ Available commands:
                 # Handle special commands
                 if user_input.lower() == "exit":
                     print(f"\n{Colors.YELLOW}Goodbye!{Colors.RESET}")
+                    if self.tts_enabled and self.tts_engine:
+                        self.tts_engine.speak("Goodbye!", blocking=True)
                     break
                 elif user_input.lower() == "help":
                     self.print_welcome()
                     continue
                 elif user_input.lower() == "status":
                     self.print_status()
+                    continue
+                elif user_input.lower() == "tts on":
+                    if TTS_AVAILABLE and self.tts_engine:
+                        self.tts_enabled = True
+                        print(f"{Colors.GREEN}✅ TTS enabled{Colors.RESET}")
+                        self.tts_engine.speak("Text to speech enabled", blocking=True)
+                    else:
+                        print(f"{Colors.YELLOW}⚠️  TTS not available{Colors.RESET}")
+                    continue
+                elif user_input.lower() == "tts off":
+                    self.tts_enabled = False
+                    print(f"{Colors.YELLOW}TTS disabled{Colors.RESET}")
+                    continue
+                elif user_input.lower() == "tts test":
+                    if TTS_AVAILABLE and self.tts_engine:
+                        print(f"{Colors.CYAN}Testing TTS...{Colors.RESET}")
+                        self.tts_engine.speak("Hello! I am Jarvis, your AI assistant. Text to speech is working!", blocking=True)
+                    else:
+                        print(f"{Colors.YELLOW}⚠️  TTS not available{Colors.RESET}")
                     continue
                 
                 # Log input

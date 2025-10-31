@@ -13,6 +13,11 @@ pyttsx3>=2.90
 pyaudio>=0.2.11
 googletrans>=4.0.0
 
+# Text-to-Speech (TTS)
+gtts>=2.5.0
+pygame>=2.5.0
+elevenlabs>=0.2.0  # Optional: Premium TTS
+
 # Advanced features (optional but recommended)
 vosk>=0.3.44
 scipy>=1.7.0
