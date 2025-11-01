@@ -10,21 +10,21 @@ export default function SettingsPanel({
   onClose 
 }) {
   return (
-    <div className="settings-overlay fixed inset-0 z-50 flex items-center justify-center p-4"
-         style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+    <div className="settings-overlay fixed inset-0 flex items-center justify-center p-4"
+         style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 100 }}
          onClick={onClose}>
       
       <div className="settings-panel max-w-md w-full p-6 rounded-xl"
            style={{
              backgroundColor: 'var(--bg-primary)',
              border: `2px solid var(--border)`,
-             boxShadow: `0 8px 32px var(--shadow)`
+             boxShadow: `0 8px 32px var(--shadow-lg)`
            }}
            onClick={(e) => e.stopPropagation()}>
         
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold" style={{ color: 'var(--accent)' }}>
+          <h2 className="text-2xl font-bold" style={{ color: 'var(--accent-primary)' }}>
             ⚙️ Settings
           </h2>
           <button 
@@ -50,9 +50,9 @@ export default function SettingsPanel({
                   theme === 'professional' ? 'ring-2' : ''
                 }`}
                 style={{
-                  backgroundColor: theme === 'professional' ? 'var(--accent)' : 'var(--bg-secondary)',
+                  backgroundColor: theme === 'professional' ? 'var(--accent-primary)' : 'var(--bg-secondary)',
                   color: theme === 'professional' ? '#ffffff' : 'var(--text-primary)',
-                  ringColor: 'var(--accent)'
+                  ringColor: 'var(--accent-primary)'
                 }}>
                 <div className="text-2xl mb-1">💼</div>
                 <div className="text-xs">Professional</div>
@@ -64,9 +64,9 @@ export default function SettingsPanel({
                   theme === 'terminal' ? 'ring-2' : ''
                 }`}
                 style={{
-                  backgroundColor: theme === 'terminal' ? 'var(--accent)' : 'var(--bg-secondary)',
+                  backgroundColor: theme === 'terminal' ? 'var(--accent-primary)' : 'var(--bg-secondary)',
                   color: theme === 'terminal' ? '#ffffff' : 'var(--text-primary)',
-                  ringColor: 'var(--accent)'
+                  ringColor: 'var(--accent-primary)'
                 }}>
                 <div className="text-2xl mb-1">💻</div>
                 <div className="text-xs">Terminal</div>
@@ -78,9 +78,9 @@ export default function SettingsPanel({
                   theme === 'avatar' ? 'ring-2' : ''
                 }`}
                 style={{
-                  backgroundColor: theme === 'avatar' ? 'var(--accent)' : 'var(--bg-secondary)',
+                  backgroundColor: theme === 'avatar' ? 'var(--accent-primary)' : 'var(--bg-secondary)',
                   color: theme === 'avatar' ? '#ffffff' : 'var(--text-primary)',
-                  ringColor: 'var(--accent)'
+                  ringColor: 'var(--accent-primary)'
                 }}>
                 <div className="text-2xl mb-1">🤖</div>
                 <div className="text-xs">Avatar</div>
@@ -146,7 +146,7 @@ export default function SettingsPanel({
         <button
           onClick={onClose}
           className="w-full mt-6 py-3 rounded-lg font-semibold transition hover:opacity-90"
-          style={{ backgroundColor: 'var(--accent)', color: '#ffffff' }}>
+          style={{ backgroundColor: 'var(--accent-primary)', color: '#ffffff' }}>
           Done
         </button>
       </div>

@@ -9,12 +9,13 @@ export default function MessageBubble({ message }) {
     <div className={`message-bubble flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div className={`max-w-[70%] ${isUser ? 'order-2' : 'order-1'}`}>
         <div 
-          className="message-content px-4 py-3 rounded-lg"
+          className="message-content px-4 py-3 transition-all"
           style={{
-            backgroundColor: isUser ? 'var(--accent)' : 'var(--bg-secondary)',
+            backgroundColor: isUser ? 'var(--accent-primary)' : 'var(--bg-secondary)',
             color: isUser ? '#ffffff' : 'var(--text-primary)',
-            borderRadius: 'var(--radius)',
-            boxShadow: `0 2px 8px var(--shadow)`
+            borderRadius: 'var(--radius-md)',
+            boxShadow: `0 2px 8px var(--shadow-md)`,
+            border: isUser ? 'none' : '1px solid var(--border-light)'
           }}>
           
           {/* Message text */}

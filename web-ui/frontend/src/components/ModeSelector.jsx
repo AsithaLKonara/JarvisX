@@ -18,21 +18,29 @@ export default function ModeSelector({ currentMode, onModeChange }) {
           <button
             key={mode.id}
             onClick={() => onModeChange(mode.id)}
-            className={`mode-button w-full text-left px-3 py-2.5 rounded-lg transition flex items-center gap-3
+            className={`mode-button w-full text-left px-3 py-2.5 transition flex items-center gap-3
                        ${currentMode === mode.id ? 'active' : ''}`}
             style={{
-              backgroundColor: currentMode === mode.id ? 'var(--accent)' : 'transparent',
+              backgroundColor: currentMode === mode.id ? 'var(--accent-primary)' : 'transparent',
               color: currentMode === mode.id ? '#ffffff' : 'var(--text-primary)',
-              opacity: currentMode === mode.id ? 1 : 0.7
+              borderRadius: 'var(--radius-md)',
+              opacity: currentMode === mode.id ? 1 : 0.8,
+              boxShadow: currentMode === mode.id ? '0 2px 8px var(--shadow-md)' : 'none'
             }}
             onMouseEnter={(e) => {
               if (currentMode !== mode.id) {
-                e.target.style.backgroundColor = 'var(--border)'
+                e.target.style.backgroundColor = 'var(--bg-hover)'
+                e.target.style.opacity = '1'
+              } else {
+                e.target.style.backgroundColor = 'var(--accent-hover)'
               }
             }}
             onMouseLeave={(e) => {
               if (currentMode !== mode.id) {
                 e.target.style.backgroundColor = 'transparent'
+                e.target.style.opacity = '0.8'
+              } else {
+                e.target.style.backgroundColor = 'var(--accent-primary)'
               }
             }}>
             

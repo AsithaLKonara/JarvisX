@@ -44,11 +44,11 @@ export default function Avatar({ ttsActive, currentEmotion = 'neutral', audioDat
   return (
     <svg 
       className="avatar-svg"
-      width="160" 
-      height="160" 
+      width="240" 
+      height="240" 
       viewBox="0 0 200 200"
       style={{
-        filter: thinking ? 'drop-shadow(0 0 20px var(--glow-primary))' : 'drop-shadow(0 0 10px var(--glow-primary))'
+        filter: thinking ? 'drop-shadow(0 0 30px var(--glow-primary))' : 'drop-shadow(0 0 15px var(--glow-primary))'
       }}>
       
       <defs>

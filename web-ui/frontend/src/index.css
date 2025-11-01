@@ -2,65 +2,164 @@
 @tailwind components;
 @tailwind utilities;
 
-/* CSS Variables for theme switching */
+/* CSS Variables for theme switching - Enhanced Color System */
 :root {
-  /* Default (Professional theme) */
+  /* Professional Theme - Light (Default) */
   --bg-primary: #ffffff;
-  --bg-secondary: #f7f7f7;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --bg-hover: #f1f3f5;
+  
   --text-primary: #1a1a1a;
-  --text-secondary: #666666;
-  --accent: #4A90E2;
+  --text-secondary: #6c757d;
+  --text-tertiary: #adb5bd;
+  
+  --accent-primary: #4A90E2;
+  --accent-secondary: #357ABD;
+  --accent-hover: #5BA3F5;
+  
   --success: #50C878;
-  --border: #e0e0e0;
-  --shadow: rgba(0, 0, 0, 0.1);
-  --radius: 12px;
+  --success-light: #6FDD8B;
+  --warning: #FFA726;
+  --error: #EF5350;
+  
+  --border: #dee2e6;
+  --border-light: #f1f3f5;
+  --border-focus: #4A90E2;
+  
+  --shadow-sm: rgba(0, 0, 0, 0.05);
+  --shadow-md: rgba(0, 0, 0, 0.1);
+  --shadow-lg: rgba(0, 0, 0, 0.15);
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
   
   /* Fonts */
-  --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-code: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  --font-code: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
 }
 
-/* Dark mode (Professional) */
+/* Professional Theme - Dark */
 :root[data-theme="professional-dark"] {
   --bg-primary: #1a1a1a;
-  --bg-secondary: #2a2a2a;
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0a0;
+  --bg-secondary: #252525;
+  --bg-tertiary: #2f2f2f;
+  --bg-hover: #333333;
+  
+  --text-primary: #f8f9fa;
+  --text-secondary: #adb5bd;
+  --text-tertiary: #6c757d;
+  
+  --accent-primary: #5BA3F5;
+  --accent-secondary: #4A90E2;
+  --accent-hover: #6FB3FF;
+  
+  --success: #6FDD8B;
+  --success-light: #50C878;
+  --warning: #FFB84D;
+  --error: #FF6B6B;
+  
   --border: #3a3a3a;
-  --shadow: rgba(255, 255, 255, 0.05);
+  --border-light: #2f2f2f;
+  --border-focus: #5BA3F5;
+  
+  --shadow-sm: rgba(0, 0, 0, 0.2);
+  --shadow-md: rgba(0, 0, 0, 0.3);
+  --shadow-lg: rgba(0, 0, 0, 0.4);
 }
 
-/* Terminal theme */
+/* Terminal Theme */
 :root[data-theme="terminal"] {
   --bg-primary: #000000;
   --bg-secondary: #0a0a0a;
+  --bg-tertiary: #121212;
+  --bg-hover: #1a1a1a;
+  
   --text-primary: #00ff00;
-  --text-secondary: #00cc00;
-  --accent: #00ffff;
+  --text-secondary: #00dd00;
+  --text-tertiary: #00aa00;
+  
+  --accent-primary: #00ffff;
+  --accent-secondary: #00dddd;
+  --accent-hover: #33ffff;
+  
   --success: #00ff00;
+  --success-light: #33ff33;
+  --warning: #ffff00;
+  --error: #ff0000;
+  
   --border: #00ff00;
-  --shadow: rgba(0, 255, 0, 0.2);
-  --radius: 0px;
-  --font-main: 'JetBrains Mono', 'Courier New', monospace;
+  --border-light: #00dd00;
+  --border-focus: #00ffff;
+  
+  --shadow-sm: rgba(0, 255, 0, 0.1);
+  --shadow-md: rgba(0, 255, 0, 0.2);
+  --shadow-lg: rgba(0, 255, 0, 0.3);
+  
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  
+  --font-main: 'JetBrains Mono', 'Courier New', 'Consolas', monospace;
 }
 
-/* Avatar theme */
+/* Avatar Theme */
 :root[data-theme="avatar"] {
   --bg-primary: #0f1419;
   --bg-secondary: #1a1f2e;
+  --bg-tertiary: #252a3d;
+  --bg-hover: #2a2f42;
+  
   --text-primary: #e4e4e7;
   --text-secondary: #a1a1aa;
-  --accent: #60a5fa;
+  --text-tertiary: #71717a;
+  
+  --accent-primary: #60a5fa;
+  --accent-secondary: #3b82f6;
+  --accent-hover: #93c5fd;
+  
   --success: #50C878;
+  --success-light: #6FDD8B;
+  --warning: #FFA726;
+  --error: #EF5350;
+  
   --border: rgba(96, 165, 250, 0.3);
-  --shadow: rgba(96, 165, 250, 0.1);
-  --radius: 16px;
+  --border-light: rgba(96, 165, 250, 0.2);
+  --border-focus: rgba(96, 165, 250, 0.6);
+  
+  --shadow-sm: rgba(96, 165, 250, 0.1);
+  --shadow-md: rgba(96, 165, 250, 0.15);
+  --shadow-lg: rgba(96, 165, 250, 0.25);
+  
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  
+  /* Avatar-specific */
+  --glow-primary: #60a5fa;
+  --glow-secondary: #a78bfa;
+  --gradient-start: #667eea;
+  --gradient-end: #764ba2;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+/* Base styles for full-height layout */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 body {

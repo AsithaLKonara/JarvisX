@@ -40,8 +40,8 @@ export default function SystemStatus() {
   
   const getColor = (percent) => {
     if (percent < 60) return 'var(--success)'
-    if (percent < 80) return '#ffb000'
-    return '#ff5555'
+    if (percent < 80) return 'var(--warning)'
+    return 'var(--error)'
   }
   
   return (
@@ -53,20 +53,24 @@ export default function SystemStatus() {
         <div className="stat-item">
           <div className="flex items-center justify-between text-sm mb-1">
             <div className="flex items-center gap-2">
-              <Cpu size={16} style={{ color: 'var(--accent)' }} />
-              <span>CPU</span>
+              <Cpu size={16} style={{ color: 'var(--accent-primary)' }} />
+              <span style={{ color: 'var(--text-primary)' }}>CPU</span>
             </div>
             <span className="font-mono font-semibold" style={{ color: getColor(status.cpu) }}>
               {status.cpu.toFixed(1)}%
             </span>
           </div>
-          <div className="progress-bar w-full h-2 rounded-full overflow-hidden"
-               style={{ backgroundColor: 'var(--border)' }}>
+          <div className="progress-bar w-full h-2 overflow-hidden"
+               style={{ 
+                 backgroundColor: 'var(--bg-tertiary)',
+                 borderRadius: 'var(--radius-sm)'
+               }}>
             <div 
               className="progress-fill h-full transition-all duration-500"
               style={{ 
                 width: `${status.cpu}%`,
-                backgroundColor: getColor(status.cpu)
+                backgroundColor: getColor(status.cpu),
+                boxShadow: `0 0 10px ${getColor(status.cpu)}`
               }} />
           </div>
         </div>

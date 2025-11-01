@@ -28,10 +28,16 @@ export default function InputBox({ onSend, ttsEnabled, onTtsToggle, disabled }) 
         <button
           type="button"
           onClick={onTtsToggle}
-          className="p-3 rounded-lg hover:opacity-80 transition"
+          className="p-3 rounded-lg transition"
           style={{ 
-            backgroundColor: ttsEnabled ? 'var(--accent)' : 'var(--border)',
+            backgroundColor: ttsEnabled ? 'var(--success)' : 'var(--bg-tertiary)',
             color: ttsEnabled ? '#ffffff' : 'var(--text-secondary)'
+          }}
+          onMouseEnter={(e) => {
+            if (!ttsEnabled) e.currentTarget.style.backgroundColor = 'var(--bg-hover)'
+          }}
+          onMouseLeave={(e) => {
+            if (!ttsEnabled) e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)'
           }}
           title={ttsEnabled ? 'Voice output ON' : 'Voice output OFF'}>
           {ttsEnabled ? <Mic size={20} /> : <MicOff size={20} />}
@@ -66,10 +72,23 @@ export default function InputBox({ onSend, ttsEnabled, onTtsToggle, disabled }) 
           disabled={!input.trim() || disabled}
           className="p-3 rounded-lg transition"
           style={{
-            backgroundColor: (!input.trim() || disabled) ? 'var(--border)' : 'var(--accent)',
+            backgroundColor: (!input.trim() || disabled) ? 'var(--bg-tertiary)' : 'var(--accent-primary)',
             color: '#ffffff',
             opacity: (!input.trim() || disabled) ? 0.5 : 1,
-            cursor: (!input.trim() || disabled) ? 'not-allowed' : 'pointer'
+            cursor: (!input.trim() || disabled) ? 'not-allowed' : 'pointer',
+            boxShadow: (!input.trim() || disabled) ? 'none' : '0 4px 12px var(--shadow-md)'
+          }}
+          onMouseEnter={(e) => {
+            if (input.trim() && !disabled) {
+              e.currentTarget.style.backgroundColor = 'var(--accent-hover)'
+              e.currentTarget.style.transform = 'translateY(-2px)'
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (input.trim() && !disabled) {
+              e.currentTarget.style.backgroundColor = 'var(--accent-primary)'
+              e.currentTarget.style.transform = 'translateY(0)'
+            }
           }}>
           <Send size={20} />
         </button>
