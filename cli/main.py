@@ -30,6 +30,7 @@ try:
     from cli import plugin
     from cli import analytics
     from cli import templates
+    from cli import help as help_module
 except ImportError as e:
     # Handle import errors gracefully
     import sys
@@ -41,7 +42,7 @@ except ImportError as e:
 app = typer.Typer(
     name="jarvisx-cli",
     help="JarvisX V2 Command Line Interface",
-    add_completion=False,
+    add_completion=True,  # Enable tab completion
     no_args_is_help=True
 )
 
@@ -58,6 +59,7 @@ app.add_typer(history_commands.app, name="history", help="Command history manage
 app.add_typer(plugin.app, name="plugin", help="Plugin management")
 app.add_typer(analytics.app, name="analytics", help="Usage analytics and metrics")
 app.add_typer(templates.app, name="template", help="Command templates management")
+app.add_typer(help_module.app, name="help", help="Interactive help system")
 
 # Add standalone commands
 app.command(name="status")(status.status_command)
