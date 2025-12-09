@@ -102,6 +102,7 @@ def interactive_voice(
     try:
         from speech.speech_recognizer import SpeechRecognizer
         from speech.text_to_speech import TTSEngine
+        from speech.wake_word_detector import WakeWordDetector
         import os
         
         recognizer = SpeechRecognizer()
@@ -115,11 +116,19 @@ def interactive_voice(
             output.warning("TTS not available, voice output disabled")
             tts_engine = None
         
-        output.success("Voice interactive mode activated")
+        # Initialize wake word detector if specified
+        wake_detector = None
         if wake_word:
-            output.info(f"Wake word: {wake_word}")
+            wake_detector = WakeWordDetector(wake_word=wake_word)
+            output.info(f"Wake word detection enabled: '{wake_word}'")
+        
+        output.success("Voice interactive mode activated")
         output.info("Say 'exit' or 'quit' to stop")
-        output.info("Listening...")
+        
+        if wake_detector:
+            output.info("Wake word mode: Say wake word to activate")
+        else:
+            output.info("Listening...")
         
         if tts_engine:
             tts_engine.speak("Voice mode activated", blocking=True)
@@ -127,21 +136,52 @@ def interactive_voice(
         from cli.voice_utils import VoiceCommandParser
         
         parser = VoiceCommandParser()
+        active = False  # Whether actively listening for commands
+        
+        # Start wake word detection if enabled
+        if wake_detector:
+            def on_wake_word_detected(text: str):
+                nonlocal active
+                active = True
+                if tts_engine:
+                    tts_engine.speak("Yes, I'm listening", blocking=False)
+                output.info("Wake word detected - listening for command...")
+            
+            wake_detector.start_listening(on_wake_word_detected)
         
         while True:
             try:
+                # If wake word mode, only listen when activated
+                if wake_detector and not active:
+                    time.sleep(0.5)
+                    continue
+                
                 # Listen for command
                 text = recognizer.listen(timeout=10)
                 
                 if not text:
+                    if wake_detector:
+                        active = False  # Reset after timeout
                     continue
                 
                 # Check for exit
                 if text.lower() in ['exit', 'quit', 'stop']:
                     output.info("Exiting voice mode...")
+                    if wake_detector:
+                        wake_detector.stop_listening()
                     if tts_engine:
                         tts_engine.speak("Goodbye", blocking=True)
                     break
+                
+                # Reset active state if using wake word
+                if wake_detector:
+                    active = False
+                
+                # Try to recognize speaker
+                speaker = speaker_recognizer.recognize(text=text)
+                if speaker:
+                    output.info(f"Recognized speaker: {speaker.name}")
+                    # Could personalize responses based on speaker preferences
                 
                 # Parse and execute command
                 output.info(f"Heard: {text}")
@@ -165,6 +205,8 @@ def interactive_voice(
             
             except KeyboardInterrupt:
                 output.info("\nExiting voice mode...")
+                if wake_detector:
+                    wake_detector.stop_listening()
                 break
             except Exception as e:
                 output.error(f"Error: {e}")

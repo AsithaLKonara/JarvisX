@@ -11,6 +11,7 @@ from typer import Option
 
 from cli.base import common_callback, get_output, get_config
 from cli.utils import get_project_root
+from cli.history import get_history
 
 # Import command groups
 try:
@@ -23,6 +24,7 @@ try:
     from cli import config
     from cli import status
     from cli import voice
+    from cli import history_commands
 except ImportError as e:
     # Handle import errors gracefully
     import sys
@@ -47,6 +49,7 @@ app.add_typer(workflow.app, name="workflow", help="Workflow orchestration")
 app.add_typer(model.app, name="model", help="Model management")
 app.add_typer(config.app, name="config", help="Configuration management")
 app.add_typer(voice.app, name="voice", help="Voice I/O operations")
+app.add_typer(history_commands.app, name="history", help="Command history management")
 
 # Add standalone commands
 app.command(name="status")(status.status_command)
@@ -82,6 +85,24 @@ def main(
 def cli():
     """Entry point for CLI"""
     try:
+        # Track command in history (before execution)
+        try:
+            import sys
+            # Skip history tracking for history commands themselves
+            if len(sys.argv) > 1 and sys.argv[1] != 'history':
+                history = get_history()
+                # Build command string from sys.argv (skip script name)
+                cmd_parts = sys.argv[1:]
+                # Filter out common flags that aren't part of the command
+                filtered = [p for p in cmd_parts if not p.startswith('--verbose') and 
+                           not p.startswith('-v') and not p.startswith('--json') and
+                           not p.startswith('--config') and not p.startswith('--voice')]
+                command_str = ' '.join(filtered) if filtered else ' '.join(cmd_parts)
+                history.add(command_str, args={})
+        except Exception:
+            # Silently fail history tracking to not break CLI
+            pass
+        
         app()
     except KeyboardInterrupt:
         output = get_output()

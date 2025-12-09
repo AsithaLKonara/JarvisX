@@ -159,6 +159,30 @@ jarvisx-cli config get --key <key>
 jarvisx-cli config validate
 ```
 
+### Command History
+
+JarvisX CLI automatically tracks all commands you run. View and manage your command history:
+
+```bash
+# List recent commands
+jarvisx-cli history list --limit 20
+
+# Search command history
+jarvisx-cli history search "training" --limit 10
+
+# Show history statistics
+jarvisx-cli history stats
+
+# Clear command history
+jarvisx-cli history clear --yes
+```
+
+History features:
+- Automatic tracking of all CLI commands
+- Search by command name or keywords
+- View statistics and most-used commands
+- JSON output support for scripting
+
 ## Voice Commands
 
 JarvisX CLI supports voice input/output for hands-free operation:
@@ -235,6 +259,8 @@ To extend the CLI, add new commands to the appropriate module in `cli/`:
 - `cli/config.py` - Configuration
 - `cli/voice.py` - Voice I/O operations
 - `cli/voice_utils.py` - Voice command parsing
+- `cli/history.py` - Command history management
+- `cli/history_commands.py` - History CLI commands
 
 ## Examples
 

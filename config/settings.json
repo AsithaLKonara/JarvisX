@@ -1,0 +1,5 @@
+{
+  "log_level": "INFO",
+  "debug": false,
+  "test_key": "test_value"
+}

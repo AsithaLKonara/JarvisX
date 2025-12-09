@@ -14,6 +14,7 @@ from typer import Option, Context
 from cli.utils import CLIOutput, get_project_root
 from utils.config import Config
 from utils.logger import get_logger as get_logger_util
+from utils.cache import get_cache
 
 
 # Global CLI context

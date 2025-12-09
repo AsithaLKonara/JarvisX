@@ -48,6 +48,8 @@ dependencies = [
 
 [project.scripts]
 jarvisx-cli = "cli.main:cli"
+jvx = "cli.main:cli"
+jarvisx = "cli.main:cli"
 
 [tool.setuptools]
 packages = ["cli", "core", "utils", "automation", "business_mode", "system_monitor", "integrations"]

@@ -56,6 +56,15 @@ class CLIOutput:
     
     def success(self, message: str):
         """Print success message"""
+        # Adapt message with voice personality if enabled
+        if self.voice:
+            try:
+                from speech.voice_personality import get_voice_personality
+                personality = get_voice_personality()
+                message = personality.adapt_response(message, {"is_success": True})
+            except Exception:
+                pass  # Fallback to original message
+        
         if self.json_output:
             self._print_json({"status": "success", "message": message})
         elif self.use_rich:
@@ -72,6 +81,15 @@ class CLIOutput:
     
     def error(self, message: str):
         """Print error message"""
+        # Adapt message with voice personality if enabled
+        if self.voice:
+            try:
+                from speech.voice_personality import get_voice_personality
+                personality = get_voice_personality()
+                message = personality.adapt_response(message, {"is_error": True})
+            except Exception:
+                pass  # Fallback to original message
+        
         if self.json_output:
             self._print_json({"status": "error", "message": message})
         elif self.use_rich:
@@ -82,7 +100,7 @@ class CLIOutput:
         # Voice output
         if self.voice and self.tts_engine and not self.json_output:
             try:
-                self.tts_engine.speak(f"Error: {message}", blocking=False)
+                self.tts_engine.speak(message, blocking=False)
             except Exception:
                 pass
     

@@ -1,0 +1,97 @@
+2025-11-06 12:49:29,970 - __main__ - INFO - 🤖 Cursor Training Bot initialized
+2025-11-06 12:49:29,970 - __main__ - INFO -    Training GUI: http://localhost:5001
+2025-11-06 12:49:29,971 - __main__ - INFO - 
+======================================================================
+2025-11-06 12:49:29,971 - __main__ - INFO - 🤖 AUTOMATED TRAINING SESSION
+2025-11-06 12:49:29,972 - __main__ - INFO - ======================================================================
+2025-11-06 12:49:29,972 - __main__ - INFO -    Domain: technical
+2025-11-06 12:49:29,972 - __main__ - INFO -    Queries: 10
+2025-11-06 12:49:29,972 - __main__ - INFO -    Min Rating: 4 stars
+2025-11-06 12:49:29,972 - __main__ - INFO - 
+2025-11-06 12:49:29,973 - __main__ - INFO - 📝 Generating 10 technical queries (mixed difficulty)...
+2025-11-06 12:49:29,974 - __main__ - INFO - ✅ Generated 10 queries
+2025-11-06 12:49:29,974 - __main__ - INFO - 
+──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:29,974 - __main__ - INFO - Query 1/10
+2025-11-06 12:49:29,975 - __main__ - INFO - ──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:29,975 - __main__ - INFO - 📝 Query: What is GraphQL and how does it work?
+2025-11-06 12:49:30,003 - __main__ - ERROR - ❌ Send query error: HTTPConnectionPool(host='localhost', port=5001): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10bde8980>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-11-06 12:49:30,004 - __main__ - WARNING - ⚠️  Skipping due to error
+2025-11-06 12:49:30,004 - __main__ - INFO - 
+──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,005 - __main__ - INFO - Query 2/10
+2025-11-06 12:49:30,006 - __main__ - INFO - ──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,006 - __main__ - INFO - 📝 Query: What are best practices for Kubernetes?
+2025-11-06 12:49:30,012 - __main__ - ERROR - ❌ Send query error: HTTPConnectionPool(host='localhost', port=5001): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10bded6d0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-11-06 12:49:30,012 - __main__ - WARNING - ⚠️  Skipping due to error
+2025-11-06 12:49:30,012 - __main__ - INFO - 
+──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,013 - __main__ - INFO - Query 3/10
+2025-11-06 12:49:30,013 - __main__ - INFO - ──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,013 - __main__ - INFO - 📝 Query: Compare CI/CD vs Docker
+2025-11-06 12:49:30,017 - __main__ - ERROR - ❌ Send query error: HTTPConnectionPool(host='localhost', port=5001): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10bdedf90>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-11-06 12:49:30,018 - __main__ - WARNING - ⚠️  Skipping due to error
+2025-11-06 12:49:30,018 - __main__ - INFO - 
+──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,018 - __main__ - INFO - Query 4/10
+2025-11-06 12:49:30,018 - __main__ - INFO - ──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,019 - __main__ - INFO - 📝 Query: How to optimize REST APIs?
+2025-11-06 12:49:30,025 - __main__ - ERROR - ❌ Send query error: HTTPConnectionPool(host='localhost', port=5001): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10bdce520>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-11-06 12:49:30,025 - __main__ - WARNING - ⚠️  Skipping due to error
+2025-11-06 12:49:30,025 - __main__ - INFO - 
+──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,025 - __main__ - INFO - Query 5/10
+2025-11-06 12:49:30,026 - __main__ - INFO - ──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,026 - __main__ - INFO - 📝 Query: How do I implement cryptocurrency?
+2025-11-06 12:49:30,029 - __main__ - ERROR - ❌ Send query error: HTTPConnectionPool(host='localhost', port=5001): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10bdcec40>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-11-06 12:49:30,029 - __main__ - WARNING - ⚠️  Skipping due to error
+2025-11-06 12:49:30,030 - __main__ - INFO - 
+──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,030 - __main__ - INFO - Query 6/10
+2025-11-06 12:49:30,030 - __main__ - INFO - ──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,030 - __main__ - INFO - 📝 Query: Real-world applications of Kubernetes
+2025-11-06 12:49:30,035 - __main__ - ERROR - ❌ Send query error: HTTPConnectionPool(host='localhost', port=5001): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10be0c170>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-11-06 12:49:30,035 - __main__ - WARNING - ⚠️  Skipping due to error
+2025-11-06 12:49:30,035 - __main__ - INFO - 
+──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,036 - __main__ - INFO - Query 7/10
+2025-11-06 12:49:30,036 - __main__ - INFO - ──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,036 - __main__ - INFO - 📝 Query: What are best practices for microservices?
+2025-11-06 12:49:30,041 - __main__ - ERROR - ❌ Send query error: HTTPConnectionPool(host='localhost', port=5001): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10be186b0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-11-06 12:49:30,041 - __main__ - WARNING - ⚠️  Skipping due to error
+2025-11-06 12:49:30,042 - __main__ - INFO - 
+──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,042 - __main__ - INFO - Query 8/10
+2025-11-06 12:49:30,042 - __main__ - INFO - ──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,043 - __main__ - INFO - 📝 Query: What is cloud computing and how does it work?
+2025-11-06 12:49:30,049 - __main__ - ERROR - ❌ Send query error: HTTPConnectionPool(host='localhost', port=5001): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10be18e20>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-11-06 12:49:30,049 - __main__ - WARNING - ⚠️  Skipping due to error
+2025-11-06 12:49:30,049 - __main__ - INFO - 
+──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,049 - __main__ - INFO - Query 9/10
+2025-11-06 12:49:30,050 - __main__ - INFO - ──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,050 - __main__ - INFO - 📝 Query: What is CI/CD and how does it work?
+2025-11-06 12:49:30,053 - __main__ - ERROR - ❌ Send query error: HTTPConnectionPool(host='localhost', port=5001): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10be19040>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-11-06 12:49:30,053 - __main__ - WARNING - ⚠️  Skipping due to error
+2025-11-06 12:49:30,053 - __main__ - INFO - 
+──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,054 - __main__ - INFO - Query 10/10
+2025-11-06 12:49:30,054 - __main__ - INFO - ──────────────────────────────────────────────────────────────────────
+2025-11-06 12:49:30,054 - __main__ - INFO - 📝 Query: How to optimize GraphQL?
+2025-11-06 12:49:30,060 - __main__ - ERROR - ❌ Send query error: HTTPConnectionPool(host='localhost', port=5001): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10bd5ff00>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-11-06 12:49:30,060 - __main__ - WARNING - ⚠️  Skipping due to error
+2025-11-06 12:49:30,060 - __main__ - INFO - 
+======================================================================
+2025-11-06 12:49:30,061 - __main__ - INFO - 📊 SESSION SUMMARY
+2025-11-06 12:49:30,061 - __main__ - INFO - ======================================================================
+2025-11-06 12:49:30,061 - __main__ - INFO - Total queries: 0
+2025-11-06 12:49:30,061 - __main__ - INFO - Successful: 0
+2025-11-06 12:49:30,061 - __main__ - INFO - High quality (4-5 stars): 0
+2025-11-06 12:49:30,061 - __main__ - INFO - 
+Rating distribution:
+2025-11-06 12:49:30,061 - __main__ - INFO - ======================================================================
+2025-11-06 12:49:30,062 - __main__ - INFO - 
+💾 Session log saved: cursor_training_data/session_technical_20251106_124930.json
+2025-11-06 12:49:30,062 - __main__ - WARNING - ⚠️  No high-quality examples to export
+2025-11-06 12:49:30,062 - __main__ - INFO - 
+✅ Training session complete!

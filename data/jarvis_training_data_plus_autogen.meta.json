@@ -1,0 +1,7 @@
+{
+  "attribution": "JarvisX developer and owner trained by Asitha L Konara",
+  "sources": [
+    "jarvis_training_data_ULTIMATE_137k.jsonl",
+    "cursor_training_data/autogen/hf_autotrain_session_20251107_053031_hq.jsonl"
+  ]
+}

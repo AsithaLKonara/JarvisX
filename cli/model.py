@@ -96,17 +96,39 @@ def load_model(
         
         output.info(f"Loading model: {name}" + (f" (version: {version})" if version else ""))
         
-        # Try to load using model loader if available
+        # Try to load using model cache and loader
         try:
-            from core.lora_model_loader import LoRAModelLoader
-            loader = LoRAModelLoader()
-            loaded = loader.load_model(str(model_path))
-            if loaded:
-                output.success("Model loaded successfully")
+            from core.model_cache import get_model_cache, get_lazy_loader
+            
+            cache = get_model_cache()
+            loader = get_lazy_loader()
+            
+            # Check cache first
+            model_key = f"model_{name}"
+            cached_model = cache.get(model_key)
+            
+            if cached_model:
+                output.success("Model loaded from cache")
             else:
-                output.warning("Model loader returned None")
-        except (ImportError, AttributeError):
-            # Fallback: just verify model files exist
+                # Try lazy loading
+                try:
+                    from core.lora_model_loader import LoRAModelLoader
+                    model_loader = LoRAModelLoader()
+                    loaded = model_loader.load_model(str(model_path))
+                    if loaded:
+                        cache.set(model_key, loaded)
+                        output.success("Model loaded successfully and cached")
+                    else:
+                        output.warning("Model loader returned None")
+                except (ImportError, AttributeError):
+                    # Fallback: just verify model files exist
+                    model_files = list(model_path.glob("*.bin")) + list(model_path.glob("*.safetensors"))
+                    if model_files:
+                        output.success(f"Model files found: {len(model_files)} files")
+                    else:
+                        output.warning("No model files found in directory")
+        except ImportError:
+            # Fallback if model_cache not available
             model_files = list(model_path.glob("*.bin")) + list(model_path.glob("*.safetensors"))
             if model_files:
                 output.success(f"Model files found: {len(model_files)} files")
