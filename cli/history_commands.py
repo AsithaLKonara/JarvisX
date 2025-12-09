@@ -154,6 +154,61 @@ def clear_history(
         raise typer.Exit(1)
 
 
+@app.command("export")
+def export_history(
+    output_file: str = typer.Option("history_export.json", '--output', '-o', help='Output file path'),
+    format: str = typer.Option("json", '--format', '-f', help='Export format (json/csv)'),
+    days: Optional[int] = typer.Option(None, '--days', '-d', help='Export only last N days'),
+    json_output: bool = typer.Option(False, '--json', help='Output in JSON format')
+):
+    """Export command history to file"""
+    output = get_output()
+    history = get_history()
+    
+    try:
+        from datetime import datetime, timedelta
+        
+        # Get history entries
+        if days:
+            cutoff = datetime.now() - timedelta(days=days)
+            cutoff_str = cutoff.isoformat()
+            entries = [e for e in history.history if e.get('timestamp', '') >= cutoff_str]
+        else:
+            entries = history.history
+        
+        if not entries:
+            output.info("No history entries to export.")
+            return
+        
+        if format.lower() == 'csv':
+            import csv
+            with open(output_file, 'w', newline='') as f:
+                writer = csv.writer(f)
+                writer.writerow(['Timestamp', 'Command', 'Args', 'Result'])
+                for entry in entries:
+                    args_str = ', '.join([f"{k}={v}" for k, v in entry.get('args', {}).items()])
+                    writer.writerow([
+                        entry.get('timestamp', ''),
+                        entry.get('command', ''),
+                        args_str,
+                        entry.get('result', '')
+                    ])
+        else:  # JSON
+            import json
+            with open(output_file, 'w') as f:
+                json.dump(entries, f, indent=2, default=str)
+        
+        if json_output:
+            import json
+            output.print(json.dumps({"success": True, "file": output_file, "entries": len(entries)}, indent=2))
+        else:
+            output.success(f"Exported {len(entries)} entries to {output_file}")
+        
+    except Exception as e:
+        output.error(f"Failed to export history: {e}")
+        raise typer.Exit(1)
+
+
 @app.command("stats")
 def history_stats(
     json_output: bool = typer.Option(False, '--json', help='Output in JSON format')

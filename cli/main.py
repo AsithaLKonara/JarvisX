@@ -12,6 +12,8 @@ from typer import Option
 from cli.base import common_callback, get_output, get_config
 from cli.utils import get_project_root
 from cli.history import get_history
+from utils.usage_analytics import get_analytics
+import time
 
 # Import command groups
 try:
@@ -25,6 +27,9 @@ try:
     from cli import status
     from cli import voice
     from cli import history_commands
+    from cli import plugin
+    from cli import analytics
+    from cli import templates
 except ImportError as e:
     # Handle import errors gracefully
     import sys
@@ -50,6 +55,9 @@ app.add_typer(model.app, name="model", help="Model management")
 app.add_typer(config.app, name="config", help="Configuration management")
 app.add_typer(voice.app, name="voice", help="Voice I/O operations")
 app.add_typer(history_commands.app, name="history", help="Command history management")
+app.add_typer(plugin.app, name="plugin", help="Plugin management")
+app.add_typer(analytics.app, name="analytics", help="Usage analytics and metrics")
+app.add_typer(templates.app, name="template", help="Command templates management")
 
 # Add standalone commands
 app.command(name="status")(status.status_command)
@@ -85,12 +93,18 @@ def main(
 def cli():
     """Entry point for CLI"""
     try:
-        # Track command in history (before execution)
+        start_time = time.time()
+        command_str = ""
+        
+        # Track command in history and analytics (before execution)
         try:
             import sys
-            # Skip history tracking for history commands themselves
-            if len(sys.argv) > 1 and sys.argv[1] != 'history':
+            # Skip tracking for analytics and history commands themselves
+            skip_commands = ['history', 'analytics']
+            if len(sys.argv) > 1 and sys.argv[1] not in skip_commands:
                 history = get_history()
+                analytics = get_analytics()
+                
                 # Build command string from sys.argv (skip script name)
                 cmd_parts = sys.argv[1:]
                 # Filter out common flags that aren't part of the command
@@ -98,12 +112,34 @@ def cli():
                            not p.startswith('-v') and not p.startswith('--json') and
                            not p.startswith('--config') and not p.startswith('--voice')]
                 command_str = ' '.join(filtered) if filtered else ' '.join(cmd_parts)
+                
+                # Track in history
                 history.add(command_str, args={})
         except Exception:
-            # Silently fail history tracking to not break CLI
+            # Silently fail tracking to not break CLI
             pass
         
-        app()
+        # Execute command
+        try:
+            app()
+        except Exception as e:
+            # Track errors
+            try:
+                analytics = get_analytics()
+                analytics.track_error(type(e).__name__, str(e), command_str)
+            except:
+                pass
+            raise
+        
+        # Track command completion
+        try:
+            if command_str:
+                duration = time.time() - start_time
+                analytics = get_analytics()
+                analytics.track_command(command_str, {}, duration, success=True)
+        except Exception:
+            # Silently fail analytics tracking
+            pass
     except KeyboardInterrupt:
         output = get_output()
         output.warning("Operation cancelled by user")

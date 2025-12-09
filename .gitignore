@@ -1,0 +1,9 @@
+# Test results
+web-ui/frontend/test-results/
+**/test-results/
+
+# Analytics and history data (optional - uncomment to ignore)
+# data/usage_analytics.json
+# data/cli_history.json
+# data/command_templates.json
+
