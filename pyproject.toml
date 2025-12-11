@@ -44,6 +44,7 @@ dependencies = [
     "sqlalchemy>=2.0.0",
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
+    "pytest-timeout>=2.1.0",
 ]
 
 [project.scripts]
@@ -53,4 +54,17 @@ jarvisx = "cli.main:cli"
 
 [tool.setuptools]
 packages = ["cli", "core", "utils", "automation", "business_mode", "system_monitor", "integrations"]
+
+[tool.pytest.ini_options]
+markers = [
+    "e2e: End-to-end tests",
+    "voice: Voice-related tests",
+    "unified: Unified orchestrator tests",
+    "slow: Slow running tests",
+    "unit: Unit tests",
+    "integration: Integration tests",
+]
+timeout = 10
+timeout_method = "thread"
+addopts = "-v --tb=short"
 

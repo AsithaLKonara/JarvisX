@@ -1,5 +1,6 @@
 # Core dependencies
 requests>=2.31.0
+certifi>=2023.0.0  # SSL certificate bundle (required by requests)
 python-dotenv>=1.0.0
 rich>=13.0.0
 typer>=0.9.0

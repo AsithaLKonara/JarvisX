@@ -88,17 +88,19 @@ class TestConfigCLI(unittest.TestCase):
         except SystemExit:
             pass
     
+    @patch('cli.config.validate_config_file')
     @patch('cli.config.get_config')
-    def test_validate_config(self, mock_get_config):
+    def test_validate_config(self, mock_get_config, mock_validate_file):
         """Test config validation"""
         # Mock config
         mock_config = MagicMock()
-        mock_config.validate.return_value = True
+        mock_config.config_file = self.config_file
         mock_get_config.return_value = mock_config
+        mock_validate_file.return_value = True
         
         # Test validation
         try:
-            validate_config(json_output=False)
+            validate_config(config_path=None, json_output=False)
             self.assertTrue(True)
         except SystemExit:
             pass

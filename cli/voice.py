@@ -177,31 +177,75 @@ def interactive_voice(
                 if wake_detector:
                     active = False
                 
-                # Try to recognize speaker
-                speaker = speaker_recognizer.recognize(text=text)
-                if speaker:
-                    output.info(f"Recognized speaker: {speaker.name}")
-                    # Could personalize responses based on speaker preferences
+                # Try to recognize speaker (optional, may not be available)
+                try:
+                    from speech.speaker_recognizer import SpeakerRecognizer
+                    speaker_recognizer = SpeakerRecognizer()
+                    speaker = speaker_recognizer.recognize(text=text)
+                    if speaker:
+                        output.info(f"Recognized speaker: {speaker.name}")
+                        # Could personalize responses based on speaker preferences
+                except (ImportError, AttributeError):
+                    # Speaker recognition not available, skip
+                    pass
                 
-                # Parse and execute command
+                # Process via unified orchestrator
                 output.info(f"Heard: {text}")
                 
                 if tts_engine:
                     tts_engine.speak("Processing", blocking=False)
                 
-                # Parse voice command
-                command = parser.parse_voice_command(text)
+                # Use unified orchestrator for full pipeline
+                try:
+                    from core.voice_orchestrator import VoiceOrchestrator
+                    
+                    voice_orch = VoiceOrchestrator()
+                    result = voice_orch.process_voice_input(voice_input=text, enable_tts=True)
+                    
+                    if result.get('success'):
+                        response = result.get('response', 'Done')
+                        actions = result.get('actions', [])
+                        
+                        if actions:
+                            output.success(f"Executed {len(actions)} action(s)")
+                            if json_output:
+                                output.print_json({
+                                    "success": True,
+                                    "response": response,
+                                    "actions": actions,
+                                    "execution_results": result.get('execution_results', [])
+                                })
+                        else:
+                            # Conversational response
+                            output.info(f"Response: {response}")
+                            if json_output:
+                                output.print_json({
+                                    "success": True,
+                                    "response": response,
+                                    "type": "conversational"
+                                })
+                    else:
+                        error = result.get('error', 'Unknown error')
+                        output.error(f"Error: {error}")
+                        if tts_engine:
+                            tts_engine.speak(f"Error: {error}", blocking=False)
                 
-                if command:
-                    output.info(f"Executing: {command}")
-                    # Note: Actual command execution would require subprocess or CLI invocation
-                    # This is a placeholder for the command execution
+                except ImportError:
+                    # Fallback to simple command parsing if unified orchestrator not available
+                    command = parser.parse_voice_command(text)
+                    if command:
+                        output.info(f"Command: {command}")
+                        output.warning("Unified orchestrator not available, using simple parsing")
+                        if tts_engine:
+                            tts_engine.speak("Command recognized but execution requires unified orchestrator", blocking=False)
+                    else:
+                        output.warning("Command not recognized")
+                        if tts_engine:
+                            tts_engine.speak("Command not recognized", blocking=False)
+                except Exception as e:
+                    output.error(f"Error processing command: {e}")
                     if tts_engine:
-                        tts_engine.speak("Command executed", blocking=False)
-                else:
-                    output.warning("Command not recognized")
-                    if tts_engine:
-                        tts_engine.speak("Command not recognized", blocking=False)
+                        tts_engine.speak("Error occurred", blocking=False)
             
             except KeyboardInterrupt:
                 output.info("\nExiting voice mode...")
@@ -221,29 +265,76 @@ def interactive_voice(
 @app.command("command")
 def voice_command(
     command_text: str = typer.Argument(..., help='Voice command text'),
+    enable_tts: bool = typer.Option(True, '--tts/--no-tts', help='Enable/disable TTS output'),
     json_output: bool = typer.Option(False, '--json')
 ):
-    """Execute a voice command"""
+    """Execute a voice command using unified orchestrator"""
     output = CLIOutput(json_output=json_output)
     
     try:
-        from cli.voice_utils import VoiceCommandParser
+        # Use unified orchestrator for full pipeline
+        from core.unified_orchestrator import UnifiedOrchestrator
         
-        parser = VoiceCommandParser()
-        command = parser.parse_voice_command(command_text)
+        orchestrator = UnifiedOrchestrator()
+        result = orchestrator.process_text_command(command_text, enable_tts=enable_tts)
         
-        if command:
+        if result.get('success'):
+            response = result.get('response', 'Done')
+            actions = result.get('actions', [])
+            execution_results = result.get('execution_results', [])
+            
             if json_output:
-                output.print_json({"command": command, "original_text": command_text})
+                output.print_json({
+                    "success": True,
+                    "user_input": result.get('user_input'),
+                    "ai_response": result.get('ai_response'),
+                    "response": response,
+                    "actions": actions,
+                    "execution_results": execution_results
+                })
             else:
-                output.success(f"Command: {command}")
-                output.info("Note: Command execution requires CLI integration")
+                if actions:
+                    output.success(f"Executed {len(actions)} action(s)")
+                    output.info(f"Response: {response}")
+                else:
+                    output.info(f"Response: {response}")
         else:
-            output.warning("Command not recognized")
+            error = result.get('error', 'Unknown error')
             if json_output:
-                output.print_json({"command": None, "original_text": command_text})
+                output.print_json({
+                    "success": False,
+                    "error": error,
+                    "response": result.get('response', '')
+                })
+            else:
+                output.error(f"Error: {error}")
+                if result.get('response'):
+                    output.info(f"Response: {result.get('response')}")
+            raise typer.Exit(1)
+    
+    except ImportError:
+        # Fallback to simple command parsing
+        try:
+            from cli.voice_utils import VoiceCommandParser
+            
+            parser = VoiceCommandParser()
+            command = parser.parse_voice_command(command_text)
+            
+            if command:
+                if json_output:
+                    output.print_json({"command": command, "original_text": command_text})
+                else:
+                    output.success(f"Command: {command}")
+                    output.warning("Unified orchestrator not available, using simple parsing")
+            else:
+                output.warning("Command not recognized")
+                if json_output:
+                    output.print_json({"command": None, "original_text": command_text})
+        except Exception as e:
+            output.error(f"Error parsing voice command: {e}")
+            raise typer.Exit(1)
     
     except Exception as e:
-        output.error(f"Error parsing voice command: {e}")
+        output.error(f"Error executing voice command: {e}")
         raise typer.Exit(1)
 

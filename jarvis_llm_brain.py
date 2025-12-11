@@ -24,11 +24,19 @@ class JarvisLLMBrain:
         """Initialize trained LLM brain"""
         # Try trained model first, fallback to old location
         if model_path is None:
-            trained_model = "/Users/asithalakmal/Documents/web/JarvisX v2/jarvis-llm-brain-final fine tune 7B model"
-            if os.path.exists(trained_model):
-                model_path = trained_model
+            # Check environment variable first
+            env_model_path = os.getenv("JARVIS_MODEL_PATH", "").strip()
+            if env_model_path and os.path.exists(env_model_path):
+                model_path = env_model_path
             else:
-                model_path = "models/jarvis-llm-brain-final"
+                # Try relative path from project root
+                project_root = Path(__file__).parent
+                trained_model = project_root / "jarvis-llm-brain-final fine tune 7B model"
+                if trained_model.exists():
+                    model_path = str(trained_model)
+                else:
+                    # Fallback to standard models directory
+                    model_path = str(project_root / "models" / "jarvis-llm-brain-final")
         
         self.model_path = model_path
         self.wrapper = None

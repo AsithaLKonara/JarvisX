@@ -224,3 +224,75 @@ def ensure_dir(path: Path) -> Path:
     path.mkdir(parents=True, exist_ok=True)
     return path
 
+
+# Input validation functions
+
+def validate_path(path_str: str, must_exist: bool = False) -> bool:
+    """Validate file or directory path"""
+    if not path_str or not isinstance(path_str, str):
+        return False
+    try:
+        path = Path(path_str)
+        if must_exist:
+            return path.exists()
+        # Check for invalid characters (basic check)
+        return len(path_str) > 0 and not any(char in path_str for char in ['\x00', '\n', '\r'])
+    except (OSError, ValueError):
+        return False
+
+
+def validate_url(url: str, allowed_schemes: tuple = ('http', 'https')) -> bool:
+    """Validate URL format"""
+    if not url or not isinstance(url, str):
+        return False
+    try:
+        from urllib.parse import urlparse
+        parsed = urlparse(url)
+        return (
+            parsed.scheme in allowed_schemes and
+            parsed.netloc != '' and
+            len(url) > 0
+        )
+    except Exception:
+        return False
+
+
+def validate_email(email: str) -> bool:
+    """Validate email format"""
+    if not email or not isinstance(email, str):
+        return False
+    import re
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return bool(re.match(pattern, email))
+
+
+def validate_json(json_str: str) -> bool:
+    """Validate JSON string"""
+    if not json_str or not isinstance(json_str, str):
+        return False
+    try:
+        json.loads(json_str)
+        return True
+    except (json.JSONDecodeError, TypeError):
+        return False
+
+
+def validate_model_name(name: str) -> bool:
+    """Validate model name format"""
+    if not name or not isinstance(name, str):
+        return False
+    # Allow alphanumeric, dash, underscore
+    import re
+    pattern = r'^[a-zA-Z0-9_-]+$'
+    return bool(re.match(pattern, name)) and len(name) > 0 and len(name) <= 100
+
+
+def validate_job_id(job_id: str) -> bool:
+    """Validate training job ID format"""
+    if not job_id or not isinstance(job_id, str):
+        return False
+    # Allow alphanumeric, dash, underscore
+    import re
+    pattern = r'^[a-zA-Z0-9_-]+$'
+    return bool(re.match(pattern, job_id)) and len(job_id) > 0 and len(job_id) <= 50
+

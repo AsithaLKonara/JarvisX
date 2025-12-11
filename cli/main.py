@@ -31,6 +31,7 @@ try:
     from cli import analytics
     from cli import templates
     from cli import help as help_module
+    from cli import unified
 except ImportError as e:
     # Handle import errors gracefully
     import sys
@@ -60,6 +61,7 @@ app.add_typer(plugin.app, name="plugin", help="Plugin management")
 app.add_typer(analytics.app, name="analytics", help="Usage analytics and metrics")
 app.add_typer(templates.app, name="template", help="Command templates management")
 app.add_typer(help_module.app, name="help", help="Interactive help system")
+app.add_typer(unified.app, name="unified", help="Unified natural language command processing")
 
 # Add standalone commands
 app.command(name="status")(status.status_command)

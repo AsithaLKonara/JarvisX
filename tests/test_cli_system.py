@@ -8,6 +8,7 @@ from unittest.mock import patch, MagicMock
 import sys
 from pathlib import Path
 import tempfile
+import importlib
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -38,10 +39,10 @@ class TestSystemCLI(unittest.TestCase):
         import shutil
         shutil.rmtree(self.temp_dir, ignore_errors=True)
     
-    @patch('cli.system.psutil')
-    def test_system_status(self, mock_psutil):
+    def test_system_status(self):
         """Test system status command"""
-        # Mock psutil
+        # Create mock psutil module and inject into sys.modules
+        mock_psutil = MagicMock()
         mock_psutil.cpu_percent.return_value = 50.0
         mock_psutil.cpu_count.return_value = 4
         mock_mem = MagicMock()
@@ -55,17 +56,33 @@ class TestSystemCLI(unittest.TestCase):
         mock_d.percent = 20.0
         mock_psutil.disk_usage.return_value = mock_d
         
-        # Test status
+        # Inject mock into sys.modules
+        original_psutil = sys.modules.get('psutil')
+        sys.modules['psutil'] = mock_psutil
+        
         try:
-            system_status(json_output=False)
-            self.assertTrue(True)
-        except SystemExit:
-            pass
+            # Reload the module to use the mock
+            import cli.system
+            importlib.reload(cli.system)
+            
+            # Test status
+            try:
+                system_status(json_output=False)
+                self.assertTrue(True)
+            except SystemExit:
+                pass
+        finally:
+            # Restore original psutil
+            if original_psutil is not None:
+                sys.modules['psutil'] = original_psutil
+            else:
+                sys.modules.pop('psutil', None)
+            # Reload module to restore original
+            importlib.reload(cli.system)
     
     @patch('system_monitor.health_checker.HealthChecker')
     @patch('system_monitor.resource_monitor.ResourceMonitor')
-    @patch('cli.system.psutil')
-    def test_system_health(self, mock_psutil, mock_resource, mock_health):
+    def test_system_health(self, mock_resource, mock_health):
         """Test system health command"""
         # Mock health checker
         mock_health_instance = MagicMock()
@@ -93,8 +110,7 @@ class TestSystemCLI(unittest.TestCase):
             pass
     
     @patch('system_monitor.resource_monitor.ResourceMonitor')
-    @patch('cli.system.psutil')
-    def test_system_optimize(self, mock_psutil, mock_resource):
+    def test_system_optimize(self, mock_resource):
         """Test system optimize command"""
         # Mock resource monitor
         mock_resource_instance = MagicMock()

@@ -290,6 +290,93 @@ class ComputerAccessLayer:
             except Exception as e:
                 return {'success': False, 'error': str(e)}
         
+        elif action_type == "write_file":
+            file_path = parameters.get('file_path') or parameters.get('path')
+            content = parameters.get('content', '')
+            mode = parameters.get('mode', 'w')  # 'w' for write, 'a' for append
+            try:
+                path = Path(file_path)
+                # Create parent directories if needed
+                path.parent.mkdir(parents=True, exist_ok=True)
+                
+                with open(path, mode) as f:
+                    f.write(content)
+                
+                return {
+                    'success': True,
+                    'action': 'write_file',
+                    'result': {
+                        'path': str(path),
+                        'bytes_written': len(content.encode('utf-8')),
+                        'mode': mode
+                    }
+                }
+            except Exception as e:
+                return {'success': False, 'error': str(e)}
+        
+        elif action_type == "delete_file":
+            file_path = parameters.get('file_path') or parameters.get('path')
+            try:
+                path = Path(file_path)
+                if not path.exists():
+                    return {'success': False, 'error': f'File not found: {file_path}'}
+                
+                if path.is_file():
+                    path.unlink()
+                elif path.is_dir():
+                    import shutil
+                    shutil.rmtree(path)
+                else:
+                    return {'success': False, 'error': f'Path is neither file nor directory: {file_path}'}
+                
+                return {
+                    'success': True,
+                    'action': 'delete_file',
+                    'result': {
+                        'path': str(path),
+                        'deleted': True
+                    }
+                }
+            except Exception as e:
+                return {'success': False, 'error': str(e)}
+        
+        elif action_type == "search_files":
+            search_path = parameters.get('path', '.')
+            pattern = parameters.get('pattern', '*')
+            recursive = parameters.get('recursive', True)
+            try:
+                path = Path(search_path)
+                if not path.exists():
+                    return {'success': False, 'error': f'Search path not found: {search_path}'}
+                
+                if recursive:
+                    matches = list(path.rglob(pattern))
+                else:
+                    matches = list(path.glob(pattern))
+                
+                result = [
+                    {
+                        'path': str(match),
+                        'name': match.name,
+                        'type': 'directory' if match.is_dir() else 'file',
+                        'size': match.stat().st_size if match.is_file() else None
+                    }
+                    for match in matches
+                ]
+                
+                return {
+                    'success': True,
+                    'action': 'search_files',
+                    'result': {
+                        'search_path': str(path),
+                        'pattern': pattern,
+                        'matches': result,
+                        'count': len(result)
+                    }
+                }
+            except Exception as e:
+                return {'success': False, 'error': str(e)}
+        
         # ===================================================================
         # RPA ACTIONS (with confirmation)
         # ===================================================================
@@ -360,7 +447,10 @@ class ComputerAccessLayer:
             # File System
             "list_directory",
             "read_file",
+            "write_file",
+            "delete_file",
             "get_file_info",
+            "search_files",
             
             # System Info
             "get_current_time",

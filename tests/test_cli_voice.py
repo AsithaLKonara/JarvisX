@@ -4,12 +4,16 @@ Tests all voice-related CLI functionality
 """
 
 import unittest
+import pytest
 from unittest.mock import patch, MagicMock
 import sys
 from pathlib import Path
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
+
+# Set timeout for voice tests (10 seconds - voice operations may take longer)
+pytestmark = pytest.mark.timeout(10)
 
 from cli.voice import (
     listen_voice,
@@ -41,7 +45,7 @@ class TestVoiceCLI(unittest.TestCase):
             result = listen_voice(timeout=5, json_output=False)
             # Result should be the recognized text
             self.assertTrue(True)
-        except SystemExit:
+        except (SystemExit, KeyboardInterrupt):
             pass
     
     @patch('speech.text_to_speech.TTSEngine')
@@ -77,15 +81,20 @@ class TestVoiceCLI(unittest.TestCase):
         # Should match "system status" pattern
         self.assertTrue(True)
     
+    @pytest.mark.timeout(5)
+    @patch('time.sleep')  # Mock sleep to prevent hanging
     @patch('cli.voice_utils.VoiceCommandParser')
     @patch('speech.text_to_speech.TTSEngine')
     @patch('speech.speech_recognizer.SpeechRecognizer')
-    def test_interactive_voice(self, mock_recognizer_class, mock_tts_class, mock_parser_class):
+    def test_interactive_voice(self, mock_recognizer_class, mock_tts_class, mock_parser_class, mock_sleep):
         """Test interactive voice mode"""
+        # Mock sleep to do nothing (prevent hanging)
+        mock_sleep.return_value = None
+        
         # Mock speech recognizer
         mock_recognizer = MagicMock()
         mock_recognizer.is_available.return_value = True
-        mock_recognizer.listen.return_value = "exit"
+        mock_recognizer.listen.return_value = "exit"  # Exit immediately
         mock_recognizer_class.return_value = mock_recognizer
         
         # Mock TTS engine

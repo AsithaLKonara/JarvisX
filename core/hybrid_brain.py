@@ -285,8 +285,11 @@ class HybridBrain:
 			self.stats['llm_calls'] += 1
 			self.last_brain_used = "llm"
 			
+			# Enhance prompt for action extraction if task requires actions
+			enhanced_input = self._enhance_prompt_for_action_extraction(user_input, task_type)
+			
 			# Use shorter max_length for faster responses during testing
-			response = self.custom_llm.get_response(user_input, max_length=256)
+			response = self.custom_llm.get_response(enhanced_input, max_length=512)
 			
 			# Validate response
 			if response and len(response.strip()) > 0:
@@ -302,6 +305,29 @@ class HybridBrain:
 			self.stats['llm_failures'] += 1
 			self.last_brain_used = None  # Reset on error
 			return None
+	
+	def _enhance_prompt_for_action_extraction(self, user_input: str, task_type: str) -> str:
+		"""Enhance prompt to encourage action extraction in AI response"""
+		# For action-oriented tasks, add instruction to be explicit about actions
+		action_oriented_tasks = [
+			TaskType.SYSTEM_MONITORING,
+			TaskType.BUSINESS,
+			TaskType.ENGINEERING,
+			TaskType.TECHNICAL
+		]
+		
+		if task_type in action_oriented_tasks:
+			enhanced = f"""{user_input}
+
+Please respond naturally, but if this request requires any actions (like checking system status, creating files, running commands, generating invoices, etc.), please be explicit about what actions should be taken. I can execute actions like:
+- System monitoring (CPU, memory, disk)
+- File operations (read, write, list)
+- Business operations (invoices, clients, reports)
+- Workflow execution
+- CLI commands"""
+			return enhanced
+		
+		return user_input
 	
 	def _get_helagpt_response(self, user_input: str, task_type: str) -> Optional[str]:
 		"""Get response from HelaGPT"""

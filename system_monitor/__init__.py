@@ -1,16 +1,35 @@
 """Jarvis X V2 - Phase 6: System Monitor"""
-from .monitor_handler import MonitorHandler
+# Import only modules that exist
 from .health_checker import HealthChecker
 from .resource_monitor import ResourceMonitor
-from .dashboard_manager import DashboardManager
 from .alert_engine import AlertEngine
-from .report_generator import ReportGenerator
+
+# Optional imports - only if modules exist
+try:
+    from .monitor_handler import MonitorHandler
+except ImportError:
+    MonitorHandler = None
+
+try:
+    from .dashboard_manager import DashboardManager
+except ImportError:
+    DashboardManager = None
+
+try:
+    from .report_generator import ReportGenerator
+except ImportError:
+    ReportGenerator = None
 
 __all__ = [
-    'MonitorHandler',
     'HealthChecker',
     'ResourceMonitor',
-    'DashboardManager',
     'AlertEngine',
-    'ReportGenerator'
 ]
+
+# Add optional modules if they exist
+if MonitorHandler is not None:
+    __all__.append('MonitorHandler')
+if DashboardManager is not None:
+    __all__.append('DashboardManager')
+if ReportGenerator is not None:
+    __all__.append('ReportGenerator')
