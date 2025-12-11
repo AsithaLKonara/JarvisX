@@ -13,7 +13,11 @@ import gradio as gr
 # Load model once at startup
 print("🔄 Loading Jarvis LLM Brain...")
 
-# Use 4-bit quantization for free GPU tier
+# Check if GPU is available
+has_gpu = torch.cuda.is_available()
+print(f"🔧 GPU available: {has_gpu}")
+
+# Use 4-bit quantization for memory efficiency
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_compute_dtype=torch.float16,
@@ -24,11 +28,26 @@ bnb_config = BitsAndBytesConfig(
 # Load base model
 base_model_name = "mistralai/Mistral-7B-Instruct-v0.1"
 print(f"📦 Loading base model: {base_model_name}")
+
+# Configure device_map and offloading based on available resources
+if has_gpu:
+    # GPU: Use auto device mapping
+    device_map = "auto"
+    offload_folder = None
+else:
+    # CPU: Use auto with disk offloading for free tier
+    device_map = "auto"
+    offload_folder = "/tmp/model_offload"
+    os.makedirs(offload_folder, exist_ok=True)
+    print(f"💾 Using disk offloading: {offload_folder}")
+
 base_model = AutoModelForCausalLM.from_pretrained(
     base_model_name,
     quantization_config=bnb_config,
-    device_map="auto",
-    trust_remote_code=True
+    device_map=device_map,
+    offload_folder=offload_folder,
+    trust_remote_code=True,
+    low_cpu_mem_usage=True
 )
 
 # Load tokenizer
