@@ -32,5 +32,22 @@
     "status": "draft",
     "created_at": "2025-10-25T12:16:20.523716",
     "due_date": null
+  },
+  "8BC0DD4F": {
+    "invoice_id": "8BC0DD4F",
+    "client_name": "test",
+    "items": [
+      {
+        "description": "Service",
+        "amount": 100.0
+      }
+    ],
+    "subtotal": 100.0,
+    "tax_rate": 0.0,
+    "tax_amount": 0.0,
+    "total": 100.0,
+    "status": "draft",
+    "created_at": "2025-12-12T07:11:45.221385",
+    "due_date": null
   }
 }
