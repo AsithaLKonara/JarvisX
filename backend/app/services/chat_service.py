@@ -64,18 +64,78 @@ def create_message(
     return message
 
 
+def create_conversation(
+    db: Session,
+    user_id: uuid.UUID,
+    title: Optional[str] = None
+) -> Conversation:
+    """Create a new conversation"""
+    conversation = Conversation(
+        id=uuid.uuid4(),
+        user_id=user_id,
+        title=title,
+    )
+    db.add(conversation)
+    db.commit()
+    db.refresh(conversation)
+    return conversation
+
+
+def get_conversation(
+    db: Session,
+    conversation_id: uuid.UUID,
+    user_id: uuid.UUID
+) -> Optional[Conversation]:
+    """Get a single conversation"""
+    return db.query(Conversation).filter(
+        Conversation.id == conversation_id,
+        Conversation.user_id == user_id
+    ).first()
+
+
 def get_conversations(
     db: Session,
     user_id: uuid.UUID,
     limit: int = 50,
-    offset: int = 0
+    offset: int = 0,
+    search: Optional[str] = None
 ) -> List[Conversation]:
-    """Get user's conversations"""
-    return db.query(Conversation).filter(
+    """Get user's conversations with optional search"""
+    query = db.query(Conversation).filter(
         Conversation.user_id == user_id
-    ).order_by(
+    )
+    
+    if search:
+        query = query.filter(
+            Conversation.title.ilike(f"%{search}%")
+        )
+    
+    return query.order_by(
         Conversation.updated_at.desc()
     ).offset(offset).limit(limit).all()
+
+
+def update_conversation(
+    db: Session,
+    conversation_id: uuid.UUID,
+    user_id: uuid.UUID,
+    title: Optional[str] = None
+) -> Optional[Conversation]:
+    """Update a conversation"""
+    conversation = db.query(Conversation).filter(
+        Conversation.id == conversation_id,
+        Conversation.user_id == user_id
+    ).first()
+    
+    if not conversation:
+        return None
+    
+    if title is not None:
+        conversation.title = title
+    conversation.updated_at = datetime.utcnow()
+    db.commit()
+    db.refresh(conversation)
+    return conversation
 
 
 def get_messages(
@@ -176,6 +236,48 @@ def delete_conversation(
         return False
     
     db.delete(conversation)
+    db.commit()
+    return True
+
+
+def update_message(
+    db: Session,
+    message_id: uuid.UUID,
+    user_id: uuid.UUID,
+    content: str
+) -> Optional[Message]:
+    """Update a message (only user messages can be updated)"""
+    message = db.query(Message).join(Conversation).filter(
+        Message.id == message_id,
+        Conversation.user_id == user_id,
+        Message.role == "user"
+    ).first()
+    
+    if not message:
+        return None
+    
+    message.content = content
+    db.commit()
+    db.refresh(message)
+    return message
+
+
+def delete_message(
+    db: Session,
+    message_id: uuid.UUID,
+    user_id: uuid.UUID
+) -> bool:
+    """Delete a message (only user messages can be deleted)"""
+    message = db.query(Message).join(Conversation).filter(
+        Message.id == message_id,
+        Conversation.user_id == user_id,
+        Message.role == "user"
+    ).first()
+    
+    if not message:
+        return False
+    
+    db.delete(message)
     db.commit()
     return True
 

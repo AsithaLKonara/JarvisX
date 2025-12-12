@@ -1,95 +1,118 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { handleOAuthCallback } from '@/lib/auth/oauth'
-import { tokenManager } from '@/lib/auth/jwt'
-import apiClient from '@/lib/api/client'
+import { useAuth } from '@/hooks/useAuth'
+import Card from '@/components/ui/Card'
 
 export default function OAuthCallbackPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const { oauthLogin } = useAuth()
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
-  const [error, setError] = useState<string>('')
-  
+  const [error, setError] = useState<string | null>(null)
+
   useEffect(() => {
-    const processCallback = async () => {
+    const handleCallback = async () => {
       const code = searchParams.get('code')
       const state = searchParams.get('state')
-      const provider = localStorage.getItem('oauth_provider') as 'google' | 'apple' | 'facebook'
-      
-      if (!code || !state || !provider) {
+      const provider = state?.split('_')[0] || searchParams.get('provider') || 'google'
+      const error = searchParams.get('error')
+
+      if (error) {
+        setError(`OAuth error: ${error}`)
         setStatus('error')
-        setError('Missing OAuth parameters')
         return
       }
-      
+
+      if (!code) {
+        setError('No authorization code received')
+        setStatus('error')
+        return
+      }
+
       try {
         // Exchange code for token
-        const { access_token, refresh_token } = await handleOAuthCallback(code, state, provider)
-        
-        // Store tokens
-        tokenManager.setTokens(access_token, refresh_token)
-        
-        // Clear OAuth state
-        localStorage.removeItem('oauth_state')
-        localStorage.removeItem('oauth_provider')
-        
-        // Get user info
-        const userResponse = await apiClient.get('/user/me')
-        // User info will be stored by useAuth hook
-        
-        setStatus('success')
-        
-        // Redirect to chat
-        setTimeout(() => {
-          router.push('/chat')
-        }, 1000)
+        // In a real implementation, you'd exchange the code for a token server-side
+        // For now, we'll use the code directly (this is a simplified version)
+        const tokenResponse = await fetch('/api/oauth/exchange', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ code, provider, redirect_uri: window.location.origin + '/oauth/callback' }),
+        })
+
+        if (!tokenResponse.ok) {
+          throw new Error('Failed to exchange code for token')
+        }
+
+        const { access_token } = await tokenResponse.json()
+
+        // Login with OAuth token
+        const result = await oauthLogin(provider, access_token)
+
+        if (result.success) {
+          setStatus('success')
+          setTimeout(() => {
+            router.push('/chat')
+          }, 1500)
+        } else {
+          setError(result.error || 'OAuth login failed')
+          setStatus('error')
+        }
       } catch (err: any) {
+        setError(err.message || 'An error occurred during OAuth callback')
         setStatus('error')
-        setError(err.message || 'OAuth callback failed')
       }
     }
-    
-    processCallback()
-  }, [searchParams, router])
-  
+
+    handleCallback()
+  }, [searchParams, router, oauthLogin])
+
   return (
-    <div className="min-h-screen gradient-bg flex items-center justify-center p-4">
-      <div className="glass-panel p-8 text-center">
-        {status === 'loading' && (
-          <>
-            <div className="w-12 h-12 border-4 border-primary-aqua border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-white">Completing authentication...</p>
-          </>
-        )}
-        
-        {status === 'success' && (
-          <>
-            <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
+    <div className="min-h-screen flex items-center justify-center bg-background-surface px-4 py-12">
+      <Card className="w-full max-w-md">
+        <Card.Content>
+          {status === 'loading' && (
+            <div className="text-center py-8">
+              <div className="w-12 h-12 mx-auto border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+              <h2 className="text-xl font-semibold text-text-primary mb-2">Completing sign in...</h2>
+              <p className="text-text-secondary">Please wait while we authenticate you.</p>
             </div>
-            <p className="text-white">Authentication successful! Redirecting...</p>
-          </>
-        )}
-        
-        {status === 'error' && (
-          <>
-            <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+          )}
+
+          {status === 'success' && (
+            <div className="text-center py-8">
+              <div className="w-12 h-12 mx-auto bg-success/10 rounded-full flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h2 className="text-xl font-semibold text-text-primary mb-2">Success!</h2>
+              <p className="text-text-secondary">Redirecting to chat...</p>
             </div>
-            <p className="text-red-400 mb-4">{error}</p>
-            <a href="/login" className="text-primary-aqua hover:underline">
-              Return to login
-            </a>
-          </>
-        )}
-      </div>
+          )}
+
+          {status === 'error' && (
+            <div className="text-center py-8">
+              <div className="w-12 h-12 mx-auto bg-error/10 rounded-full flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-error" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+              <h2 className="text-xl font-semibold text-text-primary mb-2">Authentication Failed</h2>
+              <p className="text-text-secondary mb-4">{error}</p>
+              <button
+                onClick={() => router.push('/login')}
+                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors"
+              >
+                Back to Login
+              </button>
+            </div>
+          )}
+        </Card.Content>
+      </Card>
     </div>
   )
 }
-

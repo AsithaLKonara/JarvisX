@@ -28,8 +28,8 @@ export const liquidGlassStyles = StyleSheet.create({
 } as const)
 
 export const colors = {
-  primaryBlue: '#3B82F6',
-  primaryAqua: '#06B6D4',
+  primaryBlue: '#000000',
+  primaryAqua: '#000000',
   primaryPurple: '#A855F7',
   background: '#000000',
   glassLight: 'rgba(255, 255, 255, 0.1)',

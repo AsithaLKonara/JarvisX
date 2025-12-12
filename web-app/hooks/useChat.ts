@@ -42,9 +42,9 @@ export function useChat() {
     }
   }, [currentConversationId])
   
-  const loadConversations = useCallback(async () => {
+  const loadConversations = useCallback(async (search?: string) => {
     try {
-      const data = await chatApi.getConversations()
+      const data = await chatApi.getConversations(50, 0, search)
       setConversations(data)
       return data
     } catch (err: any) {
@@ -88,8 +88,13 @@ export function useChat() {
     sendMessage,
     loadConversations,
     loadMessages,
+    createConversation,
+    updateConversation,
     deleteConversation,
+    updateMessage,
+    deleteMessage,
     setMessages,
+    setCurrentConversationId,
   }
 }
 

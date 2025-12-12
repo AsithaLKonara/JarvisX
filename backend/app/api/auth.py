@@ -61,18 +61,38 @@ async def oauth_login(oauth_data: OAuthLogin, db: Session = Depends(get_db)):
 
 
 @router.post("/refresh", response_model=Token)
-async def refresh_token(refresh_token: str, db: Session = Depends(get_db)):
+async def refresh_token(
+    refresh_token_data: dict,
+    db: Session = Depends(get_db)
+):
     """Refresh access token using refresh token"""
     from app.utils.jwt import verify_token
+    from pydantic import BaseModel
     
-    payload = verify_token(refresh_token, token_type="refresh")
+    class RefreshTokenRequest(BaseModel):
+        refresh_token: str
+    
+    # Handle both dict and request body
+    if isinstance(refresh_token_data, dict):
+        refresh_token_str = refresh_token_data.get("refresh_token")
+    else:
+        refresh_token_str = refresh_token_data.refresh_token
+    
+    if not refresh_token_str:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Refresh token required",
+        )
+    
+    payload = verify_token(refresh_token_str, token_type="refresh")
     if not payload:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid refresh token",
         )
     
-    user_id = payload.get("sub")
+    import uuid
+    user_id = uuid.UUID(payload.get("sub"))
     user = db.query(User).filter(User.id == user_id).first()
     if not user or user.is_active != "true":
         raise HTTPException(
@@ -82,6 +102,102 @@ async def refresh_token(refresh_token: str, db: Session = Depends(get_db)):
     
     tokens = create_tokens(user)
     return tokens
+
+
+@router.post("/forgot-password")
+async def forgot_password(
+    request_data: dict,
+    db: Session = Depends(get_db)
+):
+    """Request password reset"""
+    email = request_data.get("email") if isinstance(request_data, dict) else request_data
+    
+    # TODO: Implement password reset email sending
+    user = db.query(User).filter(User.email == email).first()
+    
+    # Always return success to prevent email enumeration
+    return {
+        "message": "If the email exists, a password reset link has been sent"
+    }
+
+
+@router.post("/reset-password")
+async def reset_password(
+    request_data: dict,
+    db: Session = Depends(get_db)
+):
+    """Reset password using reset token"""
+    from app.utils.jwt import verify_token
+    from app.services.auth_service import get_password_hash
+    
+    token = request_data.get("token") if isinstance(request_data, dict) else request_data.get("token")
+    new_password = request_data.get("new_password") if isinstance(request_data, dict) else request_data.get("new_password")
+    
+    if not token or not new_password:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Token and new_password are required",
+        )
+    
+    # TODO: Verify reset token (should be different from refresh token)
+    payload = verify_token(token, token_type="reset")
+    if not payload:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired reset token",
+        )
+    
+    import uuid
+    user_id = uuid.UUID(payload.get("sub"))
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
+        )
+    
+    user.password_hash = get_password_hash(new_password)
+    db.commit()
+    
+    return {"message": "Password reset successfully"}
+
+
+@router.post("/verify-email")
+async def verify_email(
+    request_data: dict,
+    db: Session = Depends(get_db)
+):
+    """Verify email address"""
+    from app.utils.jwt import verify_token
+    
+    token = request_data.get("token") if isinstance(request_data, dict) else request_data
+    
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Verification token is required",
+        )
+    
+    payload = verify_token(token, token_type="email_verification")
+    if not payload:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired verification token",
+        )
+    
+    import uuid
+    user_id = uuid.UUID(payload.get("sub"))
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
+        )
+    
+    user.is_verified = "true"
+    db.commit()
+    
+    return {"message": "Email verified successfully"}
 
 
 @router.get("/me", response_model=UserResponse)

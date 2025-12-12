@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.database import Base, engine
-from app.api import auth, chat, user
+from app.api import auth, chat, user, analytics, settings, integrations, team, billing
 
 # Create database tables (if using SQLite, tables are created on first run)
 # For production, use Alembic migrations instead
@@ -34,6 +34,11 @@ app.add_middleware(
 app.include_router(auth.router, prefix=settings.API_V1_PREFIX)
 app.include_router(chat.router, prefix=settings.API_V1_PREFIX)
 app.include_router(user.router, prefix=settings.API_V1_PREFIX)
+app.include_router(analytics.router, prefix=settings.API_V1_PREFIX)
+app.include_router(settings.router, prefix=settings.API_V1_PREFIX)
+app.include_router(integrations.router, prefix=settings.API_V1_PREFIX)
+app.include_router(team.router, prefix=settings.API_V1_PREFIX)
+app.include_router(billing.router, prefix=settings.API_V1_PREFIX)
 
 
 @app.get("/")

@@ -98,6 +98,10 @@ export function useAuth() {
     isAuthenticated,
     login,
     register,
+    oauthLogin,
+    forgotPassword,
+    resetPassword,
+    verifyEmail,
     logout,
     checkAuth,
   }

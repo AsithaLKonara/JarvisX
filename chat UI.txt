@@ -1,0 +1,2870 @@
+{
+  id 1007156,
+  name Voice assistant,
+  type FRAME,
+  visible true,
+  width 267,
+  height 585,
+  opacity 1,
+  blendMode PASS_THROUGH,
+  layout {
+    layoutMode VERTICAL,
+    itemSpacing 22,
+    primaryAxisSizingMode FIXED,
+    counterAxisSizingMode FIXED,
+    padding {
+      left 0,
+      right 0,
+      top 0,
+      bottom 0
+    },
+    primaryAxisAlignItems MIN,
+    counterAxisAlignItems CENTER
+  },
+  cornerRadii {
+    all 12
+  },
+  fills [
+    {
+      type SOLID,
+      color {
+        r 0,
+        g 0,
+        b 0
+      },
+      opacity 0.0010000000474974513,
+      visible true
+    }
+  ],
+  strokes [],
+  effects [
+    {
+      type GLASS,
+      visible true
+    },
+    {
+      type DROP_SHADOW,
+      visible true,
+      color {
+        r 0,
+        g 0,
+        b 0,
+        a 0.25
+      },
+      offset {
+        x 0,
+        y 4
+      },
+      radius 12,
+      spread 0,
+      blendMode NORMAL
+    },
+    {
+      type INNER_SHADOW,
+      visible true,
+      color {
+        r 1,
+        g 1,
+        b 1,
+        a 0.1899999976158142
+      },
+      offset {
+        x 3,
+        y 3
+      },
+      radius 9.800000190734863,
+      spread 0,
+      blendMode NORMAL
+    },
+    {
+      type INNER_SHADOW,
+      visible true,
+      color {
+        r 0,
+        g 0,
+        b 0,
+        a 0.25
+      },
+      offset {
+        x -4,
+        y -4
+      },
+      radius 5.699999809265137,
+      spread 0,
+      blendMode NORMAL
+    }
+  ],
+  constraints {
+    horizontal MIN,
+    vertical MIN
+  },
+  typography null,
+  component {
+    type FRAME
+  },
+  children [
+    {
+      id 1007189,
+      name Bars  Status Bar  iPhone  Light,
+      type FRAME,
+      visible true,
+      width 267,
+      height 45,
+      opacity 1,
+      blendMode PASS_THROUGH,
+      layout {
+        layoutMode HORIZONTAL,
+        itemSpacing 10,
+        primaryAxisSizingMode FIXED,
+        counterAxisSizingMode FIXED,
+        padding {
+          left 10,
+          right 10,
+          top 10,
+          bottom 10
+        },
+        primaryAxisAlignItems MAX,
+        counterAxisAlignItems CENTER
+      },
+      cornerRadii {
+        all 0
+      },
+      fills [
+        {
+          type SOLID,
+          color {
+            r 1,
+            g 1,
+            b 1
+          },
+          opacity 1,
+          visible false
+        }
+      ],
+      strokes [],
+      effects [],
+      constraints {
+        horizontal MIN,
+        vertical MIN
+      },
+      typography null,
+      component {
+        type FRAME
+      },
+      children [
+        {
+          id 1007468,
+          name Frame 7,
+          type FRAME,
+          visible true,
+          width 32,
+          height 32,
+          opacity 1,
+          blendMode PASS_THROUGH,
+          layout {
+            layoutMode HORIZONTAL,
+            itemSpacing 8,
+            primaryAxisSizingMode FIXED,
+            counterAxisSizingMode FIXED,
+            padding {
+              left 8,
+              right 8,
+              top 8,
+              bottom 8
+            },
+            primaryAxisAlignItems CENTER,
+            counterAxisAlignItems CENTER
+          },
+          cornerRadii {
+            all 20
+          },
+          fills [],
+          strokes [
+            {
+              type SOLID,
+              color {
+                r 0.35418128967285156,
+                g 0.3681432604789734,
+                b 0.4574999511241913
+              },
+              opacity 0.5,
+              visible false,
+              weight 1,
+              alignment INSIDE,
+              cap NONE,
+              join MITER
+            }
+          ],
+          effects [],
+          constraints {
+            horizontal MIN,
+            vertical MIN
+          },
+          typography null,
+          component {
+            type FRAME
+          },
+          children [
+            {
+              id 1007469,
+              name close,
+              type INSTANCE,
+              visible true,
+              width 24,
+              height 24,
+              opacity 1,
+              blendMode PASS_THROUGH,
+              layout {
+                layoutMode NONE,
+                itemSpacing 0,
+                primaryAxisSizingMode AUTO,
+                counterAxisSizingMode FIXED,
+                padding {
+                  left 0,
+                  right 0,
+                  top 0,
+                  bottom 0
+                },
+                primaryAxisAlignItems MIN,
+                counterAxisAlignItems MIN
+              },
+              cornerRadii {
+                all 0
+              },
+              fills [
+                {
+                  type SOLID,
+                  color {
+                    r 1,
+                    g 1,
+                    b 1
+                  },
+                  opacity 1,
+                  visible false
+                }
+              ],
+              strokes [],
+              effects [],
+              constraints {
+                horizontal MIN,
+                vertical MIN
+              },
+              typography null,
+              component {
+                type INSTANCE,
+                componentId 1007117,
+                componentName Property 1=linier,
+                variantProperties {
+                  Property 1 linier
+                }
+              },
+              children [
+                {
+                  id I1007469;137700,
+                  name vuesaxlinearadd,
+                  type GROUP,
+                  visible true,
+                  width 14,
+                  height 14,
+                  opacity 1,
+                  blendMode PASS_THROUGH,
+                  layout {},
+                  cornerRadii null,
+                  fills [],
+                  strokes [],
+                  effects [],
+                  constraints null,
+                  typography null,
+                  component {
+                    type GROUP
+                  },
+                  children [
+                    {
+                      id I1007469;137701,
+                      name add,
+                      type GROUP,
+                      visible true,
+                      width 14,
+                      height 14,
+                      opacity 1,
+                      blendMode PASS_THROUGH,
+                      layout {},
+                      cornerRadii null,
+                      fills [],
+                      strokes [],
+                      effects [],
+                      constraints null,
+                      typography null,
+                      component {
+                        type GROUP
+                      },
+                      children [
+                        {
+                          id I1007469;137702,
+                          name Group,
+                          type GROUP,
+                          visible true,
+                          width 14,
+                          height 14,
+                          opacity 1,
+                          blendMode PASS_THROUGH,
+                          layout {},
+                          cornerRadii null,
+                          fills [],
+                          strokes [],
+                          effects [],
+                          constraints null,
+                          typography null,
+                          component {
+                            type GROUP
+                          },
+                          children [
+                            {
+                              id I1007469;137703,
+                              name Line,
+                              type VECTOR,
+                              visible true,
+                              width 20,
+                              height 0,
+                              opacity 1,
+                              blendMode PASS_THROUGH,
+                              layout {},
+                              cornerRadii {
+                                all 0
+                              },
+                              fills [],
+                              strokes [
+                                {
+                                  type SOLID,
+                                  color {
+                                    r 1,
+                                    g 1,
+                                    b 1
+                                  },
+                                  opacity 1,
+                                  visible true,
+                                  weight 1.5,
+                                  alignment CENTER,
+                                  cap ROUND,
+                                  join ROUND
+                                }
+                              ],
+                              effects [],
+                              constraints {
+                                horizontal SCALE,
+                                vertical SCALE
+                              },
+                              typography null,
+                              component {
+                                type VECTOR
+                              }
+                            },
+                            {
+                              id I1007469;137704,
+                              name Line,
+                              type VECTOR,
+                              visible true,
+                              width 0,
+                              height 20,
+                              opacity 1,
+                              blendMode PASS_THROUGH,
+                              layout {},
+                              cornerRadii {
+                                all 0
+                              },
+                              fills [],
+                              strokes [
+                                {
+                                  type SOLID,
+                                  color {
+                                    r 1,
+                                    g 1,
+                                    b 1
+                                  },
+                                  opacity 1,
+                                  visible true,
+                                  weight 1.5,
+                                  alignment CENTER,
+                                  cap ROUND,
+                                  join ROUND
+                                }
+                              ],
+                              effects [],
+                              constraints {
+                                horizontal SCALE,
+                                vertical SCALE
+                              },
+                              typography null,
+                              component {
+                                type VECTOR
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          id I1007469;137705,
+                          name Vector,
+                          type VECTOR,
+                          visible false,
+                          width 24,
+                          height 24,
+                          opacity 0,
+                          blendMode PASS_THROUGH,
+                          layout {},
+                          cornerRadii {
+                            all 0
+                          },
+                          fills [],
+                          strokes [
+                            {
+                              type SOLID,
+                              color {
+                                r 1,
+                                g 1,
+                                b 1
+                              },
+                              opacity 1,
+                              visible false,
+                              weight 1,
+                              alignment INSIDE,
+                              cap NONE,
+                              join MITER
+                            }
+                          ],
+                          effects [],
+                          constraints {
+                            horizontal SCALE,
+                            vertical SCALE
+                          },
+                          typography null,
+                          component {
+                            type VECTOR
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id 1007168,
+      name Frame 6165,
+      type FRAME,
+      visible true,
+      width 267,
+      height 54,
+      opacity 1,
+      blendMode PASS_THROUGH,
+      layout {
+        layoutMode VERTICAL,
+        itemSpacing 0,
+        primaryAxisSizingMode AUTO,
+        counterAxisSizingMode FIXED,
+        padding {
+          left 0,
+          right 0,
+          top 0,
+          bottom 0
+        },
+        primaryAxisAlignItems MIN,
+        counterAxisAlignItems CENTER
+      },
+      cornerRadii {
+        all 0
+      },
+      fills [],
+      strokes [],
+      effects [],
+      constraints {
+        horizontal MIN,
+        vertical MIN
+      },
+      typography null,
+      component {
+        type FRAME
+      },
+      children [
+        {
+          id 1007169,
+          name Hi, Anastacia,
+          type TEXT,
+          visible true,
+          width 267,
+          height 24,
+          opacity 1,
+          blendMode PASS_THROUGH,
+          layout {},
+          cornerRadii null,
+          fills [
+            {
+              type SOLID,
+              color {
+                r 1,
+                g 1,
+                b 1
+              },
+              opacity 0.800000011920929,
+              visible true
+            }
+          ],
+          strokes [],
+          effects [],
+          constraints {
+            horizontal MIN,
+            vertical MIN
+          },
+          typography {
+            fontFamily Alata,
+            fontStyle Regular,
+            fontSize 16,
+            lineHeightPx 24,
+            letterSpacing {
+              unit PIXELS,
+              value 1
+            },
+            textCase ORIGINAL,
+            textDecoration NONE,
+            fills [
+              {
+                type SOLID,
+                color {
+                  r 1,
+                  g 1,
+                  b 1
+                },
+                opacity 0.800000011920929,
+                visible true
+              }
+            ],
+            characters Hi, Anastacia
+          },
+          component {
+            type TEXT
+          }
+        },
+        {
+          id 1007170,
+          name Say something,
+          type TEXT,
+          visible true,
+          width 343,
+          height 30,
+          opacity 1,
+          blendMode PASS_THROUGH,
+          layout {},
+          cornerRadii null,
+          fills [
+            {
+              type SOLID,
+              color {
+                r 1,
+                g 1,
+                b 1
+              },
+              opacity 1,
+              visible true
+            }
+          ],
+          strokes [],
+          effects [],
+          constraints {
+            horizontal MIN,
+            vertical MIN
+          },
+          typography {
+            fontFamily Alata,
+            fontStyle Regular,
+            fontSize 22,
+            lineHeightPx null,
+            letterSpacing {
+              unit PERCENT,
+              value 2
+            },
+            textCase ORIGINAL,
+            textDecoration NONE,
+            fills [
+              {
+                type SOLID,
+                color {
+                  r 1,
+                  g 1,
+                  b 1
+                },
+                opacity 1,
+                visible true
+              }
+            ],
+            characters Say something
+          },
+          component {
+            type TEXT
+          }
+        }
+      ]
+    },
+    {
+      id 1007157,
+      name Ellipse 80,
+      type ELLIPSE,
+      visible false,
+      width 653,
+      height 317,
+      opacity 1,
+      blendMode PASS_THROUGH,
+      layout {},
+      cornerRadii {
+        all 0
+      },
+      fills [
+        {
+          type GRADIENT_LINEAR,
+          gradientStops [
+            {
+              position 0,
+              color {
+                r 0.22745098173618317,
+                g 0.6823529601097107,
+                b 0.9725490212440491,
+                a 1
+              }
+            },
+            {
+              position 0.8986728191375732,
+              color {
+                r 0.6235294342041016,
+                g 0.3843137323856354,
+                b 0.929411768913269,
+                a 0
+              }
+            }
+          ],
+          gradientTransform [
+            [
+              -0.6961466670036316,
+              0.11907970160245895,
+              0.8034128546714783
+            ],
+            [
+              -0.11907970905303955,
+              -0.16405630111694336,
+              0.6366287469863892
+            ]
+          ],
+          visible true
+        }
+      ],
+      strokes [],
+      effects [
+        {
+          type LAYER_BLUR,
+          visible true,
+          radius 200
+        }
+      ],
+      constraints {
+        horizontal MIN,
+        vertical MIN
+      },
+      typography null,
+      component {
+        type ELLIPSE
+      }
+    },
+    {
+      id 1007158,
+      name Eclipse,
+      type ELLIPSE,
+      visible false,
+      width 697,
+      height 697,
+      opacity 1,
+      blendMode PASS_THROUGH,
+      layout {},
+      cornerRadii {
+        all 0
+      },
+      fills [
+        {
+          type GRADIENT_LINEAR,
+          gradientStops [
+            {
+              position 0,
+              color {
+                r 0.22745098173618317,
+                g 0.6823529601097107,
+                b 0.9725490212440491,
+                a 0
+              }
+            },
+            {
+              position 1,
+              color {
+                r 0.6235294342041016,
+                g 0.3843137323856354,
+                b 0.929411768913269,
+                a 1
+              }
+            }
+          ],
+          gradientTransform [
+            [
+              6.123234262925839e-17,
+              1,
+              0
+            ],
+            [
+              -1,
+              6.123234262925839e-17,
+              1
+            ]
+          ],
+          visible true
+        }
+      ],
+      strokes [],
+      effects [
+        {
+          type LAYER_BLUR,
+          visible true,
+          radius 200
+        }
+      ],
+      constraints {
+        horizontal MIN,
+        vertical MIN
+      },
+      typography null,
+      component {
+        type ELLIPSE
+      }
+    },
+    {
+      id 1007478,
+      name Frame 1000003798,
+      type FRAME,
+      visible true,
+      width 267,
+      height 169,
+      opacity 1,
+      blendMode PASS_THROUGH,
+      layout {
+        layoutMode HORIZONTAL,
+        itemSpacing 10,
+        primaryAxisSizingMode FIXED,
+        counterAxisSizingMode FIXED,
+        padding {
+          left 64,
+          right 64,
+          top 11,
+          bottom 11
+        },
+        primaryAxisAlignItems CENTER,
+        counterAxisAlignItems CENTER
+      },
+      cornerRadii {
+        all 0
+      },
+      fills [],
+      strokes [],
+      effects [
+        {
+          type DROP_SHADOW,
+          visible true,
+          color {
+            r 0,
+            g 0,
+            b 0,
+            a 0.25
+          },
+          offset {
+            x 0,
+            y 4
+          },
+          radius 20.600000381469727,
+          spread 4,
+          blendMode NORMAL
+        }
+      ],
+      constraints {
+        horizontal MIN,
+        vertical MIN
+      },
+      typography null,
+      component {
+        type FRAME
+      },
+      children [
+        {
+          id 1007477,
+          name Frame 1000003797,
+          type FRAME,
+          visible true,
+          width 175,
+          height 174,
+          opacity 1,
+          blendMode PASS_THROUGH,
+          layout {
+            layoutMode VERTICAL,
+            itemSpacing 10,
+            primaryAxisSizingMode FIXED,
+            counterAxisSizingMode FIXED,
+            padding {
+              left 10,
+              right 10,
+              top 10,
+              bottom 10
+            },
+            primaryAxisAlignItems CENTER,
+            counterAxisAlignItems CENTER
+          },
+          cornerRadii {
+            all 0
+          },
+          fills [],
+          strokes [],
+          effects [],
+          constraints {
+            horizontal MIN,
+            vertical MIN
+          },
+          typography null,
+          component {
+            type FRAME
+          },
+          children [
+            {
+              id 1007160,
+              name 10,
+              type FRAME,
+              visible true,
+              width 175,
+              height 169,
+              opacity 1,
+              blendMode PASS_THROUGH,
+              layout {
+                layoutMode NONE,
+                itemSpacing 0,
+                primaryAxisSizingMode FIXED,
+                counterAxisSizingMode FIXED,
+                padding {
+                  left 0,
+                  right 0,
+                  top 0,
+                  bottom 0
+                },
+                primaryAxisAlignItems MIN,
+                counterAxisAlignItems MIN
+              },
+              cornerRadii {
+                all 0
+              },
+              fills [],
+              strokes [],
+              effects [],
+              constraints {
+                horizontal CENTER,
+                vertical CENTER
+              },
+              typography null,
+              component {
+                type FRAME
+              },
+              children [
+                {
+                  id 1007161,
+                  name blue-right,
+                  type VECTOR,
+                  visible true,
+                  width 124,
+                  height 126,
+                  opacity 1,
+                  blendMode LINEAR_DODGE,
+                  layout {},
+                  cornerRadii {
+                    all 0
+                  },
+                  fills [
+                    {
+                      type GRADIENT_LINEAR,
+                      gradientStops [
+                        {
+                          position 0,
+                          color {
+                            r 0.5922722220420837,
+                            g 0.465069442987442,
+                            b 0.7541666626930237,
+                            a 0.5299999713897705
+                          }
+                        },
+                        {
+                          position 1,
+                          color {
+                            r 0.9141176342964172,
+                            g 0.35686275362968445,
+                            b 0.9254902005195618,
+                            a 0
+                          }
+                        }
+                      ],
+                      gradientTransform [
+                        [
+                          -1.6995341777801514,
+                          0.7996171712875366,
+                          1.2932918071746826
+                        ],
+                        [
+                          -0.8322870135307312,
+                          -1.9280411005020142,
+                          2.2475762367248535
+                        ]
+                      ],
+                      visible true
+                    }
+                  ],
+                  strokes [],
+                  effects [],
+                  constraints {
+                    horizontal SCALE,
+                    vertical SCALE
+                  },
+                  typography null,
+                  component {
+                    type VECTOR
+                  }
+                },
+                {
+                  id 1007162,
+                  name pink-left,
+                  type VECTOR,
+                  visible true,
+                  width 129,
+                  height 84,
+                  opacity 1,
+                  blendMode PASS_THROUGH,
+                  layout {},
+                  cornerRadii {
+                    all 0
+                  },
+                  fills [
+                    {
+                      type GRADIENT_RADIAL,
+                      gradientStops [
+                        {
+                          position 0,
+                          color {
+                            r 0.6235294342041016,
+                            g 0.3843137323856354,
+                            b 0.929411768913269,
+                            a 1
+                          }
+                        },
+                        {
+                          position 1,
+                          color {
+                            r 0.7334299087524414,
+                            g 0.40603142976760864,
+                            b 0.887499988079071,
+                            a 0
+                          }
+                        }
+                      ],
+                      gradientTransform [
+                        [
+                          0.37550362944602966,
+                          0.5301973223686218,
+                          0.3357967734336853
+                        ],
+                        [
+                          -0.8265049457550049,
+                          0.1660335659980774,
+                          0.6873432993888855
+                        ]
+                      ],
+                      visible true
+                    },
+                    {
+                      type GRADIENT_LINEAR,
+                      gradientStops [
+                        {
+                          position 0,
+                          color {
+                            r 0.6235294342041016,
+                            g 0.3843137323856354,
+                            b 0.929411768913269,
+                            a 1
+                          }
+                        },
+                        {
+                          position 1,
+                          color {
+                            r 0.7919996976852417,
+                            g 0.565481424331665,
+                            b 0.9308332800865173,
+                            a 0
+                          }
+                        }
+                      ],
+                      gradientTransform [
+                        [
+                          -0.20390547811985016,
+                          3.6380248069763184,
+                          0.40350550413131714
+                        ],
+                        [
+                          -5.6711835861206055,
+                          -0.09015990793704987,
+                          3.5292177200317383
+                        ]
+                      ],
+                      visible true
+                    },
+                    {
+                      type GRADIENT_RADIAL,
+                      gradientStops [
+                        {
+                          position 0,
+                          color {
+                            r 0.6235294342041016,
+                            g 0.3843137323856354,
+                            b 0.929411768913269,
+                            a 1
+                          }
+                        },
+                        {
+                          position 1,
+                          color {
+                            r 0.6235294342041016,
+                            g 0.3843137323856354,
+                            b 0.929411768913269,
+                            a 0.4399999976158142
+                          }
+                        }
+                      ],
+                      gradientTransform [
+                        [
+                          -1.40460205078125,
+                          0.35038426518440247,
+                          1.0579560995101929
+                        ],
+                        [
+                          -0.8234312534332275,
+                          -0.932537853717804,
+                          1.5586272478103638
+                        ]
+                      ],
+                      visible true
+                    }
+                  ],
+                  strokes [],
+                  effects [],
+                  constraints {
+                    horizontal SCALE,
+                    vertical SCALE
+                  },
+                  typography null,
+                  component {
+                    type VECTOR
+                  }
+                },
+                {
+                  id 1007163,
+                  name green-left,
+                  type VECTOR,
+                  visible true,
+                  width 126,
+                  height 100,
+                  opacity 1,
+                  blendMode NORMAL,
+                  layout {},
+                  cornerRadii {
+                    topLeft 0,
+                    topRight 0,
+                    bottomRight 0,
+                    bottomLeft 0
+                  },
+                  fills [
+                    {
+                      type GRADIENT_LINEAR,
+                      gradientStops [
+                        {
+                          position 0,
+                          color {
+                            r 0.7291479706764221,
+                            g 0.5609923005104065,
+                            b 0.9441667199134827,
+                            a 1
+                          }
+                        },
+                        {
+                          position 0.6657324433326721,
+                          color {
+                            r 0.5882353186607361,
+                            g 0.364705890417099,
+                            b 0.8784313797950745,
+                            a 1
+                          }
+                        },
+                        {
+                          position 0.9115252494812012,
+                          color {
+                            r 0.5215686559677124,
+                            g 0.38823530077934265,
+                            b 0.929411768913269,
+                            a 1
+                          }
+                        }
+                      ],
+                      gradientTransform [
+                        [
+                          1.5689384937286377,
+                          -2.459404230117798,
+                          0.6370158791542053
+                        ],
+                        [
+                          2.6883935928344727,
+                          1.1506074666976929,
+                          -2.660254955291748
+                        ]
+                      ],
+                      visible true
+                    },
+                    {
+                      type GRADIENT_RADIAL,
+                      gradientStops [
+                        {
+                          position 0,
+                          color {
+                            r 0.6235294342041016,
+                            g 0.3843137323856354,
+                            b 0.929411768913269,
+                            a 1
+                          }
+                        },
+                        {
+                          position 1,
+                          color {
+                            r 0.6235294342041016,
+                            g 0.3843137323856354,
+                            b 0.929411768913269,
+                            a 0
+                          }
+                        }
+                      ],
+                      gradientTransform [
+                        [
+                          1.6690564155578613,
+                          0.8120555281639099,
+                          -0.08927398175001144
+                        ],
+                        [
+                          -0.8120555281639099,
+                          1.1207101345062256,
+                          -0.1735651195049286
+                        ]
+                      ],
+                      visible true
+                    }
+                  ],
+                  strokes [],
+                  effects [],
+                  constraints {
+                    horizontal SCALE,
+                    vertical SCALE
+                  },
+                  typography null,
+                  component {
+                    type VECTOR
+                  }
+                },
+                {
+                  id 1007164,
+                  name bottom-pink,
+                  type VECTOR,
+                  visible true,
+                  width 40,
+                  height 63,
+                  opacity 1,
+                  blendMode PASS_THROUGH,
+                  layout {},
+                  cornerRadii {
+                    all 0
+                  },
+                  fills [
+                    {
+                      type GRADIENT_RADIAL,
+                      gradientStops [
+                        {
+                          position 0,
+                          color {
+                            r 0.8916666507720947,
+                            g 0.4569791555404663,
+                            b 0.8742791414260864,
+                            a 0
+                          }
+                        },
+                        {
+                          position 1,
+                          color {
+                            r 0.6235294342041016,
+                            g 0.3843137323856354,
+                            b 0.929411768913269,
+                            a 1
+                          }
+                        }
+                      ],
+                      gradientTransform [
+                        [
+                          -0.09887716174125671,
+                          -0.75527423620224,
+                          1.3156174421310425
+                        ],
+                        [
+                          0.36696597933769226,
+                          -0.12541407346725464,
+                          0.394660085439682
+                        ]
+                      ],
+                      visible true
+                    },
+                    {
+                      type GRADIENT_LINEAR,
+                      gradientStops [
+                        {
+                          position 0,
+                          color {
+                            r 1,
+                            g 1,
+                            b 1,
+                            a 1
+                          }
+                        },
+                        {
+                          position 1,
+                          color {
+                            r 1,
+                            g 1,
+                            b 1,
+                            a 0
+                          }
+                        }
+                      ],
+                      gradientTransform [
+                        [
+                          0.3268236517906189,
+                          3.5575034618377686,
+                          -0.45442238450050354
+                        ],
+                        [
+                          -4.312955856323242,
+                          1.0152870416641235,
+                          0.8057255148887634
+                        ]
+                      ],
+                      visible true
+                    }
+                  ],
+                  strokes [],
+                  effects [],
+                  constraints {
+                    horizontal SCALE,
+                    vertical SCALE
+                  },
+                  typography null,
+                  component {
+                    type VECTOR
+                  }
+                },
+                {
+                  id 1007165,
+                  name Ellipse 29,
+                  type VECTOR,
+                  visible true,
+                  width 113,
+                  height 85,
+                  opacity 1,
+                  blendMode PASS_THROUGH,
+                  layout {},
+                  cornerRadii {
+                    all 0
+                  },
+                  fills [
+                    {
+                      type GRADIENT_ANGULAR,
+                      gradientStops [
+                        {
+                          position 0.007693295832723379,
+                          color {
+                            r 0.845215916633606,
+                            g 0.7241668701171875,
+                            b 1,
+                            a 1
+                          }
+                        },
+                        {
+                          position 0.25812581181526184,
+                          color {
+                            r 0.5744466781616211,
+                            g 0.00385069428011775,
+                            b 0.9241666197776794,
+                            a 0
+                          }
+                        },
+                        {
+                          position 0.5701876282691956,
+                          color {
+                            r 0.9368705153465271,
+                            g 0.887499988079071,
+                            b 1,
+                            a 0
+                          }
+                        },
+                        {
+                          position 0.7322915196418762,
+                          color {
+                            r 0.30929481983184814,
+                            g 0.08911723643541336,
+                            b 0.590833306312561,
+                            a 0
+                          }
+                        }
+                      ],
+                      gradientTransform [
+                        [
+                          -0.24430564045906067,
+                          0.40558743476867676,
+                          0.5701383948326111
+                        ],
+                        [
+                          -0.4984070062637329,
+                          -0.17973360419273376,
+                          0.7170388102531433
+                        ]
+                      ],
+                      visible true
+                    }
+                  ],
+                  strokes [],
+                  effects [
+                    {
+                      type LAYER_BLUR,
+                      visible false,
+                      radius 1
+                    }
+                  ],
+                  constraints {
+                    horizontal SCALE,
+                    vertical SCALE
+                  },
+                  typography null,
+                  component {
+                    type VECTOR
+                  }
+                },
+                {
+                  id 1007166,
+                  name Ellipse 30,
+                  type VECTOR,
+                  visible true,
+                  width 75,
+                  height 74,
+                  opacity 1,
+                  blendMode LINEAR_DODGE,
+                  layout {},
+                  cornerRadii {
+                    all 0
+                  },
+                  fills [
+                    {
+                      type GRADIENT_RADIAL,
+                      gradientStops [
+                        {
+                          position 0,
+                          color {
+                            r 1,
+                            g 1,
+                            b 1,
+                            a 1
+                          }
+                        },
+                        {
+                          position 0.16583915054798126,
+                          color {
+                            r 1,
+                            g 1,
+                            b 1,
+                            a 1
+                          }
+                        },
+                        {
+                          position 0.3352806866168976,
+                          color {
+                            r 0.8096762299537659,
+                            g 0.6608332395553589,
+                            b 1,
+                            a 1
+                          }
+                        },
+                        {
+                          position 1,
+                          color {
+                            r 0.6235294342041016,
+                            g 0.3843137323856354,
+                            b 0.929411768913269,
+                            a 0
+                          }
+                        }
+                      ],
+                      gradientTransform [
+                        [
+                          7.183702969275972e-17,
+                          1.2091190814971924,
+                          -0.10993652790784836
+                        ],
+                        [
+                          -1.1731873750686646,
+                          7.403717792091807e-17,
+                          1.104883074760437
+                        ]
+                      ],
+                      visible true
+                    }
+                  ],
+                  strokes [],
+                  effects [
+                    {
+                      type LAYER_BLUR,
+                      visible true,
+                      radius 4
+                    }
+                  ],
+                  constraints {
+                    horizontal SCALE,
+                    vertical SCALE
+                  },
+                  typography null,
+                  component {
+                    type VECTOR
+                  }
+                },
+                {
+                  id 1007167,
+                  name Ellipse 14,
+                  type VECTOR,
+                  visible true,
+                  width 55,
+                  height 61,
+                  opacity 1,
+                  blendMode PASS_THROUGH,
+                  layout {},
+                  cornerRadii {
+                    all 0
+                  },
+                  fills [
+                    {
+                      type GRADIENT_RADIAL,
+                      gradientStops [
+                        {
+                          position 0,
+                          color {
+                            r 1,
+                            g 1,
+                            b 1,
+                            a 1
+                          }
+                        },
+                        {
+                          position 0.16583915054798126,
+                          color {
+                            r 1,
+                            g 1,
+                            b 1,
+                            a 1
+                          }
+                        },
+                        {
+                          position 0.3352806866168976,
+                          color {
+                            r 0.8660517334938049,
+                            g 0.771073043346405,
+                            b 0.987500011920929,
+                            a 1
+                          }
+                        },
+                        {
+                          position 1,
+                          color {
+                            r 0.6235294342041016,
+                            g 0.3843137323856354,
+                            b 0.929411768913269,
+                            a 0
+                          }
+                        }
+                      ],
+                      gradientTransform [
+                        [
+                          6.698747490215323e-17,
+                          1.1614526510238647,
+                          -0.14885661005973816
+                        ],
+                        [
+                          -1.0939878225326538,
+                          7.111837517657365e-17,
+                          1.0889874696731567
+                        ]
+                      ],
+                      visible true
+                    }
+                  ],
+                  strokes [],
+                  effects [
+                    {
+                      type LAYER_BLUR,
+                      visible false,
+                      radius 4
+                    }
+                  ],
+                  constraints {
+                    horizontal SCALE,
+                    vertical SCALE
+                  },
+                  typography null,
+                  component {
+                    type VECTOR
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id 1007479,
+      name Frame 1000003799,
+      type FRAME,
+      visible true,
+      width 267,
+      height 124,
+      opacity 1,
+      blendMode PASS_THROUGH,
+      layout {
+        layoutMode HORIZONTAL,
+        itemSpacing 10,
+        primaryAxisSizingMode FIXED,
+        counterAxisSizingMode AUTO,
+        padding {
+          left 17,
+          right 17,
+          top 8,
+          bottom 8
+        },
+        primaryAxisAlignItems CENTER,
+        counterAxisAlignItems CENTER
+      },
+      cornerRadii {
+        all 0
+      },
+      fills [],
+      strokes [],
+      effects [],
+      constraints {
+        horizontal MIN,
+        vertical MIN
+      },
+      typography null,
+      component {
+        type FRAME
+      },
+      children [
+        {
+          id 1007159,
+          name JarvisX V2 is an ultra-optimized, intelligent AI assistant powered by a custom-trained Mistral 7B model with 137,300 domain-specific examples. It features multi-modal operation,
+          type TEXT,
+          visible true,
+          width 233,
+          height 108,
+          opacity 1,
+          blendMode PASS_THROUGH,
+          layout {},
+          cornerRadii null,
+          fills [
+            {
+              type SOLID,
+              color {
+                r 1,
+                g 1,
+                b 1
+              },
+              opacity 1,
+              visible true
+            }
+          ],
+          strokes [],
+          effects [],
+          constraints {
+            horizontal MIN,
+            vertical MIN
+          },
+          typography {
+            fontFamily Albert Sans,
+            fontStyle Regular,
+            fontSize 14,
+            lineHeightPx 18,
+            letterSpacing {
+              unit PIXELS,
+              value 0
+            },
+            textCase ORIGINAL,
+            textDecoration NONE,
+            fills [
+              {
+                type SOLID,
+                color {
+                  r 1,
+                  g 1,
+                  b 1
+                },
+                opacity 1,
+                visible true
+              }
+            ],
+            characters JarvisX V2 is an ultra-optimized, intelligent AI assistant powered by a custom-trained Mistral 7B model with 137,300 domain-specific examples. It features multi-modal operation
+          },
+          component {
+            type TEXT
+          }
+        }
+      ]
+    },
+    {
+      id 1007171,
+      name Frame 6164,
+      type FRAME,
+      visible true,
+      width 267,
+      height 110,
+      opacity 1,
+      blendMode PASS_THROUGH,
+      layout {
+        layoutMode HORIZONTAL,
+        itemSpacing 32,
+        primaryAxisSizingMode FIXED,
+        counterAxisSizingMode FIXED,
+        padding {
+          left 49,
+          right 49,
+          top 0,
+          bottom 0
+        },
+        primaryAxisAlignItems SPACE_BETWEEN,
+        counterAxisAlignItems CENTER
+      },
+      cornerRadii {
+        all 0
+      },
+      fills [],
+      strokes [],
+      effects [],
+      constraints {
+        horizontal MIN,
+        vertical MIN
+      },
+      typography null,
+      component {
+        type FRAME
+      },
+      children [
+        {
+          id 1007172,
+          name Frame 5,
+          type FRAME,
+          visible true,
+          width 36,
+          height 36,
+          opacity 1,
+          blendMode PASS_THROUGH,
+          layout {
+            layoutMode HORIZONTAL,
+            itemSpacing 8,
+            primaryAxisSizingMode AUTO,
+            counterAxisSizingMode AUTO,
+            padding {
+              left 8,
+              right 8,
+              top 8,
+              bottom 8
+            },
+            primaryAxisAlignItems MIN,
+            counterAxisAlignItems MIN
+          },
+          cornerRadii {
+            all 20
+          },
+          fills [],
+          strokes [
+            {
+              type SOLID,
+              color {
+                r 0.3529411852359772,
+                g 0.3686274588108063,
+                b 0.4588235318660736
+              },
+              opacity 0.5,
+              visible true,
+              weight 1,
+              alignment INSIDE,
+              cap NONE,
+              join MITER
+            }
+          ],
+          effects [],
+          constraints {
+            horizontal MIN,
+            vertical MIN
+          },
+          typography null,
+          component {
+            type FRAME
+          },
+          children [
+            {
+              id 1007173,
+              name messages,
+              type INSTANCE,
+              visible true,
+              width 20,
+              height 20,
+              opacity 1,
+              blendMode PASS_THROUGH,
+              layout {
+                layoutMode NONE,
+                itemSpacing 0,
+                primaryAxisSizingMode AUTO,
+                counterAxisSizingMode FIXED,
+                padding {
+                  left 0,
+                  right 0,
+                  top 0,
+                  bottom 0
+                },
+                primaryAxisAlignItems MIN,
+                counterAxisAlignItems MIN
+              },
+              cornerRadii {
+                all 0
+              },
+              fills [
+                {
+                  type SOLID,
+                  color {
+                    r 1,
+                    g 1,
+                    b 1
+                  },
+                  opacity 1,
+                  visible false
+                }
+              ],
+              strokes [],
+              effects [],
+              constraints {
+                horizontal MIN,
+                vertical MIN
+              },
+              typography null,
+              component {
+                type INSTANCE,
+                componentId 100713,
+                componentName Property 1=linear,
+                variantProperties {
+                  Property 1 linear
+                }
+              },
+              children [
+                {
+                  id I1007173;136031,
+                  name vuesaxlinearmessages,
+                  type GROUP,
+                  visible true,
+                  width 20,
+                  height 20,
+                  opacity 1,
+                  blendMode PASS_THROUGH,
+                  layout {},
+                  cornerRadii null,
+                  fills [],
+                  strokes [],
+                  effects [],
+                  constraints null,
+                  typography null,
+                  component {
+                    type GROUP
+                  },
+                  children [
+                    {
+                      id I1007173;136032,
+                      name messages,
+                      type GROUP,
+                      visible true,
+                      width 20,
+                      height 20,
+                      opacity 1,
+                      blendMode PASS_THROUGH,
+                      layout {},
+                      cornerRadii null,
+                      fills [],
+                      strokes [],
+                      effects [],
+                      constraints null,
+                      typography null,
+                      component {
+                        type GROUP
+                      },
+                      children [
+                        {
+                          id I1007173;136033,
+                          name Group,
+                          type GROUP,
+                          visible true,
+                          width 13,
+                          height 13,
+                          opacity 1,
+                          blendMode PASS_THROUGH,
+                          layout {},
+                          cornerRadii null,
+                          fills [],
+                          strokes [],
+                          effects [],
+                          constraints null,
+                          typography null,
+                          component {
+                            type GROUP
+                          },
+                          children [
+                            {
+                              id I1007173;136034,
+                              name Vector,
+                              type VECTOR,
+                              visible true,
+                              width 13,
+                              height 13,
+                              opacity 1,
+                              blendMode PASS_THROUGH,
+                              layout {},
+                              cornerRadii {
+                                all 0
+                              },
+                              fills [],
+                              strokes [
+                                {
+                                  type SOLID,
+                                  color {
+                                    r 1,
+                                    g 1,
+                                    b 1
+                                  },
+                                  opacity 1,
+                                  visible true,
+                                  weight 1.5,
+                                  alignment CENTER,
+                                  cap ROUND,
+                                  join ROUND
+                                }
+                              ],
+                              effects [],
+                              constraints {
+                                horizontal SCALE,
+                                vertical SCALE
+                              },
+                              typography null,
+                              component {
+                                type VECTOR
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          id I1007173;136035,
+                          name Vector,
+                          type VECTOR,
+                          visible true,
+                          width 13,
+                          height 11,
+                          opacity 1,
+                          blendMode PASS_THROUGH,
+                          layout {},
+                          cornerRadii {
+                            all 0
+                          },
+                          fills [],
+                          strokes [
+                            {
+                              type SOLID,
+                              color {
+                                r 1,
+                                g 1,
+                                b 1
+                              },
+                              opacity 1,
+                              visible true,
+                              weight 1.5,
+                              alignment CENTER,
+                              cap ROUND,
+                              join ROUND
+                            }
+                          ],
+                          effects [],
+                          constraints {
+                            horizontal SCALE,
+                            vertical SCALE
+                          },
+                          typography null,
+                          component {
+                            type VECTOR
+                          }
+                        },
+                        {
+                          id I1007173;136036,
+                          name Vector,
+                          type VECTOR,
+                          visible true,
+                          width 20,
+                          height 20,
+                          opacity 0,
+                          blendMode PASS_THROUGH,
+                          layout {},
+                          cornerRadii {
+                            all 0
+                          },
+                          fills [],
+                          strokes [],
+                          effects [],
+                          constraints {
+                            horizontal SCALE,
+                            vertical SCALE
+                          },
+                          typography null,
+                          component {
+                            type VECTOR
+                          }
+                        },
+                        {
+                          id I1007173;136037,
+                          name Vector,
+                          type VECTOR,
+                          visible true,
+                          width 1,
+                          height 1,
+                          opacity 1,
+                          blendMode PASS_THROUGH,
+                          layout {},
+                          cornerRadii {
+                            all 0
+                          },
+                          fills [],
+                          strokes [
+                            {
+                              type SOLID,
+                              color {
+                                r 1,
+                                g 1,
+                                b 1
+                              },
+                              opacity 1,
+                              visible true,
+                              weight 2,
+                              alignment CENTER,
+                              cap ROUND,
+                              join ROUND
+                            }
+                          ],
+                          effects [],
+                          constraints {
+                            horizontal SCALE,
+                            vertical SCALE
+                          },
+                          typography null,
+                          component {
+                            type VECTOR
+                          }
+                        },
+                        {
+                          id I1007173;136038,
+                          name Vector,
+                          type VECTOR,
+                          visible true,
+                          width 1,
+                          height 1,
+                          opacity 1,
+                          blendMode PASS_THROUGH,
+                          layout {},
+                          cornerRadii {
+                            all 0
+                          },
+                          fills [],
+                          strokes [
+                            {
+                              type SOLID,
+                              color {
+                                r 1,
+                                g 1,
+                                b 1
+                              },
+                              opacity 1,
+                              visible true,
+                              weight 2,
+                              alignment CENTER,
+                              cap ROUND,
+                              join ROUND
+                            }
+                          ],
+                          effects [],
+                          constraints {
+                            horizontal SCALE,
+                            vertical SCALE
+                          },
+                          typography null,
+                          component {
+                            type VECTOR
+                          }
+                        },
+                        {
+                          id I1007173;136039,
+                          name Vector,
+                          type VECTOR,
+                          visible true,
+                          width 1,
+                          height 1,
+                          opacity 1,
+                          blendMode PASS_THROUGH,
+                          layout {},
+                          cornerRadii {
+                            all 0
+                          },
+                          fills [],
+                          strokes [
+                            {
+                              type SOLID,
+                              color {
+                                r 1,
+                                g 1,
+                                b 1
+                              },
+                              opacity 1,
+                              visible true,
+                              weight 2,
+                              alignment CENTER,
+                              cap ROUND,
+                              join ROUND
+                            }
+                          ],
+                          effects [],
+                          constraints {
+                            horizontal SCALE,
+                            vertical SCALE
+                          },
+                          typography null,
+                          component {
+                            type VECTOR
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id 1007174,
+          name Frame 1000003796,
+          type FRAME,
+          visible true,
+          width 100,
+          height 100,
+          opacity 1,
+          blendMode PASS_THROUGH,
+          layout {
+            layoutMode NONE,
+            itemSpacing 0,
+            primaryAxisSizingMode AUTO,
+            counterAxisSizingMode FIXED,
+            padding {
+              left 0,
+              right 0,
+              top 0,
+              bottom 0
+            },
+            primaryAxisAlignItems MIN,
+            counterAxisAlignItems MIN
+          },
+          cornerRadii {
+            all 0
+          },
+          fills [],
+          strokes [],
+          effects [],
+          constraints {
+            horizontal MIN,
+            vertical MIN
+          },
+          typography null,
+          component {
+            type FRAME
+          },
+          children [
+            {
+              id 1007480,
+              name Frame 1000003800,
+              type FRAME,
+              visible true,
+              width 54,
+              height 54,
+              opacity 1,
+              blendMode PASS_THROUGH,
+              layout {
+                layoutMode VERTICAL,
+                itemSpacing 10,
+                primaryAxisSizingMode FIXED,
+                counterAxisSizingMode FIXED,
+                padding {
+                  left 10,
+                  right 10,
+                  top 10,
+                  bottom 10
+                },
+                primaryAxisAlignItems CENTER,
+                counterAxisAlignItems CENTER
+              },
+              cornerRadii {
+                all 1000
+              },
+              fills [
+                {
+                  type SOLID,
+                  color {
+                    r 0,
+                    g 0,
+                    b 0
+                  },
+                  opacity 0.0010000000474974513,
+                  visible true
+                }
+              ],
+              strokes [],
+              effects [
+                {
+                  type GLASS,
+                  visible true
+                }
+              ],
+              constraints {
+                horizontal CENTER,
+                vertical CENTER
+              },
+              typography null,
+              component {
+                type FRAME
+              },
+              children [
+                {
+                  id 1007178,
+                  name Ellipse 4,
+                  type ELLIPSE,
+                  visible false,
+                  width 34,
+                  height 49,
+                  opacity 1,
+                  blendMode PASS_THROUGH,
+                  layout {},
+                  cornerRadii {
+                    all 0
+                  },
+                  fills [
+                    {
+                      type GRADIENT_LINEAR,
+                      gradientStops [
+                        {
+                          position 0,
+                          color {
+                            r 0.5221960544586182,
+                            g 0.38823530077934265,
+                            b 0.929411768913269,
+                            a 1
+                          }
+                        },
+                        {
+                          position 1,
+                          color {
+                            r 0.8365384340286255,
+                            g 0.18269230425357819,
+                            b 1,
+                            a 1
+                          }
+                        }
+                      ],
+                      gradientTransform [
+                        [
+                          -0.7017869353294373,
+                          0.9671627879142761,
+                          0.14625205099582672
+                        ],
+                        [
+                          -0.9671627879142761,
+                          -0.6980589628219604,
+                          1.354360818862915
+                        ]
+                      ],
+                      visible false
+                    }
+                  ],
+                  strokes [],
+                  effects [
+                    {
+                      type DROP_SHADOW,
+                      visible true,
+                      color {
+                        r 0.22745098173618317,
+                        g 0.6823529601097107,
+                        b 0.9725490212440491,
+                        a 0.30000001192092896
+                      },
+                      offset {
+                        x 0,
+                        y 8.548700332641602
+                      },
+                      radius 29.920452117919922,
+                      spread 0,
+                      blendMode NORMAL
+                    }
+                  ],
+                  constraints {
+                    horizontal MIN,
+                    vertical MIN
+                  },
+                  typography null,
+                  component {
+                    type ELLIPSE
+                  }
+                }
+              ]
+            },
+            {
+              id 1007179,
+              name microphone-2,
+              type INSTANCE,
+              visible true,
+              width 32,
+              height 32,
+              opacity 1,
+              blendMode PASS_THROUGH,
+              layout {
+                layoutMode NONE,
+                itemSpacing 0,
+                primaryAxisSizingMode AUTO,
+                counterAxisSizingMode FIXED,
+                padding {
+                  left 0,
+                  right 0,
+                  top 0,
+                  bottom 0
+                },
+                primaryAxisAlignItems MIN,
+                counterAxisAlignItems MIN
+              },
+              cornerRadii {
+                all 0
+              },
+              fills [
+                {
+                  type SOLID,
+                  color {
+                    r 1,
+                    g 1,
+                    b 1
+                  },
+                  opacity 1,
+                  visible false
+                }
+              ],
+              strokes [],
+              effects [],
+              constraints {
+                horizontal CENTER,
+                vertical CENTER
+              },
+              typography null,
+              component {
+                type INSTANCE,
+                componentId 100770,
+                componentName Property 1=linear,
+                variantProperties {
+                  Property 1 linear
+                }
+              },
+              children [
+                {
+                  id I1007179;155944,
+                  name vuesaxlinearmicrophone-2,
+                  type GROUP,
+                  visible true,
+                  width 32,
+                  height 32,
+                  opacity 1,
+                  blendMode PASS_THROUGH,
+                  layout {},
+                  cornerRadii null,
+                  fills [],
+                  strokes [],
+                  effects [],
+                  constraints null,
+                  typography null,
+                  component {
+                    type GROUP
+                  },
+                  children [
+                    {
+                      id I1007179;155945,
+                      name microphone-2,
+                      type GROUP,
+                      visible true,
+                      width 32,
+                      height 32,
+                      opacity 1,
+                      blendMode PASS_THROUGH,
+                      layout {},
+                      cornerRadii null,
+                      fills [],
+                      strokes [],
+                      effects [],
+                      constraints null,
+                      typography null,
+                      component {
+                        type GROUP
+                      },
+                      children [
+                        {
+                          id I1007179;155946,
+                          name Vector,
+                          type VECTOR,
+                          visible true,
+                          width 11,
+                          height 18,
+                          opacity 1,
+                          blendMode PASS_THROUGH,
+                          layout {},
+                          cornerRadii {
+                            all 0
+                          },
+                          fills [],
+                          strokes [
+                            {
+                              type SOLID,
+                              color {
+                                r 1,
+                                g 1,
+                                b 1
+                              },
+                              opacity 1,
+                              visible true,
+                              weight 3,
+                              alignment CENTER,
+                              cap ROUND,
+                              join ROUND
+                            }
+                          ],
+                          effects [],
+                          constraints {
+                            horizontal SCALE,
+                            vertical SCALE
+                          },
+                          typography null,
+                          component {
+                            type VECTOR
+                          }
+                        },
+                        {
+                          id I1007179;155947,
+                          name Vector,
+                          type VECTOR,
+                          visible true,
+                          width 20,
+                          height 12,
+                          opacity 1,
+                          blendMode PASS_THROUGH,
+                          layout {},
+                          cornerRadii {
+                            all 0
+                          },
+                          fills [],
+                          strokes [
+                            {
+                              type SOLID,
+                              color {
+                                r 1,
+                                g 1,
+                                b 1
+                              },
+                              opacity 1,
+                              visible true,
+                              weight 3,
+                              alignment CENTER,
+                              cap ROUND,
+                              join ROUND
+                            }
+                          ],
+                          effects [],
+                          constraints {
+                            horizontal SCALE,
+                            vertical SCALE
+                          },
+                          typography null,
+                          component {
+                            type VECTOR
+                          }
+                        },
+                        {
+                          id I1007179;155948,
+                          name Vector,
+                          type VECTOR,
+                          visible true,
+                          width 4,
+                          height 0,
+                          opacity 1,
+                          blendMode PASS_THROUGH,
+                          layout {},
+                          cornerRadii {
+                            all 0
+                          },
+                          fills [],
+                          strokes [
+                            {
+                              type SOLID,
+                              color {
+                                r 1,
+                                g 1,
+                                b 1
+                              },
+                              opacity 1,
+                              visible true,
+                              weight 3,
+                              alignment CENTER,
+                              cap ROUND,
+                              join ROUND
+                            }
+                          ],
+                          effects [],
+                          constraints {
+                            horizontal SCALE,
+                            vertical SCALE
+                          },
+                          typography null,
+                          component {
+                            type VECTOR
+                          }
+                        },
+                        {
+                          id I1007179;155949,
+                          name Vector,
+                          type VECTOR,
+                          visible true,
+                          width 2,
+                          height 0,
+                          opacity 1,
+                          blendMode PASS_THROUGH,
+                          layout {},
+                          cornerRadii {
+                            all 0
+                          },
+                          fills [],
+                          strokes [
+                            {
+                              type SOLID,
+                              color {
+                                r 1,
+                                g 1,
+                                b 1
+                              },
+                              opacity 1,
+                              visible true,
+                              weight 3,
+                              alignment CENTER,
+                              cap ROUND,
+                              join ROUND
+                            }
+                          ],
+                          effects [],
+                          constraints {
+                            horizontal SCALE,
+                            vertical SCALE
+                          },
+                          typography null,
+                          component {
+                            type VECTOR
+                          }
+                        },
+                        {
+                          id I1007179;155950,
+                          name Line,
+                          type VECTOR,
+                          visible true,
+                          width 0,
+                          height 4,
+                          opacity 1,
+                          blendMode PASS_THROUGH,
+                          layout {},
+                          cornerRadii {
+                            all 0
+                          },
+                          fills [],
+                          strokes [
+                            {
+                              type SOLID,
+                              color {
+                                r 1,
+                                g 1,
+                                b 1
+                              },
+                              opacity 1,
+                              visible true,
+                              weight 3,
+                              alignment CENTER,
+                              cap ROUND,
+                              join ROUND
+                            }
+                          ],
+                          effects [],
+                          constraints {
+                            horizontal SCALE,
+                            vertical SCALE
+                          },
+                          typography null,
+                          component {
+                            type VECTOR
+                          }
+                        },
+                        {
+                          id I1007179;155951,
+                          name Vector,
+                          type VECTOR,
+                          visible true,
+                          width 32,
+                          height 32,
+                          opacity 0,
+                          blendMode PASS_THROUGH,
+                          layout {},
+                          cornerRadii {
+                            all 0
+                          },
+                          fills [],
+                          strokes [],
+                          effects [],
+                          constraints {
+                            horizontal SCALE,
+                            vertical SCALE
+                          },
+                          typography null,
+                          component {
+                            type VECTOR
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id 1007180,
+          name Frame 7,
+          type FRAME,
+          visible true,
+          width 36,
+          height 36,
+          opacity 1,
+          blendMode PASS_THROUGH,
+          layout {
+            layoutMode HORIZONTAL,
+            itemSpacing 8,
+            primaryAxisSizingMode AUTO,
+            counterAxisSizingMode AUTO,
+            padding {
+              left 8,
+              right 8,
+              top 8,
+              bottom 8
+            },
+            primaryAxisAlignItems MIN,
+            counterAxisAlignItems MIN
+          },
+          cornerRadii {
+            all 20
+          },
+          fills [],
+          strokes [
+            {
+              type SOLID,
+              color {
+                r 0.35418128967285156,
+                g 0.3681432604789734,
+                b 0.4574999511241913
+              },
+              opacity 0.5,
+              visible true,
+              weight 1,
+              alignment INSIDE,
+              cap NONE,
+              join MITER
+            }
+          ],
+          effects [],
+          constraints {
+            horizontal MIN,
+            vertical MIN
+          },
+          typography null,
+          component {
+            type FRAME
+          },
+          children [
+            {
+              id 1007181,
+              name close,
+              type INSTANCE,
+              visible true,
+              width 20,
+              height 20,
+              opacity 1,
+              blendMode PASS_THROUGH,
+              layout {
+                layoutMode NONE,
+                itemSpacing 0,
+                primaryAxisSizingMode AUTO,
+                counterAxisSizingMode FIXED,
+                padding {
+                  left 0,
+                  right 0,
+                  top 0,
+                  bottom 0
+                },
+                primaryAxisAlignItems MIN,
+                counterAxisAlignItems MIN
+              },
+              cornerRadii {
+                all 0
+              },
+              fills [
+                {
+                  type SOLID,
+                  color {
+                    r 1,
+                    g 1,
+                    b 1
+                  },
+                  opacity 1,
+                  visible false
+                }
+              ],
+              strokes [],
+              effects [],
+              constraints {
+                horizontal MIN,
+                vertical MIN
+              },
+              typography null,
+              component {
+                type INSTANCE,
+                componentId 1007117,
+                componentName Property 1=linier,
+                variantProperties {
+                  Property 1 linier
+                }
+              },
+              children [
+                {
+                  id I1007181;137700,
+                  name vuesaxlinearadd,
+                  type GROUP,
+                  visible true,
+                  width 20,
+                  height 20,
+                  opacity 1,
+                  blendMode PASS_THROUGH,
+                  layout {},
+                  cornerRadii null,
+                  fills [],
+                  strokes [],
+                  effects [],
+                  constraints null,
+                  typography null,
+                  component {
+                    type GROUP
+                  },
+                  children [
+                    {
+                      id I1007181;137701,
+                      name add,
+                      type GROUP,
+                      visible true,
+                      width 20,
+                      height 20,
+                      opacity 1,
+                      blendMode PASS_THROUGH,
+                      layout {},
+                      cornerRadii null,
+                      fills [],
+                      strokes [],
+                      effects [],
+                      constraints null,
+                      typography null,
+                      component {
+                        type GROUP
+                      },
+                      children [
+                        {
+                          id I1007181;137702,
+                          name Group,
+                          type GROUP,
+                          visible true,
+                          width 12,
+                          height 12,
+                          opacity 1,
+                          blendMode PASS_THROUGH,
+                          layout {},
+                          cornerRadii null,
+                          fills [],
+                          strokes [],
+                          effects [],
+                          constraints null,
+                          typography null,
+                          component {
+                            type GROUP
+                          },
+                          children [
+                            {
+                              id I1007181;137703,
+                              name Line,
+                              type VECTOR,
+                              visible true,
+                              width 16,
+                              height 0,
+                              opacity 1,
+                              blendMode PASS_THROUGH,
+                              layout {},
+                              cornerRadii {
+                                all 0
+                              },
+                              fills [],
+                              strokes [
+                                {
+                                  type SOLID,
+                                  color {
+                                    r 1,
+                                    g 1,
+                                    b 1
+                                  },
+                                  opacity 1,
+                                  visible true,
+                                  weight 1.5,
+                                  alignment CENTER,
+                                  cap ROUND,
+                                  join ROUND
+                                }
+                              ],
+                              effects [],
+                              constraints {
+                                horizontal SCALE,
+                                vertical SCALE
+                              },
+                              typography null,
+                              component {
+                                type VECTOR
+                              }
+                            },
+                            {
+                              id I1007181;137704,
+                              name Line,
+                              type VECTOR,
+                              visible true,
+                              width 0,
+                              height 16,
+                              opacity 1,
+                              blendMode PASS_THROUGH,
+                              layout {},
+                              cornerRadii {
+                                all 0
+                              },
+                              fills [],
+                              strokes [
+                                {
+                                  type SOLID,
+                                  color {
+                                    r 1,
+                                    g 1,
+                                    b 1
+                                  },
+                                  opacity 1,
+                                  visible true,
+                                  weight 1.5,
+                                  alignment CENTER,
+                                  cap ROUND,
+                                  join ROUND
+                                }
+                              ],
+                              effects [],
+                              constraints {
+                                horizontal SCALE,
+                                vertical SCALE
+                              },
+                              typography null,
+                              component {
+                                type VECTOR
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          id I1007181;137705,
+                          name Vector,
+                          type VECTOR,
+                          visible true,
+                          width 20,
+                          height 20,
+                          opacity 0,
+                          blendMode PASS_THROUGH,
+                          layout {},
+                          cornerRadii {
+                            all 0
+                          },
+                          fills [],
+                          strokes [],
+                          effects [],
+                          constraints {
+                            horizontal SCALE,
+                            vertical SCALE
+                          },
+                          typography null,
+                          component {
+                            type VECTOR
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

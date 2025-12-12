@@ -53,8 +53,8 @@ Complete multi-platform UI/UX system for JarvisX V2 has been implemented with li
 
 ### Liquid Glass iOS 26 Style
 - **Colors**:
-  - Primary Blue: `#3B82F6`
-  - Primary Aqua: `#06B6D4`
+  - Primary Blue (Black): `#000000`
+  - Primary Aqua (Black): `#000000`
   - Primary Purple: `#A855F7`
   - Background: `#000000`
   - Glass: `rgba(255, 255, 255, 0.1)`

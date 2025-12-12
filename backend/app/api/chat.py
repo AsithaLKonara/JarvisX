@@ -9,8 +9,10 @@ from app.models.user import User
 from app.middleware.auth import get_current_user
 from app.schemas.chat import (
     MessageCreate,
+    MessageUpdate,
     MessageResponse,
     ConversationCreate,
+    ConversationUpdate,
     ConversationResponse,
     ChatResponse,
 )
@@ -65,15 +67,36 @@ async def send_message(
     )
 
 
+@router.post("/conversations", response_model=ConversationResponse, status_code=status.HTTP_201_CREATED)
+async def create_conversation(
+    conversation_data: ConversationCreate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Create a new conversation"""
+    from app.services.chat_service import create_conversation as create_conv
+    conversation = create_conv(db, current_user.id, conversation_data.title)
+    
+    return ConversationResponse(
+        id=str(conversation.id),
+        user_id=str(conversation.user_id),
+        title=conversation.title,
+        created_at=conversation.created_at,
+        updated_at=conversation.updated_at,
+        message_count=0,
+    )
+
+
 @router.get("/conversations", response_model=List[ConversationResponse])
 async def list_conversations(
     limit: int = 50,
     offset: int = 0,
+    search: Optional[str] = None,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Get user's conversations"""
-    conversations = get_conversations(db, current_user.id, limit, offset)
+    """Get user's conversations with optional search"""
+    conversations = get_conversations(db, current_user.id, limit, offset, search)
     
     return [
         ConversationResponse(
@@ -86,6 +109,77 @@ async def list_conversations(
         )
         for conv in conversations
     ]
+
+
+@router.get("/conversations/{conversation_id}", response_model=ConversationResponse)
+async def get_conversation(
+    conversation_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Get a single conversation"""
+    import uuid
+    try:
+        conv_id = uuid.UUID(conversation_id)
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid conversation ID"
+        )
+    
+    from app.services.chat_service import get_conversation as get_conv
+    conversation = get_conv(db, conv_id, current_user.id)
+    
+    if not conversation:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Conversation not found"
+        )
+    
+    return ConversationResponse(
+        id=str(conversation.id),
+        user_id=str(conversation.user_id),
+        title=conversation.title,
+        created_at=conversation.created_at,
+        updated_at=conversation.updated_at,
+        message_count=len(conversation.messages),
+    )
+
+
+@router.patch("/conversations/{conversation_id}", response_model=ConversationResponse)
+async def update_conversation(
+    conversation_id: str,
+    conversation_data: ConversationUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Update a conversation (e.g., rename)"""
+    import uuid
+    try:
+        conv_id = uuid.UUID(conversation_id)
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid conversation ID"
+        )
+    
+    from app.services.chat_service import update_conversation as update_conv
+    conversation = update_conv(db, conv_id, current_user.id, conversation_data.title)
+    
+    if not conversation:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Conversation not found"
+        )
+    
+    return ConversationResponse(
+        id=str(conversation.id),
+        user_id=str(conversation.user_id),
+        title=conversation.title,
+        created_at=conversation.created_at,
+        updated_at=conversation.updated_at,
+        message_count=len(conversation.messages),
+    )
 
 
 @router.get("/conversations/{conversation_id}/messages", response_model=List[MessageResponse])
@@ -144,6 +238,69 @@ async def delete_conversation_endpoint(
         )
     
     return {"message": "Conversation deleted successfully"}
+
+
+@router.patch("/messages/{message_id}", response_model=MessageResponse)
+async def update_message(
+    message_id: str,
+    message_data: MessageUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Update a message (edit)"""
+    import uuid
+    try:
+        msg_id = uuid.UUID(message_id)
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid message ID"
+        )
+    
+    from app.services.chat_service import update_message as update_msg
+    message = update_msg(db, msg_id, current_user.id, message_data.content)
+    
+    if not message:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Message not found"
+        )
+    
+    return MessageResponse(
+        id=str(message.id),
+        conversation_id=str(message.conversation_id),
+        role=message.role,
+        content=message.content,
+        created_at=message.created_at,
+    )
+
+
+@router.delete("/messages/{message_id}")
+async def delete_message(
+    message_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Delete a message"""
+    import uuid
+    try:
+        msg_id = uuid.UUID(message_id)
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid message ID"
+        )
+    
+    from app.services.chat_service import delete_message as delete_msg
+    success = delete_msg(db, msg_id, current_user.id)
+    
+    if not success:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Message not found"
+        )
+    
+    return {"message": "Message deleted successfully"}
 
 
 @router.websocket("/ws/{client_id}")

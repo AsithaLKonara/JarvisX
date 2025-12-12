@@ -9,22 +9,42 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          blue: '#3B82F6',
-          aqua: '#06B6D4',
-          purple: '#A855F7',
+          DEFAULT: '#6366f1',
+          hover: '#4f46e5',
+          light: '#e0e7ff',
+          dark: '#4338ca',
         },
-        glass: {
-          light: 'rgba(255, 255, 255, 0.1)',
-          medium: 'rgba(255, 255, 255, 0.15)',
-          dark: 'rgba(255, 255, 255, 0.05)',
+        background: {
+          DEFAULT: '#ffffff',
+          surface: '#f9fafb',
+          'surface-hover': '#f3f4f6',
         },
+        text: {
+          primary: '#1f2937',
+          secondary: '#6b7280',
+          tertiary: '#9ca3af',
+        },
+        border: {
+          DEFAULT: '#e5e7eb',
+          hover: '#d1d5db',
+        },
+        success: '#10b981',
+        error: '#ef4444',
+        warning: '#f59e0b',
+        info: '#3b82f6',
       },
       fontFamily: {
-        alata: ['Alata', 'sans-serif'],
-        'albert-sans': ['Albert Sans', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
-      backdropBlur: {
-        xs: '2px',
+      boxShadow: {
+        sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        DEFAULT: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
+        md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+        lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
+      },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
       },
     },
   },

@@ -29,6 +29,16 @@ class ConversationCreate(BaseModel):
     title: Optional[str] = None
 
 
+class ConversationUpdate(BaseModel):
+    """Update conversation schema"""
+    title: Optional[str] = None
+
+
+class MessageUpdate(BaseModel):
+    """Update message schema"""
+    content: str
+
+
 class ConversationResponse(BaseModel):
     """Conversation response schema"""
     id: str

@@ -1,71 +1,96 @@
 'use client'
 
-import React, { useState, KeyboardEvent } from 'react'
-import MicrophoneButton from '../ui/MicrophoneButton'
+import React, { useState, useRef, useEffect } from 'react'
+// Using inline SVG icons
+import Button from '../ui/Button'
 
 interface ChatInputProps {
   onSend: (message: string) => void
+  onVoiceInput?: () => void
+  placeholder?: string
+  disabled?: boolean
 }
 
-export default function ChatInput({ onSend }: ChatInputProps) {
+// Make onVoiceInput required or provide default
+const defaultVoiceInput = () => {
+  console.warn('Voice input handler not provided')
+}
+
+export default function ChatInput({
+  onSend,
+  onVoiceInput = defaultVoiceInput,
+  placeholder = 'Message JarvisX...',
+  disabled = false,
+}: ChatInputProps) {
   const [message, setMessage] = useState('')
-  
-  const handleSend = () => {
-    if (message.trim()) {
-      onSend(message)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 200)}px`
+    }
+  }, [message])
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (message.trim() && !disabled) {
+      onSend(message.trim())
       setMessage('')
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto'
+      }
     }
   }
-  
-  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      handleSend()
+      handleSubmit(e)
     }
   }
-  
+
   return (
-    <div className="flex items-center gap-4">
-      <button className="glass-button w-9 h-9 flex items-center justify-center">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path
-            d="M13 3H7C4.79 3 3 4.79 3 7V13C3 15.21 4.79 17 7 17H13C15.21 17 17 15.21 17 13V7C17 4.79 15.21 3 13 3Z"
-            stroke="white"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+    <div className="border-t border-gray-200 bg-white">
+      <form onSubmit={handleSubmit} className="flex items-end gap-2 p-4">
+        <div className="flex-1 relative">
+          <textarea
+            ref={textareaRef}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={placeholder}
+            disabled={disabled}
+            rows={1}
+            className="w-full px-4 py-3 pr-12 text-sm border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed"
+            style={{ maxHeight: '200px', minHeight: '48px' }}
           />
-          <circle cx="10" cy="10" r="2" fill="white" />
-        </svg>
-      </button>
-      
-      <div className="flex-1 glass-panel px-4 py-2">
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={handleKeyPress}
-          placeholder="Type your message..."
-          className="w-full bg-transparent text-white placeholder-white/50 outline-none font-albert-sans"
-        />
+          <button
+            type="button"
+            onClick={onVoiceInput}
+            disabled={disabled}
+            className="absolute right-3 bottom-3 p-1.5 text-gray-400 hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Voice input"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+            </svg>
+          </button>
+        </div>
+        <Button
+          type="submit"
+          variant="primary"
+          disabled={!message.trim() || disabled}
+          className="flex-shrink-0"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+          </svg>
+        </Button>
+      </form>
+      <div className="px-4 pb-2 text-xs text-gray-500 text-center">
+        Press Enter to send, Shift+Enter for new line
       </div>
-      
-      <MicrophoneButton
-        size={54}
-        onRecordStart={() => console.log('Recording started')}
-        onRecordStop={() => console.log('Recording stopped')}
-      />
-      
-      <button
-        onClick={handleSend}
-        className="glass-button w-9 h-9 flex items-center justify-center"
-      >
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <line x1="10" y1="4" x2="10" y2="16" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="4" y1="10" x2="16" y2="10" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-        </svg>
-      </button>
     </div>
   )
 }
-

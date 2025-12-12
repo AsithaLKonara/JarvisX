@@ -6,7 +6,7 @@ def get_liquid_glass_stylesheet() -> str:
     return """
     QMainWindow {
         background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-            stop:0 #3B82F6, stop:0.5 #06B6D4, stop:1 #A855F7);
+            stop:0 #000000, stop:0.5 #000000, stop:1 #A855F7);
     }
     
     QWidget {
@@ -52,13 +52,13 @@ def get_liquid_glass_stylesheet() -> str:
     }
     
     QLineEdit#glassInput:focus {
-        border: 1px solid #06B6D4;
+        border: 1px solid #000000;
     }
     
     /* Message Bubble */
     QLabel#messageBubble {
-        background: rgba(59, 130, 246, 0.2);
-        border: 1px solid rgba(59, 130, 246, 0.3);
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(0, 0, 0, 0.3);
         border-radius: 12px;
         padding: 12px;
         color: white;
