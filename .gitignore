@@ -170,3 +170,66 @@ htmlcov/
 # Profiling
 *.prof
 *.lprof
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+backend/jarvisx.db
+backend/*.db
+clients.db
+finance.db
+jarvis_memory.db
+tasks.db
+training_jobs.db
+
+# Next.js
+.next/
+out/
+web-app/.next/
+web-app/out/
+web-app/.env.local
+web-app/.env*.local
+
+# React Native
+mobile/.expo/
+mobile/.expo-shared/
+mobile/dist/
+mobile/build/
+mobile/.env.local
+mobile/.env*.local
+
+# Desktop builds
+desktop/build/
+desktop/dist/
+desktop/*.app
+desktop/*.exe
+desktop/*.dmg
+desktop/*.deb
+desktop/*.rpm
+
+# Screenshots
+screenshots/
+*.png
+!web-app/public/*.png
+!mobile/assets/*.png
+
+# Test results
+ai_integration_test_results.json
+ai_pipeline_test_results.json
+
+# Temporary files
+/tmp/
+*.tmp
+*.temp
+/tmp/jarvisx_*.log
+/tmp/jarvisx_*.pid
+
+# Backend specific
+backend/__pycache__/
+backend/.pytest_cache/
+backend/.env
+backend/.env.local
+
+# Submodules (if needed)
+jarvis-llm-brain/

@@ -1,0 +1,21 @@
+# Desktop Application Requirements
+
+# GUI Framework
+PyQt6>=6.6.0
+PyQt6-Qt6>=6.6.0
+PyQt6-sip>=6.6.0
+
+# HTTP Client
+requests>=2.31.0
+websocket-client>=1.6.0
+
+# Authentication
+PyJWT>=2.8.0
+cryptography>=41.0.0
+
+# Utilities
+python-dotenv>=1.0.0
+
+# Packaging
+pyinstaller>=6.0.0
+
