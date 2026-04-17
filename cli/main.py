@@ -3,6 +3,10 @@ JarvisX V2 CLI - Main Entry Point
 Command-line interface for JarvisX V2 operations
 """
 
+import utils.clients
+import utils.http_session
+import utils.transport
+import utils.session
 import sys
 from pathlib import Path
 
