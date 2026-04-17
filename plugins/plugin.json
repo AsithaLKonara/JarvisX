@@ -1,0 +1,12 @@
+{
+  "id": "jarvisx.builtin.tools",
+  "name": "JarvisX Builtin Tools",
+  "version": "1.0.0",
+  "tools": [
+    {
+      "name": "plugin.echo",
+      "description": "Echo utility tool used for plugin runtime validation",
+      "permission": "safe"
+    }
+  ]
+}
