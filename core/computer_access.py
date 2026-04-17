@@ -13,6 +13,7 @@ from typing import Dict, Any, List, Optional, Tuple
 from datetime import datetime
 import logging
 import json
+from core.sandbox_executor import SandboxExecutor
 
 logger = logging.getLogger(__name__)
 
@@ -61,6 +62,7 @@ class ComputerAccessLayer:
         self.safety_mode = safety_mode
         self.auto_confirm_safe = auto_confirm_safe
         self.action_history = []
+        self.sandbox = SandboxExecutor(root_path=".")
         
         # Import optional components
         self._load_components()
@@ -295,6 +297,9 @@ class ComputerAccessLayer:
             content = parameters.get('content', '')
             mode = parameters.get('mode', 'w')  # 'w' for write, 'a' for append
             try:
+                allowed, reason = self.sandbox.validate_path(file_path)
+                if not allowed:
+                    return {'success': False, 'error': reason}
                 path = Path(file_path)
                 # Create parent directories if needed
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -313,10 +318,50 @@ class ComputerAccessLayer:
                 }
             except Exception as e:
                 return {'success': False, 'error': str(e)}
+
+        elif action_type == "execute_command":
+            command = parameters.get("command", "")
+            if not command:
+                return {"success": False, "error": "No command provided"}
+            sandboxed = self.sandbox.run_command(command, timeout=30)
+            if sandboxed.get("success"):
+                return {
+                    "success": True,
+                    "action": "execute_command",
+                    "result": sandboxed.get("result", {}),
+                }
+            return {
+                "success": False,
+                "action": "execute_command",
+                "error": sandboxed.get("error"),
+                "result": sandboxed.get("result", {}),
+            }
+
+        elif action_type == "launch_app":
+            app_name = parameters.get("app", "")
+            if not app_name:
+                return {"success": False, "error": "No app name provided"}
+            try:
+                if sys.platform == "darwin":
+                    subprocess.Popen(["open", "-a", app_name])
+                elif sys.platform.startswith("linux"):
+                    subprocess.Popen([app_name])
+                else:
+                    subprocess.Popen(["start", app_name], shell=True)
+                return {
+                    "success": True,
+                    "action": "launch_app",
+                    "result": {"app": app_name, "launched": True},
+                }
+            except Exception as e:
+                return {"success": False, "error": str(e)}
         
         elif action_type == "delete_file":
             file_path = parameters.get('file_path') or parameters.get('path')
             try:
+                allowed, reason = self.sandbox.validate_path(file_path)
+                if not allowed:
+                    return {'success': False, 'error': reason}
                 path = Path(file_path)
                 if not path.exists():
                     return {'success': False, 'error': f'File not found: {file_path}'}
@@ -451,6 +496,8 @@ class ComputerAccessLayer:
             "delete_file",
             "get_file_info",
             "search_files",
+            "execute_command",
+            "launch_app",
             
             # System Info
             "get_current_time",

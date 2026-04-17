@@ -7,6 +7,7 @@ Intelligently routes extracted actions to the correct tool module
 import logging
 from typing import Dict, Any, Optional, List
 from core.action_extractor import ExtractedAction
+from core.plugin_runtime import PluginRegistry
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +20,7 @@ class ToolRouter:
     def __init__(self):
         """Initialize tool router"""
         self.tools = {}
+        self.plugin_registry = PluginRegistry()
         self._initialize_tools()
         logger.info("Tool Router initialized")
     
@@ -115,6 +117,49 @@ class ToolRouter:
                 'action_type': action.action_type,
                 'tool': action.tool
             }
+
+    def route_structured_call(self, tool_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        OpenAI-style structured tool call path.
+        """
+        plugin_handler = self.plugin_registry.get_handler(tool_name)
+        if plugin_handler:
+            result = plugin_handler(arguments)
+            return {
+                "success": result.get("success", False),
+                "result": result.get("result", {}),
+                "error": result.get("error"),
+            }
+
+        structured_map = {
+            "get_current_time": ("system", "get_current_time"),
+            "list_directory": ("file", "list_directory"),
+            "read_file": ("file", "read_file"),
+            "write_file": ("file", "write_file"),
+            "delete_file": ("file", "delete_file"),
+            "launch_app": ("system", "launch_app"),
+            "execute_command": ("cli", "execute_command"),
+        }
+        mapped = structured_map.get(tool_name)
+        if not mapped:
+            return {"success": False, "error": f"Unsupported structured tool: {tool_name}"}
+
+        action_type, action_name = mapped
+        if action_type in ("system", "file"):
+            tool = self.tools.get(action_type)
+            if not tool:
+                return {"success": False, "error": f"Tool unavailable: {action_type}"}
+            return tool.execute_action(action_name, arguments)
+
+        if action_type == "cli":
+            tool = self.tools.get("cli")
+            if not tool:
+                return {"success": False, "error": "CLI tool unavailable"}
+            command = arguments.get("command", "")
+            result = tool.execute_command(command, json_output=True)
+            return {"success": result.get("success", False), "result": result, "error": result.get("error")}
+
+        return {"success": False, "error": f"No route for action type: {action_type}"}
     
     def _get_tool_for_action(self, action: ExtractedAction):
         """Get appropriate tool for action"""

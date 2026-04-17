@@ -9,6 +9,8 @@ from typing import Dict, Any, Optional, List
 from core.action_extractor import ActionExtractor, ExtractedAction
 from core.tool_router import ToolRouter
 from core.response_formatter import ResponseFormatter
+from core.agent_runtime import AgentRuntime
+from core.contracts import UserRequest
 
 logger = logging.getLogger(__name__)
 
@@ -84,6 +86,7 @@ class UnifiedOrchestrator:
         
         # Initialize response formatter
         self.response_formatter = ResponseFormatter()
+        self.agent_runtime = AgentRuntime()
     
     def process_voice_command(
         self,
@@ -294,6 +297,12 @@ If this request requires any actions (like checking system status, creating file
             'ai_available': self.ai_available,
             'stt_available': self.stt_available,
             'tts_available': self.tts_available,
-            'tools_available': self.tool_router.get_available_tools()
+            'tools_available': self.tool_router.get_available_tools(),
+            'cloud_first_runtime': True,
         }
+
+    def stream_agent_events(self, text: str, session_id: str = "orchestrator"):
+        """Cloud-first structured runtime event stream."""
+        request = UserRequest(message=text, session_id=session_id)
+        yield from self.agent_runtime.stream_request(request)
 
